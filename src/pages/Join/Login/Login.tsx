@@ -48,7 +48,7 @@ const InputEmail = () => {
 				if (res.data.success) {
 					localStorage.setItem("token", res.data.data);
 					setAutomaticLogIn(true);
-					navigate("/home");
+					navigate("/home", { replace: true }); 
 				} else {
 					setIsEmailError(true);
 					setIsPwdError(true);
