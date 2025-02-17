@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="manifest" href="./manifest.json" crossorigin="anonymous"/>
+    <link rel="apple-icon" href="icons/apple-icon-144x144.png"/>
+    <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
+    <meta name="apple-mobile-web-app-capable" content="yes"></meta>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="theme-color" content="#fff"/>
+    <link
+      rel="apple-icon-precomposed"
+      sizes="57x57"
+      href="icons/apple-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="114x114"
+      href="icons/apple-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="72x72"
+      href="icons/apple-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="144x144"
+      href="icons/apple-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="60x60"
+      href="icons/apple-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="120x120"
+      href="icons/apple-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="76x76"
+      href="icons/apple-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon-precomposed"
+      sizes="152x152"
+      href="icons/apple-icon-152x152.png"/>
+    <link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="icons/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="icons/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="&nbsp;" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
+    <title>Geeks</title>
+    <style>
+      pwa-install::part(openButton) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 60px;
+        border-radius: 12px;
+        background: #ffc700;
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 24px;
+        text-align: center;
+        color: #333333;
+        font-family: 'Pretendard';
+      }
+
+      pwa-install::part(installModal) {
+        --install-button-color: #000000;
+        
+        font-family: 'Pretendard';
+        text-align: center;
+        line-height: 2rem;
+        white-space: pre-wrap;
+
+        background-image: url(https://bucket-geeks.s3.ap-northeast-2.amazonaws.com/install.png);
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-size: 90%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <script>
+		window.isUpdateAvailable = new Promise(function(resolve, reject) {
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('./sw.js')
+					.then(reg => {
+						reg.onupdatefound = () => {
+							const installingWorker = reg.installing;
+							installingWorker.onstatechange = () => {
+								switch (installingWorker.state) {
+									case 'installed':
+										if (navigator.serviceWorker.controller) {
+											// new update available
+											resolve(true);
+                      console.log('new update');
+										} else {
+											// no update available
+											resolve(false);
+                      console.log('no update');
+										}
+										break;  
+								}
+							};
+						};
+					})
+					.catch(err => console.error('[SW ERROR]', err));
+			}
+		});
+
+
+    </script>
+    <script src="%PUBLIC_URL%/config.js"></script> -->
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+    </div>
+  </body>
+</html>
