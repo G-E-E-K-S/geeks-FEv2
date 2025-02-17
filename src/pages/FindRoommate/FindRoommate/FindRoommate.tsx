@@ -30,7 +30,9 @@ export default function FindRoommate() {
 		queryFn: async () => {
 			const response = await API.get(`/api/v1/matching/points`);
 			return response.data.data;
-		}
+		},
+		retry: 2,
+		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)
 	});
 
 	useMemo(() => {
