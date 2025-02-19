@@ -1,126 +1,146 @@
 import styled from "styled-components";
-import { theme } from "../../../styles/theme";
+import {theme} from "../../../styles/theme";
 import Typography from "../../../components/Common/Layouts/Typography";
-import { getDaysInMonth, isToday } from "../utils";
-import { ReactComponent as AddIcon } from "../.././../assets/img/Calendar/AddIcon.svg";
+import {getDaysInMonth, getDaysInWeek, isToday} from "../utils";
+import {ReactComponent as AddIcon} from "../.././../assets/img/Calendar/AddIcon.svg";
 import Row from "../../../components/Common/Layouts/Row";
-import { Dayjs } from "dayjs";
-import { ScheduleMark, ScheduleType } from "../utils/styles/ScheduleMark.styled";
+import {Dayjs} from "dayjs";
+import {ScheduleMark, ScheduleType} from "../utils/styles/ScheduleMark.styled";
+import {Calendar} from "../utils/types";
 
 interface DayProps {
-	$isEmpty: boolean;
-	$isWeekend: boolean;
-	$isSunday: boolean;
-	$isToday: boolean;
-	$isSelected: boolean;
-	$type: "calendar" | "modal";
+    $isEmpty: boolean;
+    $isWeekend: boolean;
+    $isSunday: boolean;
+    $isToday: boolean;
+    $isSelected: boolean;
+    $type: Calendar;
 }
 
 interface CalendarGridProps {
-	type: "calendar" | "modal";
-	currentDate: Dayjs;
-	selectedDate: string | null;
-	handleDayClick: (day: string | number) => void;
-	scheduleData?: { [key: string]: { title: string, type: string; content: string; time: string }[] };
+    type: Calendar;
+    currentDate: Dayjs;
+    selectedDate: string | null;
+    handleDayClick: (day: string | number) => void;
+    scheduleData?: { [key: string]: { title: string, type: string; content: string; time: string }[] };
 }
 
 const scheduleTypes = ["외출", "외박", "공동 일정", "기타"];
 
-export default function CalendarGrid ({
-	type,
-	scheduleData,
-	currentDate,
-	selectedDate,
-	handleDayClick,
-}: CalendarGridProps) {
-	const getScheduleForDay = (day: string | number) => {
-		if (day === "") return [];
-		const dateString = currentDate.date(Number(day)).format("YYYY.M.D");
-		return scheduleData?.[dateString] || [];
-	};
+export default function CalendarGrid({
+                                         type,
+                                         scheduleData,
+                                         currentDate,
+                                         selectedDate,
+                                         handleDayClick,
+                                     }: CalendarGridProps) {
+    const getScheduleForDay = (day: string | number) => {
+        if (day === "") return [];
+        const dateString = currentDate.date(Number(day)).format("YYYY.M.D");
+        return scheduleData?.[dateString] || [];
+    };
 
-	const renderScheduleMarks = (schedules: { type: string; content: string; time: string }[]) => {
-		if (schedules.length >= 4) {
-			return (
-				<ScheduleMarkWrapper style={{ flexDirection: "column", alignItems: "center" }}>
-					<Row gap={2}>
-						{schedules.slice(0, 2).map((scheduleType, index) => (
-							<ScheduleMark key={index} $type={scheduleType.type} />
-						))}
-					</Row>
-					<Row gap={2}>
-						<ScheduleMark $type={schedules[2].type} />
-						<AddIcon />
-					</Row>
-				</ScheduleMarkWrapper>
-			);
-		}
+    const renderScheduleMarks = (schedules: { type: string; content: string; time: string }[]) => {
+        if (schedules.length >= 4) {
+            return (
+                <ScheduleMarkWrapper style={{flexDirection: "column", alignItems: "center"}}>
+                    <Row gap={2}>
+                        {schedules.slice(0, 2).map((scheduleType, index) => (
+                            <ScheduleMark key={index} $type={scheduleType.type}/>
+                        ))}
+                    </Row>
+                    <Row gap={2}>
+                        <ScheduleMark $type={schedules[2].type}/>
+                        <AddIcon/>
+                    </Row>
+                </ScheduleMarkWrapper>
+            );
+        }
 
-		return (
-			<ScheduleMarkWrapper>
-				{schedules.map((scheduleType, index) => (
-					<ScheduleMark key={index} $type={scheduleType.type} />
-				))}
-			</ScheduleMarkWrapper>
-		);
-	};
+        return (
+            <ScheduleMarkWrapper>
+                {schedules.map((scheduleType, index) => (
+                    <ScheduleMark key={index} $type={scheduleType.type}/>
+                ))}
+            </ScheduleMarkWrapper>
+        );
+    };
 
-	return (
-		<CalendarContainer>
-			{type === "calendar" && (
-				<ScheduleHeader>
-					{scheduleTypes.map((scheduleType: string) => (
-						<ScheduleType key={scheduleType} $type={scheduleType}>
-							<ScheduleMark $type={scheduleType} />
-							<Typography typoSize="B2_medium">{scheduleType}</Typography>
-						</ScheduleType>
-					))}
-				</ScheduleHeader>
-			)}
-			<WeekdayHeader>
-				{["일", "월", "화", "수", "목", "금", "토"].map((day: string) => (
-					<WeekdayCell key={day} $day={day}>
-						<Typography typoSize="B1_medium">{day}</Typography>
-					</WeekdayCell>
-				))}
-			</WeekdayHeader>
-			<CalendarBody>
-				{getDaysInMonth(currentDate).map((week: (string | number)[], weekIdx: number) => (
-					<Week key={`week-${weekIdx}`}>
-						{week.map((day: string | number, dayIdx: number) => (
-							<Day
-								key={`day-${weekIdx}-${dayIdx}`}
-								$isEmpty={day === ""}
-								$isWeekend={dayIdx === 0 || dayIdx === 6}
-								$isSunday={dayIdx === 0}
-								$isToday={isToday(currentDate, day)}
-								$isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
-								$type={type}
-								onClick={() => handleDayClick(day)}
-							>
-								<Typography typoSize="B1_medium">{day}</Typography>
-								{type === "calendar" && scheduleData && renderScheduleMarks(getScheduleForDay(day))}
-							</Day>
-						))}
-					</Week>
-				))}
-			</CalendarBody>
-		</CalendarContainer>
-	);
+    return (
+        <CalendarContainer>
+            {type === "calendar" && (
+                <ScheduleHeader>
+                    {scheduleTypes.map((scheduleType: string) => (
+                        <ScheduleType key={scheduleType} $type={scheduleType}>
+                            <ScheduleMark $type={scheduleType}/>
+                            <Typography typoSize="B2_medium">{scheduleType}</Typography>
+                        </ScheduleType>
+                    ))}
+                </ScheduleHeader>
+            )}
+            <WeekdayHeader $type={type}>
+                {["일", "월", "화", "수", "목", "금", "토"].map((day: string) => (
+                    <WeekdayCell key={day} $day={day}>
+                        <Typography typoSize="B1_medium">{day}</Typography>
+                    </WeekdayCell>
+                ))}
+            </WeekdayHeader>
+            <CalendarBody>
+                {(type === "calendar" || type === "modal") && getDaysInMonth(currentDate).map((week: (string | number)[], weekIdx: number) => (
+                    <Week key={`week-${weekIdx}`}>
+                        {week.map((day: string | number, dayIdx: number) => (
+                            <Day
+                                key={`day-${weekIdx}-${dayIdx}`}
+                                $isEmpty={day === ""}
+                                $isWeekend={dayIdx === 0 || dayIdx === 6}
+                                $isSunday={dayIdx === 0}
+                                $isToday={isToday(currentDate, day)}
+                                $isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
+                                $type={type}
+                                onClick={() => handleDayClick(day)}
+                            >
+                                <Typography typoSize="B1_medium">{day}</Typography>
+                                {type === "calendar" && scheduleData && renderScheduleMarks(getScheduleForDay(day))}
+                            </Day>
+                        ))}
+                    </Week>
+                ))}
+                {type === "home" && (
+                    <Week>
+                        {getDaysInWeek(currentDate).map((day: string | number, dayIdx: number) => (
+                            <Day
+                                key={`day-${dayIdx}`}
+                                $isEmpty={day === ""}
+                                $isWeekend={dayIdx === 0 || dayIdx === 6}
+                                $isSunday={dayIdx === 0}
+                                $isToday={isToday(currentDate, day)}
+                                $isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
+                                $type={type}
+                                onClick={() => handleDayClick(day)}
+                            >
+                                <Typography typoSize="B1_medium">{day}</Typography>
+                                {type === "home" && scheduleData && renderScheduleMarks(getScheduleForDay(day))}
+                            </Day>
+                        ))}
+                    </Week>
+                )}
+            </CalendarBody>
+        </CalendarContainer>
+    );
 }
 
 const CalendarContainer = styled.div``;
 
-const WeekdayHeader = styled.div`
+const WeekdayHeader = styled.div<{ $type: Calendar }>`
     display: flex;
-    margin-bottom: 36px;
+    margin-bottom: ${({$type}) => $type === "home" ? "20px" : "36px"};
     justify-content: space-between;
 `;
 
 const WeekdayCell = styled.div<{ $day: string }>`
     min-width: 38px;
     text-align: center;
-    color: ${({ $day }) => {
+    color: ${({$day}) => {
         switch ($day) {
             case "토":
                 return theme.Gray500;
@@ -142,6 +162,7 @@ const Week = styled.div`
 
 const Day = styled.div<DayProps>`
     position: relative;
+    z-index: 1;
     min-width: 38px;
     min-height: 48px;
     text-align: center;
@@ -149,7 +170,7 @@ const Day = styled.div<DayProps>`
     color: ${(props) => {
         if (props.$type === "calendar" && props.$isSelected) {
             return theme.White;
-        } else if (props.$type === "calendar" && props.$isToday) {
+        } else if ((props.$type === "calendar" || props.$type === "home") && props.$isToday) {
             return theme.Yellow700;
         } else if (props.$isWeekend) {
             return props.$isSunday ? theme.Red500 : theme.Gray500;
