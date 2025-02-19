@@ -21,6 +21,9 @@ export default function Welcome() {
 	const [showPopup, setShowPopup] = useState(false);
 	const location = useLocation();
 	const [popupMessage, setPopupMessage] = useState("");
+	//@ts-ignore
+	const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+
 	const [updateState, setUpdateState] = useState(true);
 	// const [phoneKind, setPhoneKind] = useState("");
 
@@ -38,11 +41,22 @@ export default function Welcome() {
 		}
 	}, [location]);
 
-	const handleBeforeInstallPrompt = (event: any) => {
+	const handleBeforeInstallPrompt = (event) => {
 		event.preventDefault();
 
 		setDeferredPrompt(event);
 	};
+
+	useEffect(() => {
+		window.addEventListener("beforeinstallprompt", (event) => {
+			event.preventDefault();
+			setDeferredPrompt(event);
+		});
+
+		return () => {
+			window.removeEventListener("beforeinstallprompt", () => {});
+		};
+	}, []);
 
 	const handleInstall = () => {
 		if (deferredPrompt) {
@@ -106,29 +120,32 @@ export default function Welcome() {
 				<Button text="이메일 회원가입" isNextPage={true} onClick={() => navigate("/agree")} />
 				<S.LoginButton onClick={() => navigate("/login")}>로그인</S.LoginButton>
 				{/* {deferredPrompt && <button onClick={handleInstall}>앱 설치</button>} */}
-				{updateState ||
-					(!window.matchMedia("(display-mode: standalone)").matches && (
-						<Modal padding={`40px 24px 28px 24px`} isWelcome={true}>
-							<Column horizonAlign="center" verticalAlign="center">
-								<S.LogoImg src={Logo} />
-								<img src={TextLogo} />
-							</Column>
-							<Typography
-								typoSize="T1"
-								color="Gray800"
-							>{`긱스를 터치 한 번으로\n바로 시작해 보세요!`}</Typography>
-							{navigator.userAgent.toLowerCase().indexOf("android") > -1 ? (
-								<S.DownLoadApp onClick={() => handleInstall()}>{`앱 내려받기`}</S.DownLoadApp>
-							) : (
-								// @ts-ignore
-								<pwa-install
-									installbuttontext={"앱 내려받기"}
-									iosinstallinfotext={'공유 버튼 클릭 후 "홈 화면에 추가" 를 눌러주세요!'}
-									descriptionheader={``}
-								/>
-							)}
-						</Modal>
-					))}
+				{(!!deferredPrompt || updateState || !isStandalone) && (
+					<Modal padding={`40px 24px 28px 24px`} isWelcome={true}>
+						<Column horizonAlign="center" verticalAlign="center" gap={12}>
+							<S.LogoImg src={Logo} />
+							<img src={TextLogo} />
+						</Column>
+						<Typography
+							typoSize="T1"
+							color="Gray800"
+							textAlign="center"
+							style={{ marginTop: "40px", marginBottom: "40px" }}
+						>
+							{`긱스를 터치 한 번으로\n바로 시작해 보세요!`}
+						</Typography>
+						{navigator.userAgent.toLowerCase().indexOf("android") > -1 ? (
+							<S.DownLoadApp onClick={() => handleInstall()}>{`앱 내려받기`}</S.DownLoadApp>
+						) : (
+							// @ts-ignore
+							<pwa-install
+								installbuttontext={"앱 내려받기"}
+								iosinstallinfotext={'공유 버튼 클릭 후 "홈 화면에 추가" 를 눌러주세요!'}
+								descriptionheader={``}
+							/>
+						)}
+					</Modal>
+				)}
 			</CS.ScreenComponent>
 		</CS.Totalframe>
 	);
