@@ -258,7 +258,7 @@ export default function EditProfile() {
 		const userData = {
 			nickname: nickname,
 			major: major,
-			studentNum: 23,
+			studentNum: studentNum,
 			dormitory: dormitory === "신관" ? "NEW" : dormitory === "구관" ? "OLD" : "HAPPY"
 		};
 
