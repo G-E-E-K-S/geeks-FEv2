@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import API from "../../../axios/BaseUrl";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as CS from "../../../components/Common/CommonStyle";
 import * as S from "./style";
-import InputSearch from "../../../components/Common/InputSearch";
-import FindPost from "../../../components/Main/FindPost";
-import FindMember from "../../../components/Main/FindMember";
 import FetchMore from "../../../components/Community/FetchMore";
 import moment from "moment";
 import "moment/locale/ko";
@@ -14,20 +12,9 @@ import SearchBar from "../../../components/DesignStuff/SearchBar/SearchBar";
 import Row from "../../../components/Common/Layouts/Row";
 import GoBack from "../../../components/Common/GoBack";
 import Typography from "../../../components/Common/Layouts/Typography";
+import UserProfile from "../../../components/Main/UserProfile/UserProfile";
+import { UserProfileType } from "../../../types/userProfileType";
 
-// const Menu = styled.div`
-// 	width: calc(100% / 2);
-// 	padding: 14px 0px;
-// 	display: flex;
-// 	justify-content: center;
-// 	align-items: center;
-// 	border-bottom: ${(props) => (props.isSelect ? "2px solid #333" : "1px solid #efefef")};
-// 	font-size: 1.125rem;
-// 	font-weight: 600;
-// 	line-height: 24px;
-// 	text-align: center;
-// 	color: ${(props) => (props.isSelect ? "#333" : "#B7B7B7")};
-// `;
 const MemberNotice = styled.div`
 	padding: 13px 0 13px 20px;
 	width: 100vw;
@@ -41,67 +28,31 @@ const MemberNotice = styled.div`
 	position: relative;
 	top: 1px;
 `;
-const FixInput = styled.div`
-	width: calc(100% - 5.12vw * 2);
-	position: fixed;
-	height: 124px;
-	background-color: #fff;
-	z-index: 3;
-`;
-const ContentBox = styled.div`
-	position: relative;
-	top: 124px;
-`;
+
 export default function Search() {
-	const [keyword, setKeyword] = useState(null);
-	const [posts, setPosts] = useState([]);
-	const [cursor, setCursor] = useState(-1);
-	const [hasNext, setHasNext] = useState(true);
-	const [users, setUsers] = useState([]);
-	const [isSelect, setIsSelect] = useState("post");
+	const [inputKeyword, setInputKeyword] = useState("");
+	const [searchUser, setSearchUser] = useState<UserProfileType[]>([]);
 
 	let navigate = useNavigate();
 
-	// async function fetchAllPost() {
-	// 	try {
-	// 		const res = await API.get("/home/search/post?cursor=" + cursor + "&keyword=" + keyword);
-	// 		console.log(res.data);
-	// 		setHasNext(res.data.hasNextPage);
-	// 		setPosts((prev) => [...prev, ...res.data.posts]);
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// }
+	const { refetch } = useQuery({
+		queryKey: ["searchRoommate", inputKeyword],
+		queryFn: async () => {
+			const response = await API.get(`/api/v1/user/search/${inputKeyword}`);
+			return response.data.data;
+		},
+		enabled: false
+	});
 
-	// async function fetchMember() {
-	// 	try {
-	// 		const res = await API.get("/home/search/member?keyword=" + keyword);
-	// 		console.log(res.data);
-	// 		setUsers(res.data);
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 	}
-	// }
+	const handleSearchRoommate = (inputVal: string) => {
+		setInputKeyword(inputVal);
+	};
 
-	// useEffect(() => {
-	// 	if (!hasNext || keyword == null) {
-	// 		return;
-	// 	}
-
-	// 	fetchAllPost();
-	// }, [cursor]);
-
-	// useEffect(() => {
-	// 	if (keyword == null) {
-	// 		return;
-	// 	}
-
-	// 	if (isSelect === "post") {
-	// 		setCursor(0);
-	// 	} else {
-	// 		fetchMember();
-	// 	}
-	// }, [keyword]);
+	useEffect(() => {
+		if (inputKeyword) {
+			refetch().then((val) => setSearchUser(val.data));
+		}
+	}, [inputKeyword]);
 
 	return (
 		<CS.Totalframe background={`#fff`}>
@@ -109,39 +60,13 @@ export default function Search() {
 				<CS.Header backgroundColor="White">
 					<Row horizonAlign="center" verticalAlign="center" gap={12}>
 						<GoBack />
-						<SearchBar placeHolder="검색할 키워드를 입력하세요" inputVal={(val) => console.log(val)} />
+						<SearchBar
+							placeHolder="검색할 키워드를 입력하세요"
+							inputVal={(val) => handleSearchRoommate(val)}
+						/>
 					</Row>
 				</CS.Header>
-
-				{/* <ContentBox>
-					{isSelect === "post" &&
-						posts?.map((post) => (
-							<FindPost
-								postId={post.postId}
-								title={post.title}
-								date={moment(post.createDate).format("MM.DD")}
-								content={post.content}
-							/>
-						))}
-					{isSelect === "post" && keyword !== null && posts.length !== 0 && (
-						<FetchMore items={posts} setCursor={setCursor} />
-					)}
-
-					{isSelect === "member" && (
-						<>
-							<MemberNotice>{`같은 성별의 회원만 검색할 수 있어요`}</MemberNotice>
-							{users?.map((user) => (
-								<FindMember
-									userName={user.nickname}
-									profileImg={user.photoName}
-									major={user.major}
-									onClick={() => navigate("/detail/details/" + user.userId)}
-								/>
-							))}
-						</>
-					)}
-				</ContentBox> */}
-				{posts.length === 0 && users?.length === 0 && (
+				{searchUser?.length === 0 ? (
 					<S.SearchTotalTxt>
 						<Typography
 							typoSize="T3_semibold"
@@ -151,8 +76,26 @@ export default function Search() {
 							typoSize="T4_medium"
 							color="Gray400"
 							style={{ marginTop: "8px" }}
-						>{`예) 닉네임, 커뮤니티 글 제목, 내용 등`}</Typography>
+						>{`예) 닉네임, 기능, 메뉴 등`}</Typography>
 					</S.SearchTotalTxt>
+				) : (
+					<>
+						<Typography typoSize="B2_medium" color="Gray500">
+							{"회원"}
+						</Typography>
+						<MemberNotice>{`같은 성별의 회원만 검색할 수 있어요`}</MemberNotice>
+						{searchUser?.map((val) => (
+							<UserProfile
+								ID={val.studentNum}
+								image={val.image}
+								major={val.major}
+								nickName={val.nickname}
+								smoke={val.smoke}
+								hasPadding
+								onClick={() => navigate(`/details/detail/${val.matchingPointId}/${val.opponentId}`)}
+							/>
+						))}
+					</>
 				)}
 			</CS.ScreenComponent>
 		</CS.Totalframe>
