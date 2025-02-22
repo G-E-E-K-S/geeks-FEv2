@@ -390,7 +390,7 @@ export default function CompareUserInfo() {
 				message={opponentInfo.nickname + `님께\n룸메이트를 신청할까요?`}
 				subMessage={`상대방이 수락하기 전까지는\n언제든지 취소 가능해요`}
 				btnName={`신청하기`}
-				isOpen={applyRoommate && !roommateApplyState && !roommateState}
+				isOpen={applyRoommate}
 				onClick={() => ApplyRoommate()}
 				applyRoommate={() => setApplyRommate(false)}
 			/>

@@ -359,7 +359,7 @@ export default function RoommateApply() {
 					bottom={`9.95`}
 					isShowPopup={showPopup}
 					setShowPopup={setShowPopup}
-					message={`룸메이트 신청을 취소하였습니다`}
+					message={`룸메이트 신청을 거절했어요`}
 				/>
 			</CS.ScreenComponent>
 		</CS.Totalframe>
