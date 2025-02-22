@@ -63,9 +63,14 @@ export default function LifeStyle() {
 	}, [saveRoommateList]);
 
 	const handleCheck = (bookmarkId: number) => {
-		setCheckToDelete((value) => [...value, bookmarkId]);
-		if (checkToDelete.includes(bookmarkId))
-			setCheckToDelete(checkToDelete.filter((nowBookmarkId) => nowBookmarkId !== bookmarkId));
+		if (activeEdit) {
+			setCheckToDelete((value) => [...value, bookmarkId]);
+			if (checkToDelete.includes(bookmarkId))
+				setCheckToDelete(checkToDelete.filter((nowBookmarkId) => nowBookmarkId !== bookmarkId));
+		} else {
+			const matchData = saveRoommateList.filter((list) => list.bookmarkId === bookmarkId);
+			navigate(`/detail/details/${matchData?.[0].matchingPointId}/${matchData?.[0].opponentId}`);
+		}
 	};
 	const [isDone, setIsDone] = useState(false);
 	const handleDelete = () => {
