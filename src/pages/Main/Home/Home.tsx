@@ -268,7 +268,7 @@ export default function Home() {
                             </Row>
                         </ButtonBox>
                     )}
-                    <ButtonBox backgroundColor="White">
+                    <ButtonBox backgroundColor="White" onClick={()=>navigate("/calendar")}>
                         <CalendarHeader
                             type="home"
                             currentDate={currentDate}
