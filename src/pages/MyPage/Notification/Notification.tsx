@@ -5,6 +5,7 @@ import Typography from "../../../components/Common/Layouts/Typography";
 import Toggle from "../../../components/DesignStuff/Toggle/Toggle";
 import Column from "../../../components/Common/Layouts/Column";
 import { useState } from "react";
+import { handleAllowNotification } from "../../../FCM_ALARM";
 
 export default function Notification() {
 	const [toggleState, setToggleState] = useState({
@@ -17,6 +18,8 @@ export default function Notification() {
 
 	const handleToggle = (type: string) => {
 		// Recheck
+		handleAllowNotification();
+		console.log(";;clickToggle");
 		setToggleState((prev: any) => {
 			if (type === "total") {
 				const newState = !prev.total;
