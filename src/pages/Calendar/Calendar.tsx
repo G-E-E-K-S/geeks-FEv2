@@ -1,20 +1,20 @@
 import * as c from "../../components/Common/CommonStyle";
 import CalendarGrid from "./components/CalendarGrid";
 import styled from "styled-components";
-import {theme} from "../../styles/theme";
-import {useCalendar} from "./hooks/useCalendar";
+import { theme } from "../../styles/theme";
+import { useCalendarStore } from "../../store/calendarStore";
 import TodaySchedules from "./components/TodaySchedules";
 import CalendarHeader from "./ui/CalendarHeader";
 import BottomSheet from "../../components/DesignStuff/BottomSheet/BottomSheet";
 import Typography from "../../components/Common/Layouts/Typography";
-import {ReactComponent as CloseModal} from "../../assets/img/Join/closeModal.svg";
-import {ReactComponent as AddIcon} from ".././../assets/img/Calendar/AddIcon.svg";
+import { ReactComponent as CloseModal } from "../../assets/img/Join/closeModal.svg";
+import { ReactComponent as AddIcon } from ".././../assets/img/Calendar/AddIcon.svg";
 import Row from "../../components/Common/Layouts/Row";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ScrollPicker from "../../components/DesignStuff/ScrollPicker/ScrollPicker";
-import {MONTHS} from "./utils/const";
-import {useNavigate} from "react-router-dom";
-import {useCalendarSchedules} from "./hooks/useCalendarSchedules";
+import { MONTHS } from "./utils/const";
+import { useNavigate } from "react-router-dom";
+import { useCalendarSchedules } from "./hooks/useCalendarSchedules";
 import Loading from "../Loading";
 
 export default function Calendar() {
@@ -23,17 +23,15 @@ export default function Calendar() {
     const {
         currentDate,
         selectedDate,
-        handleDayClick,
-        handleTodayClick,
         setCurrentDate
-    } = useCalendar();
+    } = useCalendarStore();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const toggleIsOpen = () => {
         setIsOpen(prevState => !prevState);
     };
 
-    const {data, isLoading} = useCalendarSchedules(currentDate.year(), currentDate.month() + 1);
-    if (isLoading) return <Loading/>;
+    const { data, isLoading } = useCalendarSchedules(currentDate.year(), currentDate.month() + 1);
+    if (isLoading) return <Loading />;
     const scheduleData = data?.data || [];
 
     const handleMonthSelect = (month: number) => {
@@ -53,29 +51,23 @@ export default function Calendar() {
                 <c.SubScreen>
                     <CalendarHeader
                         type="calendar"
-                        currentDate={currentDate}
-                        handleTodayClick={handleTodayClick}
                         toggleIsOpen={toggleIsOpen}
                     />
                     <CalendarGrid
                         type="calendar"
                         scheduleData={scheduleData}
-                        currentDate={currentDate}
-                        selectedDate={selectedDate}
-                        handleDayClick={handleDayClick}
                     />
-                    <Line/>
+                    <Line />
                     <TodaySchedules
-                        selectedDate={selectedDate}
                         todayScheduleDatas={todayScheduleDatas}
                     />
                     <BottomSheet isOpen={isOpen} height="45.73vh">
-                        <Row horizonAlign="distribute" style={{marginBottom: "1.25rem"}}>
+                        <Row horizonAlign="distribute" style={{ marginBottom: "1.25rem" }}>
                             <Typography color="Gray800" typoSize="T2_bold">
                                 {"월 선택"}
                             </Typography>
                             <Button onClick={toggleIsOpen}>
-                                <CloseModal/>
+                                <CloseModal />
                             </Button>
                         </Row>
                         <ScrollPicker<number, string>
@@ -85,7 +77,7 @@ export default function Calendar() {
                         />
                     </BottomSheet>
                     <ScheduleAddButton onClick={() => navigate("/schedule/add")}>
-                        <AddIcon style={{width: "20px", height: "20px"}}/>
+                        <AddIcon style={{ width: "20px", height: "20px" }} />
                         <Typography typoSize="T4_semibold" color="Gray700">
                             일정 추가
                         </Typography>
@@ -113,6 +105,7 @@ const Button = styled.button`
 `;
 
 const ScheduleAddButton = styled(Button)`
+    z-index: 10;
     position: fixed;
     right: 20px;
     bottom: calc(11.84vh + 20px);

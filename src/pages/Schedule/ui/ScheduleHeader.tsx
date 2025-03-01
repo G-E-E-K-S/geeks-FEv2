@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import {ReactComponent as BackIcon} from "../.././../assets/img/Calendar/BackIcon.svg";
-import {ReactComponent as EditIcon} from "../.././../assets/img/Calendar/EditIcon.svg";
+import { ReactComponent as BackIcon } from "../.././../assets/img/Calendar/BackIcon.svg";
+import { ReactComponent as EditIcon } from "../.././../assets/img/Calendar/EditIcon.svg";
 import Row from "../../../components/Common/Layouts/Row";
 import Typography from "../../../components/Common/Layouts/Typography";
-import {theme} from "../../../styles/theme";
-import {useNavigate, useParams} from "react-router-dom";
-import {Schedule} from "../../Calendar/utils/types";
+import { theme } from "../../../styles/theme";
+import { useNavigate, useParams } from "react-router-dom";
+import { Schedule } from "../../Calendar/utils/types";
+import { useScheduleStore } from "../../../store/scheduleStore";
 
 interface ScheduleHeaderProps {
     pathName: string;
@@ -14,9 +15,10 @@ interface ScheduleHeaderProps {
     schedule?: Schedule;
 }
 
-export default function ScheduleHeader({pathName, isActive, onClick, schedule}: ScheduleHeaderProps) {
+export default function ScheduleHeader({ pathName, isActive, onClick }: ScheduleHeaderProps) {
     const navigate = useNavigate();
-    const {scheduleId} = useParams<{ scheduleId: string }>();
+    const { scheduleId } = useParams<{ scheduleId: string }>();
+    const { currentSchedule, setCurrentSchedule } = useScheduleStore();
 
     const getTitle = () => {
         if (pathName === `/schedule/${scheduleId}/modify`) {
@@ -28,11 +30,24 @@ export default function ScheduleHeader({pathName, isActive, onClick, schedule}: 
         return "";
     };
 
+    const handleEditClick = () => {
+        if (currentSchedule) {
+            navigate(`/schedule/${scheduleId}/modify`);
+        }
+    };
+
+    const handleBackClick = () => {
+        if (pathName === `/schedule/${scheduleId}`) {
+            setCurrentSchedule(null);
+        }
+        navigate(-1);
+    }
+
     return (
         <ScheduleHeaderWrapper>
             <Row gap={8} verticalAlign="center">
-                <Button onClick={() => navigate(-1)}>
-                    <BackIcon/>
+                <Button onClick={handleBackClick}>
+                    <BackIcon />
                 </Button>
 
                 <Typography typoSize="H3" color="Gray800">
@@ -46,8 +61,8 @@ export default function ScheduleHeader({pathName, isActive, onClick, schedule}: 
                 </CompleteButton>
             )}
             {pathName === `/schedule/${scheduleId}` && (
-                <Button onClick={() => navigate(`/schedule/${scheduleId}/modify`, {state: {schedule}})}>
-                    <EditIcon/>
+                <Button onClick={handleEditClick}>
+                    <EditIcon />
                 </Button>
             )}
         </ScheduleHeaderWrapper>
@@ -70,16 +85,16 @@ const Button = styled.button`
     background-color: transparent;
 `;
 
-const CompleteButton = styled(Button)<{ $isActive: boolean }>`
+const CompleteButton = styled(Button) <{ $isActive: boolean }>`
     border: none;
     cursor: pointer;
     padding: 8px 12px;
     border-radius: 8px;
     display: flex;
-    color: ${({$isActive}) => $isActive ? theme.Gray800 : theme.Gray400};;
-    background-color: ${({$isActive}) => $isActive ? theme.Yellow500 : theme.Gray50};
+    color: ${({ $isActive }) => $isActive ? theme.Gray800 : theme.Gray400};;
+    background-color: ${({ $isActive }) => $isActive ? theme.Yellow500 : theme.Gray50};
 
     &:active {
-        background-color: ${({$isActive}) => $isActive ? theme.Yellow600 : theme.Gray50};
+        background-color: ${({ $isActive }) => $isActive ? theme.Yellow600 : theme.Gray50};
     }
 `;

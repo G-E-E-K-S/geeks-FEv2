@@ -1,18 +1,19 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Typography from "../../../../components/Common/Layouts/Typography";
 import Row from "../../../../components/Common/Layouts/Row";
-import {HOURS, MINUTES, TIMES} from "../../util/const";
+import { HOURS, MINUTES, TIMES } from "../../util/const";
 import Column from "../../../../components/Common/Layouts/Column";
-import {SelectInput} from "../../util/styles";
+import { SelectInput } from "../../util/styles";
 import CalendarHeader from "../../../Calendar/ui/CalendarHeader";
 import CalendarGrid from "../../../Calendar/components/CalendarGrid";
 import BottomSheet from "../../../../components/DesignStuff/BottomSheet/BottomSheet";
 import styled from "styled-components";
-import {theme} from "../../../../styles/theme";
-import {Swiper, SwiperSlide} from "swiper/react";
+import { theme } from "../../../../styles/theme";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import {useCalendar} from "../../../Calendar/hooks/useCalendar";
-import {ReactComponent as CloseModalIcon} from "../../../../assets/img/Join/closeModal.svg";
+import { useCalendarStore } from "../../../../store/calendarStore";
+import dayjs from "dayjs";
+import { ReactComponent as CloseModalIcon } from "../../../../assets/img/Join/closeModal.svg";
 
 interface ScheduleEditDateProps {
     startDate: string;
@@ -27,18 +28,20 @@ interface ScheduleEditDateProps {
 }
 
 export default function ScheduleEditDate({
-                                             startDate,
-                                             endDate,
-                                             startTime,
-                                             endTime,
-                                             type,
-                                             setStartDate,
-                                             setStartTime,
-                                             setEndDate,
-                                             setEndTime,
-                                         }: ScheduleEditDateProps) {
-    const {currentDate, selectedDate, handlePrevMonth, handleNextMonth, handleScheduleDayClick} =
-        useCalendar();
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    type,
+    setStartDate,
+    setStartTime,
+    setEndDate,
+    setEndTime,
+}: ScheduleEditDateProps) {
+    const {
+        currentDate,
+        handleDayClick
+    } = useCalendarStore();
 
     const [isStartTimeOpen, setIsStartTimeOpen] = useState(false);
     const [isEndTimeOpen, setIsEndTimeOpen] = useState(false);
@@ -46,6 +49,19 @@ export default function ScheduleEditDate({
     const [isEndDateOpen, setIsEndDateOpen] = useState(false);
     const [selectedHour, setSelectedHour] = useState(HOURS[0].option);
     const [selectedMinute, setSelectedMinute] = useState(MINUTES[0].option);
+
+    const handleDateClick = (day: string | number) => {
+        if (day === "") return;
+        const selectedDate = currentDate.date(Number(day)).format("YYYY.M.D");
+
+        if (isStartDateOpen) {
+            setStartDate(selectedDate);
+            setIsStartDateOpen(false);
+        } else if (isEndDateOpen) {
+            setEndDate(selectedDate);
+            setIsEndDateOpen(false);
+        }
+    };
 
     const handleClick = () => {
         const time = `${selectedHour}:${selectedMinute}`;
@@ -64,23 +80,23 @@ export default function ScheduleEditDate({
             <Column gap={8} width="w-full">
                 <Typography typoSize="B2_medium" color="Gray500">날짜</Typography>
                 <Row gap={9.5} horizonAlign="center" verticalAlign="center" width="w-full">
-                    <SelectInput onClick={() => setIsStartDateOpen(true)} style={{width: "33.215%"}}>
+                    <SelectInput onClick={() => setIsStartDateOpen(true)} style={{ width: "33.215%" }}>
                         <Typography
                             typoSize="T3_semibold"
                             color="Gray800"
-                            style={{display: "flex", alignItems: "center", gap: "6px"}}
+                            style={{ display: "flex", alignItems: "center", gap: "6px" }}
                         >
                             {startDate}
                         </Typography>
                     </SelectInput>
                     <SelectInput
                         onClick={() => type !== "SLEEPOVER" && setIsStartTimeOpen(true)}
-                        style={{width: "19.37%"}}
+                        style={{ width: "19.37%" }}
                     >
                         <Typography
                             typoSize="T3_semibold"
                             color={type === "SLEEPOVER" ? "Gray200" : "Gray800"}
-                            style={{display: "flex", alignItems: "center", gap: "6px"}}
+                            style={{ display: "flex", alignItems: "center", gap: "6px" }}
                         >
                             {TIMES[startTime]?.option ?? startTime}
                         </Typography>
@@ -88,23 +104,23 @@ export default function ScheduleEditDate({
                     <Typography typoSize="B1_semibold" color="Gray800">
                         -
                     </Typography>
-                    <SelectInput onClick={() => setIsEndDateOpen(true)} style={{width: "33.215%"}}>
+                    <SelectInput onClick={() => setIsEndDateOpen(true)} style={{ width: "33.215%" }}>
                         <Typography
                             typoSize="T3_semibold"
                             color="Gray800"
-                            style={{display: "flex", alignItems: "center", gap: "6px"}}
+                            style={{ display: "flex", alignItems: "center", gap: "6px" }}
                         >
                             {endDate}
                         </Typography>
                     </SelectInput>
                     <SelectInput
                         onClick={() => type !== "SLEEPOVER" && setIsEndTimeOpen(true)}
-                        style={{width: "19.37%"}}
+                        style={{ width: "19.37%" }}
                     >
                         <Typography
                             typoSize="T3_semibold"
                             color={type === "SLEEPOVER" ? "Gray200" : "Gray800"}
-                            style={{display: "flex", alignItems: "center", gap: "6px"}}
+                            style={{ display: "flex", alignItems: "center", gap: "6px" }}
                         >
                             {TIMES[endTime]?.option ?? endTime}
                         </Typography>
@@ -114,7 +130,7 @@ export default function ScheduleEditDate({
 
             {/*날짜 선택 모달*/}
             <BottomSheet isOpen={isStartDateOpen || isEndDateOpen} height="65.16vh">
-                <Row horizonAlign="distribute" style={{marginBottom: "1.25rem"}}>
+                <Row horizonAlign="distribute" style={{ marginBottom: "1.25rem" }}>
                     <Typography color="Gray800" typoSize="T2_bold">
                         날짜
                     </Typography>
@@ -124,35 +140,19 @@ export default function ScheduleEditDate({
                             setIsEndDateOpen(false);
                         }}
                     >
-                        <CloseModalIcon/>
+                        <CloseModalIcon />
                     </CloseButton>
                 </Row>
-                <CalendarHeader
-                    type="modal"
-                    currentDate={currentDate}
-                    handlePrevMonth={handlePrevMonth}
-                    handleNextMonth={handleNextMonth}
-                />
+                <CalendarHeader type="modal" />
                 <CalendarGrid
                     type="modal"
-                    currentDate={currentDate}
-                    selectedDate={selectedDate}
-                    handleDayClick={(day) => {
-                        if (isStartDateOpen) {
-                            setStartDate(handleScheduleDayClick(day));
-                            setIsStartDateOpen(false);
-                        } else {
-                            setEndDate(handleScheduleDayClick(day));
-                            setIsEndDateOpen(false);
-                        }
-
-                    }}
+                    onDayClick={handleDateClick}
                 />
             </BottomSheet>
 
             {/*시간 선택 모달*/}
             <BottomSheet isOpen={isStartTimeOpen || isEndTimeOpen} height="54.73vh">
-                <Row horizonAlign="distribute" style={{marginBottom: "1.25rem"}}>
+                <Row horizonAlign="distribute" style={{ marginBottom: "1.25rem" }}>
                     <Typography color="Gray800" typoSize="T2_bold">
                         시간
                     </Typography>
@@ -160,12 +160,12 @@ export default function ScheduleEditDate({
                         setIsStartTimeOpen(false);
                         setIsEndTimeOpen(false);
                     }}>
-                        <CloseModalIcon/>
+                        <CloseModalIcon />
                     </CloseButton>
                 </Row>
                 <Row horizonAlign="center" verticalAlign="center">
                     <Swiper
-                        style={{height: "220px"}}
+                        style={{ height: "220px" }}
                         direction={"vertical"}
                         slidesPerView={3}
                         slideToClickedSlide={true}
@@ -175,18 +175,18 @@ export default function ScheduleEditDate({
                         }}
                     >
                         {HOURS.map(no =>
-                            <SwiperSlide key={no.option} style={{display: "flex", alignItems: "center"}}>
+                            <SwiperSlide key={no.option} style={{ display: "flex", alignItems: "center" }}>
                                 <Typography typoSize="T1" color="Gray700" textAlign="center">
                                     {no.option}
                                 </Typography>
                             </SwiperSlide>
                         )}
                     </Swiper>
-                    <Typography typoSize="T1" color="Gray700" style={{height: "35px"}}>
+                    <Typography typoSize="T1" color="Gray700" style={{ height: "35px" }}>
                         :
                     </Typography>
                     <Swiper
-                        style={{height: "220px"}}
+                        style={{ height: "220px" }}
                         direction={"vertical"}
                         slidesPerView={3}
                         slideToClickedSlide={true}
@@ -195,7 +195,7 @@ export default function ScheduleEditDate({
                             setSelectedMinute(MINUTES[swiper.realIndex].option);
                         }}>
                         {MINUTES.map(no =>
-                            <SwiperSlide key={no.option} style={{display: "flex", alignItems: "center"}}>
+                            <SwiperSlide key={no.option} style={{ display: "flex", alignItems: "center" }}>
                                 <Typography typoSize="T1" color="Gray700" textAlign="center">
                                     {no.option}
                                 </Typography>

@@ -1,6 +1,6 @@
-import React, {useState, useMemo} from "react";
-import {useNavigate} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 import API from "../../../axios/BaseUrl";
 import * as S from "./style";
@@ -24,23 +24,23 @@ import Typography from "../../../components/Common/Layouts/Typography";
 import ButtonBox from "../../../components/DesignStuff/ButtonBox/ButtonBox";
 
 import Tooltip from "../../../components/DesignStuff/ToolTip/ToolTip";
-import {useUserInfo} from "../../../store/useUserInfo";
+import { useUserInfo } from "../../../store/useUserInfo";
 import UserProfile from "../../../components/Main/UserProfile/UserProfile";
-import {UserProfileType} from "../../../types/userProfileType";
+import { UserProfileType } from "../../../types/userProfileType";
 import CalendarHeader from "../../Calendar/ui/CalendarHeader";
 import CalendarGrid from "../../Calendar/components/CalendarGrid";
 import TodaySchedules from "../../Calendar/components/TodaySchedules";
-import {useCalendar} from "../../Calendar/hooks/useCalendar";
-import {useWeekSchedules} from "../../Calendar/hooks/useWeekSchedules";
+import { useCalendarStore } from "../../../store/calendarStore";
+import { useWeekSchedules } from "../../Calendar/hooks/useWeekSchedules";
 
 export default function Home() {
 	const MAIN_HEADER = [
-		{key: "checklist", menuName: "생활 규칙", Icon: checklist},
-		{key: "stayout", menuName: "외박 신청", Icon: stayOut},
-		{key: "dormitorynoti", menuName: "기숙사 공지", Icon: dormiNoti},
-		{key: "dormitoryCall", menuName: "문의하기", Icon: Call}
+		{ key: "checklist", menuName: "생활 규칙", Icon: checklist },
+		{ key: "stayout", menuName: "외박 신청", Icon: stayOut },
+		{ key: "dormitorynoti", menuName: "기숙사 공지", Icon: dormiNoti },
+		{ key: "dormitoryCall", menuName: "문의하기", Icon: Call }
 	];
-	const {nickname, setNickname} = useUserInfo();
+	const { nickname, setNickname } = useUserInfo();
 	const [showPopup, setShowPopup] = useState(false);
 	const [isShowWriteReview, setIsShowWriteReview] = useState(localStorage.getItem("show") !== "false");
 	const [isExist, setIsExist] = useState(false);
@@ -51,9 +51,8 @@ export default function Home() {
 
 	const {
 		currentDate,
-		selectedDate,
-		handleDayClick,
-	} = useCalendar();
+		selectedDate
+	} = useCalendarStore();
 
 	const handleHeader = (headerKey: string) => {
 		switch (headerKey) {
@@ -72,7 +71,7 @@ export default function Home() {
 		}
 	};
 
-	const {data: receiveRommateData} = useQuery({
+	const { data: receiveRommateData } = useQuery({
 		queryKey: ["receiveRoommate"],
 		queryFn: async () => {
 			const response = await API.get(`/api/v1/roommate/receive/list`);
@@ -129,8 +128,8 @@ export default function Home() {
 		setIsRoommateApply(receiveRommateData?.length);
 	}, [top3UserData, mydata, receiveRommateData]);
 
-	const {data:weekData, isLoading:isCalendarLoading} = useWeekSchedules();
-	if (isCalendarLoading) return <Loading/>;
+	const { data: weekData, isLoading: isCalendarLoading } = useWeekSchedules();
+	if (isCalendarLoading) return <Loading />;
 	const scheduleData = weekData?.data || [];
 	const todayScheduleDatas = scheduleData[currentDate.day()].schedules;
 
@@ -154,7 +153,7 @@ export default function Home() {
 			/>
 			<CS.ScreenComponent navigation={true}>
 				<CS.Header backgroundColor="Background">
-					<Header/>
+					<Header />
 				</CS.Header>
 				<Column gap={24}>
 					<Row gap={31}>
@@ -163,10 +162,10 @@ export default function Home() {
 								gap={8}
 								horizonAlign="center"
 								verticalAlign="center"
-								style={{width: "16.41vw"}}
+								style={{ width: "16.41vw" }}
 								onClick={() => handleHeader(header.key)}
 							>
-								<img src={header.Icon}/>
+								<img src={header.Icon} />
 								<Typography typoSize="B2_medium" color="Gray900">
 									{header.menuName}
 								</Typography>
@@ -184,7 +183,7 @@ export default function Home() {
 								</Typography>
 							</Column>
 							<Tooltip message="누르면 알림이 전송돼요" isVisible={isVisited !== "true"}>
-								<img src={SendAlarm} onClick={() => setIsSendMessgae(true)} alt="sendAlarmToRoommate"/>
+								<img src={SendAlarm} onClick={() => setIsSendMessgae(true)} alt="sendAlarmToRoommate" />
 							</Tooltip>
 						</Row>
 					</ButtonBox>
@@ -195,21 +194,21 @@ export default function Home() {
 								<Typography typoSize="H3" color="Gray800">
 									{"누군가 나에게 룸메이트를\n신청했어요!"}
 								</Typography>
-								<img src={ForwardArrow} style={{width: "20px", height: "20px"}}/>
+								<img src={ForwardArrow} style={{ width: "20px", height: "20px" }} />
 							</Row>
 							<Row horizonAlign="center" verticalAlign="center">
-								<S.FindIcon src={ApplyRoommate}/>
+								<S.FindIcon src={ApplyRoommate} />
 							</Row>
 						</ButtonBox>
 					)}
 					<ButtonBox backgroundColor="White" onClick={() => navigate("/roommate")}>
 						<Row horizonAlign="distribute">
-							<Typography typoSize="H3" color="Gray800" style={{marginBottom: "32px"}}>
+							<Typography typoSize="H3" color="Gray800" style={{ marginBottom: "32px" }}>
 								{isExist
 									? `${nickname} 님과 딱 맞는\n룸메이트를 찾았어요`
 									: `${nickname} 님과 딱 맞는\n룸메이트를 찾아드려요`}
 							</Typography>
-							<img src={ForwardArrow} style={{width: "20px", height: "20px"}}/>
+							<img src={ForwardArrow} style={{ width: "20px", height: "20px" }} />
 						</Row>
 						{isExist ? (
 							<Column gap={28}>
@@ -232,7 +231,7 @@ export default function Home() {
 							</Column>
 						) : (
 							<Column gap={16} horizonAlign="center" verticalAlign="center">
-								<S.FindIcon src={Find}/>
+								<S.FindIcon src={Find} />
 								<Typography
 									typoSize="B1_medium"
 									color="Gray600"
@@ -274,26 +273,21 @@ export default function Home() {
 							</Row>
 						</ButtonBox>
 					)}
-					<ButtonBox backgroundColor="White" onClick={()=>navigate("/calendar")}>
+					<ButtonBox backgroundColor="White" onClick={() => navigate("/calendar")}>
 						<CalendarHeader
 							type="home"
-							currentDate={currentDate}
 						/>
 						<CalendarGrid
 							type="home"
 							scheduleData={scheduleData}
-							currentDate={currentDate}
-							selectedDate={selectedDate}
-							handleDayClick={handleDayClick}
 						/>
 						<TodaySchedules
-							selectedDate={selectedDate}
 							todayScheduleDatas={todayScheduleDatas}
 						/>
 					</ButtonBox>
 				</Column>
 			</CS.ScreenComponent>
-			<NavigationBar type={`home`}/>
+			<NavigationBar type={`home`} />
 		</CS.Totalframe>
 	);
 }

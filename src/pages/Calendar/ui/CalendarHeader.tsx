@@ -1,30 +1,31 @@
 import React from "react";
 import Typography from "../../../components/Common/Layouts/Typography";
 import styled from "styled-components";
-import {ReactComponent as RightArrowIcon} from "../.././../assets/img/Calendar/RightArrowIcon.svg";
-import {ReactComponent as LeftArrowIcon} from "../.././../assets/img/Calendar/LeftArrowIcon.svg";
-import {ReactComponent as DownArrowIcon} from "../.././../assets/img/Calendar/DownArrowIcon.svg";
-import {Dayjs} from "dayjs";
+import { ReactComponent as RightArrowIcon } from "../.././../assets/img/Calendar/RightArrowIcon.svg";
+import { ReactComponent as LeftArrowIcon } from "../.././../assets/img/Calendar/LeftArrowIcon.svg";
+import { ReactComponent as DownArrowIcon } from "../.././../assets/img/Calendar/DownArrowIcon.svg";
+import { Dayjs } from "dayjs";
 import Row from "../../../components/Common/Layouts/Row";
-import {Calendar} from "../utils/types";
+import { Calendar } from "../utils/types";
+import { useCalendarStore } from "../../../store/calendarStore";
 
 interface CalendarHeaderProps {
     type: Calendar;
-    currentDate: Dayjs;
-    handlePrevMonth?: () => void;
-    handleNextMonth?: () => void;
-    handleTodayClick?: () => void;
     toggleIsOpen?: () => void;
 }
 
 export default function CalendarHeader({
-                                           type,
-                                           currentDate,
-                                           handlePrevMonth,
-                                           handleNextMonth,
-                                           handleTodayClick,
-                                           toggleIsOpen
-                                       }: CalendarHeaderProps) {
+    type,
+    toggleIsOpen
+}: CalendarHeaderProps) {
+    const {
+        currentDate,
+        handlePrevMonth,
+        handleNextMonth,
+        handleTodayClick
+    } = useCalendarStore();
+
+
     return (
         <CalendarHeaderWrapper $type={type}>
             {type === "calendar" && (
@@ -34,7 +35,7 @@ export default function CalendarHeader({
                             {currentDate.format("YYYY.M")}
                         </Typography>
                         <Button onClick={toggleIsOpen}>
-                            <DownArrowIcon/>
+                            <DownArrowIcon />
                         </Button>
                     </Row>
                     <Button onClick={handleTodayClick}>
@@ -47,13 +48,13 @@ export default function CalendarHeader({
             {type === "modal" && (
                 <>
                     <Button onClick={handlePrevMonth}>
-                        <LeftArrowIcon/>
+                        <LeftArrowIcon />
                     </Button>
                     <Typography typoSize="T3_semibold" color="Gray800">
                         {currentDate.format("YYYY.M")}
                     </Typography>
                     <Button onClick={handleNextMonth}>
-                        <RightArrowIcon/>
+                        <RightArrowIcon />
                     </Button>
                 </>
             )}
@@ -63,7 +64,7 @@ export default function CalendarHeader({
                         <Typography typoSize="H3" color="Gray800">
                             {currentDate.format("YYYY.M")}
                         </Typography>
-                        <RightArrowIcon/>
+                        <RightArrowIcon />
                     </Row>
                 </>
             )}
@@ -74,7 +75,7 @@ export default function CalendarHeader({
 const CalendarHeaderWrapper = styled.div<{ $type: Calendar }>`
     display: flex;
     align-items: center;
-    ${({$type}) => {
+    ${({ $type }) => {
         switch ($type) {
             case "calendar":
                 return `

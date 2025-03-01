@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import {theme} from "../../../styles/theme";
+import { theme } from "../../../styles/theme";
 import Typography from "../../../components/Common/Layouts/Typography";
-import {getDaysInMonth, getDaysInWeek, isPreviousMonth, isToday} from "../utils";
-import {ReactComponent as AddIcon} from "../.././../assets/img/Calendar/AddIcon.svg";
+import { getDaysInMonth, getDaysInWeek, isPreviousMonth, isToday } from "../utils";
+import { ReactComponent as AddIcon } from "../.././../assets/img/Calendar/AddIcon.svg";
 import Row from "../../../components/Common/Layouts/Row";
-import {Dayjs} from "dayjs";
+import { Dayjs } from "dayjs";
 import * as S from "../utils/styles/ScheduleMark.styled";
-import {Calendar, Schedule, ScheduleDay, ScheduleType} from "../utils/types";
+import { Calendar, Schedule, ScheduleDay, ScheduleType } from "../utils/types";
+import { useCalendarStore } from "../../../store/calendarStore";
 
 interface DayProps {
     $isEmpty: boolean;
@@ -20,10 +21,8 @@ interface DayProps {
 
 interface CalendarGridProps {
     type: Calendar;
-    currentDate: Dayjs;
-    selectedDate: string | null;
-    handleDayClick: (day: string | number) => void;
     scheduleData?: (ScheduleDay | null)[];
+    onDayClick?: (day: string | number) => void;
 }
 
 const scheduleTextMap: Record<ScheduleType, string> = {
@@ -34,33 +33,41 @@ const scheduleTextMap: Record<ScheduleType, string> = {
 };
 
 export default function CalendarGrid({
-                                         type,
-                                         scheduleData,
-                                         currentDate,
-                                         selectedDate,
-                                         handleDayClick,
-                                     }: CalendarGridProps) {
+    type,
+    scheduleData,
+    onDayClick
+}: CalendarGridProps) {
+    const {
+        currentDate,
+        selectedDate,
+        handleDayClick
+    } = useCalendarStore();
+
     const getScheduleForDay = (day: string | number) => {
         if (day === "") return [];
         return scheduleData?.[day] ? scheduleData[day]?.schedules : [];
     };
 
-    const getScheduleForDayHome = (day: string | number) => {
-        return scheduleData?.[day] ? scheduleData[day]?.schedules : [];
+    const handleClick = (day: string | number) => {
+        if (type === "modal" && onDayClick) {
+            onDayClick(day);
+        } else {
+            handleDayClick(day);
+        }
     };
 
     const renderScheduleMarks = (schedules: Schedule[]) => {
         if (schedules.length >= 4) {
             return (
-                <ScheduleMarkWrapper style={{flexDirection: "column", alignItems: "center"}}>
+                <ScheduleMarkWrapper style={{ flexDirection: "column", alignItems: "center" }}>
                     <Row gap={2}>
                         {schedules.slice(0, 2).map((scheduleType) => (
-                            <S.ScheduleMark key={scheduleType.roommateScheduleId} $type={scheduleType.type}/>
+                            <S.ScheduleMark key={scheduleType.roommateScheduleId} $type={scheduleType.type} />
                         ))}
                     </Row>
                     <Row gap={2}>
-                        <S.ScheduleMark $type={schedules[2].type}/>
-                        <AddIcon/>
+                        <S.ScheduleMark $type={schedules[2].type} />
+                        <AddIcon />
                     </Row>
                 </ScheduleMarkWrapper>
             );
@@ -69,7 +76,7 @@ export default function CalendarGrid({
         return (
             <ScheduleMarkWrapper>
                 {schedules.map((scheduleType) => (
-                    <S.ScheduleMark key={scheduleType.roommateScheduleId} $type={scheduleType.type}/>
+                    <S.ScheduleMark key={scheduleType.roommateScheduleId} $type={scheduleType.type} />
                 ))}
             </ScheduleMarkWrapper>
         );
@@ -81,7 +88,7 @@ export default function CalendarGrid({
                 <ScheduleHeader>
                     {["OUTING", "SLEEPOVER", "TOGETHER", "ETC"].map((type: any) => (
                         <S.ScheduleTypeDiv key={type} $type={type}>
-                            <S.ScheduleMark $type={type}/>
+                            <S.ScheduleMark $type={type} />
                             <Typography typoSize="B2_medium">{scheduleTextMap[type]}</Typography>
                         </S.ScheduleTypeDiv>
                     ))}
@@ -106,7 +113,7 @@ export default function CalendarGrid({
                                 $isToday={isToday(currentDate, day)}
                                 $isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
                                 $type={type}
-                                onClick={() => handleDayClick(day)}
+                                onClick={() => handleClick(day)}
                             >
                                 <Typography typoSize="B1_medium">{day}</Typography>
                                 {type === "calendar" && scheduleData && renderScheduleMarks(getScheduleForDay(day))}
@@ -126,10 +133,10 @@ export default function CalendarGrid({
                                 $isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
                                 $type={type}
                                 $isPreviousMonth={isPreviousMonth(currentDate, day)}
-                                onClick={() => handleDayClick(day)}
+                                onClick={() => handleClick(day)}
                             >
                                 <Typography typoSize="B1_medium">{day}</Typography>
-                                {type === "home" && scheduleData && renderScheduleMarks(getScheduleForDayHome(dayIdx))}
+                                {type === "home" && scheduleData && renderScheduleMarks(getScheduleForDay(dayIdx))}
                             </Day>
                         ))}
                     </Week>
@@ -143,14 +150,14 @@ const CalendarContainer = styled.div``;
 
 const WeekdayHeader = styled.div<{ $type: Calendar }>`
     display: flex;
-    margin-bottom: ${({$type}) => $type === "home" ? "20px" : "36px"};
+    margin-bottom: ${({ $type }) => $type === "home" ? "20px" : "36px"};
     justify-content: space-between;
 `;
 
 const WeekdayCell = styled.div<{ $day: string }>`
     min-width: 38px;
     text-align: center;
-    color: ${({$day}) => {
+    color: ${({ $day }) => {
         switch ($day) {
             case "토":
                 return theme.Gray500;

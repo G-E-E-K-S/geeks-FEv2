@@ -14,11 +14,12 @@ import { ScheduleType } from "../../Calendar/utils/types";
 import { formatDateTimeForApi } from "../util";
 import { usePostCalendar } from "../hooks/usePostCalendar";
 import { usePutCalendar } from "../hooks/usePutCalendar";
+import { useScheduleStore } from "../../../store/scheduleStore";
 
 export default function ScheduleEdit() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { schedule } = location.state || {};
+    const { currentSchedule, setCurrentSchedule } = useScheduleStore();
 
     const postCalendar = usePostCalendar();
     const putCalendar = usePutCalendar();
@@ -35,29 +36,29 @@ export default function ScheduleEdit() {
 
     const [isActive, setIsActive] = useState(false);
     const [prevValues, setPrevValues] = useState({ title, type, alarm, explain });
-    const isAdd = location.pathname.includes("add");
 
     useEffect(() => {
-        if (schedule) {
-            setTitle(schedule.title || "");
-            setType(schedule.type || "OUTING");
-            setAlarm(schedule.alarm || 1);
-            setExplain(schedule.description || "");
-            setStartDate(dayjs(schedule.startDate).format("YYYY.M.D"));
-            setStartTime(dayjs(schedule.startDate).format("HH:mm"));
-            setEndDate(dayjs(schedule.endDate).format("YYYY.M.D"));
-            setEndTime(dayjs(schedule.endDate).format("HH:mm"));
+        if (currentSchedule) {
+            setTitle(currentSchedule.title || "");
+            setType(currentSchedule.type || "OUTING");
+            setAlarm(1); // 기본값 설정
+            setExplain(currentSchedule.description || "");
+            setStartDate(dayjs(currentSchedule.startDate).format("YYYY.M.D"));
+            setStartTime(dayjs(currentSchedule.startDate).format("HH:mm"));
+            setEndDate(dayjs(currentSchedule.endDate).format("YYYY.M.D"));
+            setEndTime(dayjs(currentSchedule.endDate).format("HH:mm"));
             setPrevValues({
-                title: schedule.title || "",
-                type: schedule.type || "OUTING",
-                alarm: schedule.alarm || 1,
-                explain: schedule.description || ""
+                title: currentSchedule.title || "",
+                type: currentSchedule.type || "OUTING",
+                alarm: 1, // 기본값 설정
+                explain: currentSchedule.description || ""
             });
         }
-    }, [schedule]);
+
+    }, [currentSchedule]);
 
     useEffect(() => {
-        if (schedule) {
+        if (currentSchedule) {
             // schedule이 있을 때는 이전 값과 비교하여 변경되었는지 확인
             const isChanged =
                 title !== prevValues.title ||
@@ -69,20 +70,22 @@ export default function ScheduleEdit() {
             // schedule이 없을 때는 title이 비어있지 않으면 active
             setIsActive(title.trim() !== "");
         }
-    }, [title, type, alarm, explain, schedule, prevValues]);
+    }, [title, type, alarm, explain, currentSchedule, prevValues]);
 
     const addCalendarSchedule = async () => {
         const startDateTime = formatDateTimeForApi(startDate, startTime);
         const endDateTime = formatDateTimeForApi(endDate, endTime);
 
-        if (schedule) {
-            const roommateScheduleId = schedule.roommateScheduleId;
+        if (currentSchedule) {
+            const roommateScheduleId = currentSchedule.roommateScheduleId;
             const response = await putCalendar({ roommateScheduleId, title, startDateTime, endDateTime, type, explain });
             console.log(response);
         } else {
             const response = await postCalendar({ title, startDateTime, endDateTime, type, explain });
             console.log(response);
         }
+        // 전역 상태 초기화
+        setCurrentSchedule(null);
         navigate("/calendar");
     }
 
