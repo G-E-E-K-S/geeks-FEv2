@@ -74,12 +74,12 @@ export default function ScheduleEditDate({
                         </Typography>
                     </SelectInput>
                     <SelectInput
-                        onClick={() => type !== "외박" && setIsStartTimeOpen(true)}
+                        onClick={() => type !== "SLEEPOVER" && setIsStartTimeOpen(true)}
                         style={{width: "19.37%"}}
                     >
                         <Typography
                             typoSize="T3_semibold"
-                            color={type === "외박" ? "Gray200" : "Gray800"}
+                            color={type === "SLEEPOVER" ? "Gray200" : "Gray800"}
                             style={{display: "flex", alignItems: "center", gap: "6px"}}
                         >
                             {TIMES[startTime]?.option ?? startTime}
@@ -98,12 +98,12 @@ export default function ScheduleEditDate({
                         </Typography>
                     </SelectInput>
                     <SelectInput
-                        onClick={() => type !== "외박" && setIsEndTimeOpen(true)}
+                        onClick={() => type !== "SLEEPOVER" && setIsEndTimeOpen(true)}
                         style={{width: "19.37%"}}
                     >
                         <Typography
                             typoSize="T3_semibold"
-                            color={type === "외박" ? "Gray200" : "Gray800"}
+                            color={type === "SLEEPOVER" ? "Gray200" : "Gray800"}
                             style={{display: "flex", alignItems: "center", gap: "6px"}}
                         >
                             {TIMES[endTime]?.option ?? endTime}
@@ -175,7 +175,7 @@ export default function ScheduleEditDate({
                         }}
                     >
                         {HOURS.map(no =>
-                            <SwiperSlide style={{display: "flex", alignItems: "center"}}>
+                            <SwiperSlide key={no.option} style={{display: "flex", alignItems: "center"}}>
                                 <Typography typoSize="T1" color="Gray700" textAlign="center">
                                     {no.option}
                                 </Typography>
@@ -195,7 +195,7 @@ export default function ScheduleEditDate({
                             setSelectedMinute(MINUTES[swiper.realIndex].option);
                         }}>
                         {MINUTES.map(no =>
-                            <SwiperSlide style={{display: "flex", alignItems: "center"}}>
+                            <SwiperSlide key={no.option} style={{display: "flex", alignItems: "center"}}>
                                 <Typography typoSize="T1" color="Gray700" textAlign="center">
                                     {no.option}
                                 </Typography>

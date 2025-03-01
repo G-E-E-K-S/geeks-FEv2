@@ -1,55 +1,57 @@
-import React, { useState } from "react";
 import styled from "styled-components";
-import { ReactComponent as BackIcon } from "../.././../assets/img/Calendar/BackIcon.svg";
-import { ReactComponent as EditIcon } from "../.././../assets/img/Calendar/EditIcon.svg";
+import {ReactComponent as BackIcon} from "../.././../assets/img/Calendar/BackIcon.svg";
+import {ReactComponent as EditIcon} from "../.././../assets/img/Calendar/EditIcon.svg";
 import Row from "../../../components/Common/Layouts/Row";
 import Typography from "../../../components/Common/Layouts/Typography";
-import { theme } from "../../../styles/theme";
-import { useNavigate, useParams } from "react-router-dom";
+import {theme} from "../../../styles/theme";
+import {useNavigate, useParams} from "react-router-dom";
+import {Schedule} from "../../Calendar/utils/types";
 
 interface ScheduleHeaderProps {
-	pathName: string;
-	isActive?: boolean;
+    pathName: string;
+    isActive?: boolean;
+    onClick?: () => void;
+    schedule?: Schedule;
 }
 
-export default function ScheduleHeader ({ pathName, isActive }: ScheduleHeaderProps) {
-	const navigate = useNavigate();
-	const { scheduleId } = useParams<{ scheduleId: string }>();
+export default function ScheduleHeader({pathName, isActive, onClick, schedule}: ScheduleHeaderProps) {
+    const navigate = useNavigate();
+    const {scheduleId} = useParams<{ scheduleId: string }>();
 
-	const getTitle = () => {
-		if (pathName === `/schedule/${scheduleId}/modify`) {
-			return "일정 수정";
-		}
-		if (pathName === "/schedule/add") {
-			return "일정 추가";
-		}
-		return "";
-	};
+    const getTitle = () => {
+        if (pathName === `/schedule/${scheduleId}/modify`) {
+            return "일정 수정";
+        }
+        if (pathName === "/schedule/add") {
+            return "일정 추가";
+        }
+        return "";
+    };
 
-	return (
-		<ScheduleHeaderWrapper>
-			<Row gap={8} verticalAlign="center">
-				<Button onClick={() => navigate(-1)}>
-					<BackIcon />
-				</Button>
+    return (
+        <ScheduleHeaderWrapper>
+            <Row gap={8} verticalAlign="center">
+                <Button onClick={() => navigate(-1)}>
+                    <BackIcon/>
+                </Button>
 
-				<Typography typoSize="H3" color="Gray800">
-					{getTitle()}
-				</Typography>
+                <Typography typoSize="H3" color="Gray800">
+                    {getTitle()}
+                </Typography>
 
-			</Row>
-			{(pathName === `/schedule/${scheduleId}/modify` || pathName === "/schedule/add") && (
-				<CompleteButton $isActive={isActive ?? false} disabled={isActive ?? false}>
-					<Typography typoSize="T4_semibold">완료</Typography>
-				</CompleteButton>
-			)}
-			{pathName === `/schedule/${scheduleId}` && (
-				<Button onClick={() => navigate(`/schedule/${scheduleId}/modify`)}>
-					<EditIcon />
-				</Button>
-			)}
-		</ScheduleHeaderWrapper>
-	);
+            </Row>
+            {(pathName === `/schedule/${scheduleId}/modify` || pathName === "/schedule/add") && (
+                <CompleteButton onClick={onClick} $isActive={isActive ?? false} disabled={!isActive}>
+                    <Typography typoSize="T4_semibold">완료</Typography>
+                </CompleteButton>
+            )}
+            {pathName === `/schedule/${scheduleId}` && (
+                <Button onClick={() => navigate(`/schedule/${scheduleId}/modify`, {state: {schedule}})}>
+                    <EditIcon/>
+                </Button>
+            )}
+        </ScheduleHeaderWrapper>
+    );
 }
 
 const ScheduleHeaderWrapper = styled.div`
@@ -74,10 +76,10 @@ const CompleteButton = styled(Button)<{ $isActive: boolean }>`
     padding: 8px 12px;
     border-radius: 8px;
     display: flex;
-    color: ${({ $isActive }) => $isActive ? theme.Gray800 : theme.Gray400};;
-    background-color: ${({ $isActive }) => $isActive ? theme.Yellow500 : theme.Gray50};
+    color: ${({$isActive}) => $isActive ? theme.Gray800 : theme.Gray400};;
+    background-color: ${({$isActive}) => $isActive ? theme.Yellow500 : theme.Gray50};
 
     &:active {
-        background-color: ${({ $isActive }) => $isActive ? theme.Yellow600 : theme.Gray50};
+        background-color: ${({$isActive}) => $isActive ? theme.Yellow600 : theme.Gray50};
     }
 `;

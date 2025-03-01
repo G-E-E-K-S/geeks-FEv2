@@ -6,16 +6,24 @@ import Column from "../../../../components/Common/Layouts/Column";
 import {SelectInput} from "../../util/styles";
 import {TYPES} from "../../util/const";
 import ScrollPickerBottomSheet from "../../util/ScrollPickerBottomSheet";
+import {ScheduleType} from "../../../Calendar/utils/types";
 
 interface ScheduleEditTypeProps {
-    type: string;
-    setType: (value: string) => void;
+    type: ScheduleType;
+    setType: (value: ScheduleType) => void;
 }
+
+const scheduleTextMap: Record<ScheduleType, string> = {
+    OUTING: "외출",
+    SLEEPOVER: "외박",
+    TOGETHER: "공동 일정",
+    ETC: "기타",
+};
 
 function ScheduleEditType({type, setType}: ScheduleEditTypeProps) {
     const [isTypeOpen, setIsTypeOpen] = useState(false);
 
-    const handleTypeSelect = (type: string) => {
+    const handleTypeSelect = (type: ScheduleType) => {
         setType(type);
         setIsTypeOpen(false);
     };
@@ -30,12 +38,12 @@ function ScheduleEditType({type, setType}: ScheduleEditTypeProps) {
                         color="Gray800"
                         style={{display: "flex", alignItems: "center", gap: "6px"}}
                     >
-                        <ScheduleMark $type={type}/> {type}
+                        <ScheduleMark $type={type}/> {scheduleTextMap[type]}
                     </Typography>
                     <img src={DownArrowIcon}/>
                 </SelectInput>
             </Column>
-            <ScrollPickerBottomSheet<string, ReactNode>
+            <ScrollPickerBottomSheet<ScheduleType, ReactNode>
                 isOpen={isTypeOpen}
                 title="종류"
                 options={TYPES}

@@ -1,60 +1,98 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import * as c from "../../../components/Common/CommonStyle";
 import ScheduleHeader from "../ui/ScheduleHeader";
-import {useLocation} from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import Column from "../../../components/Common/Layouts/Column";
-import {floorToNearest30} from "../../Calendar/utils";
+import { floorToNearest30 } from "../../Calendar/utils";
 import ScheduleEditTitle from "./components/ScheduleEditTitle";
 import ScheduleEditType from "./components/ScheduleEditType";
 import ScheduleEditAlarm from "./components/ScheduleEditAlarm";
 import ScheduleEditExplain from "./components/ScheduleEditExplain";
 import ScheduleEditDate from "./components/ScheduleEditDate";
 import dayjs from "dayjs";
+import { ScheduleType } from "../../Calendar/utils/types";
+import { formatDateTimeForApi } from "../util";
+import { usePostCalendar } from "../hooks/usePostCalendar";
+import { usePutCalendar } from "../hooks/usePutCalendar";
 
 export default function ScheduleEdit() {
-    // 수정이면 api 받아서 state에 넣기
+    const navigate = useNavigate();
     const location = useLocation();
+    const { schedule } = location.state || {};
+
+    const postCalendar = usePostCalendar();
+    const putCalendar = usePutCalendar();
+
     const [title, setTitle] = useState("");
-    const [type, setType] = useState("외출");
+    const [type, setType] = useState<ScheduleType>("OUTING");
     const [alarm, setAlarm] = useState(1);
     const [explain, setExplain] = useState("");
 
-    // 날짜 합쳐서 상태고 관리하는게 나을지도
     const [startDate, setStartDate] = useState(dayjs().format("YYYY.M.D"));
     const [startTime, setStartTime] = useState(floorToNearest30(dayjs()).format("HH:mm"));
     const [endDate, setEndDate] = useState(dayjs().format("YYYY.M.D"));
     const [endTime, setEndTime] = useState(floorToNearest30(dayjs()).format("HH:mm"));
 
     const [isActive, setIsActive] = useState(false);
-    const [prevValues, _] = useState({title, type, alarm, explain});
+    const [prevValues, setPrevValues] = useState({ title, type, alarm, explain });
     const isAdd = location.pathname.includes("add");
 
     useEffect(() => {
-        if (isAdd) {
-            if (title && type && alarm) {
-                setIsActive(true);
-            } else {
-                setIsActive(false);
-            }
-        } else if ((title && title !== prevValues.title) ||
-            (type && type !== prevValues.type) ||
-            (alarm && alarm !== prevValues.alarm) ||
-            (explain !== prevValues.explain)
-        ) {
-            setIsActive(true);
-        } else {
-            setIsActive(false);
+        if (schedule) {
+            setTitle(schedule.title || "");
+            setType(schedule.type || "OUTING");
+            setAlarm(schedule.alarm || 1);
+            setExplain(schedule.description || "");
+            setStartDate(dayjs(schedule.startDate).format("YYYY.M.D"));
+            setStartTime(dayjs(schedule.startDate).format("HH:mm"));
+            setEndDate(dayjs(schedule.endDate).format("YYYY.M.D"));
+            setEndTime(dayjs(schedule.endDate).format("HH:mm"));
+            setPrevValues({
+                title: schedule.title || "",
+                type: schedule.type || "OUTING",
+                alarm: schedule.alarm || 1,
+                explain: schedule.description || ""
+            });
         }
+    }, [schedule]);
 
-    }, [title, type, alarm, explain]);
+    useEffect(() => {
+        if (schedule) {
+            // schedule이 있을 때는 이전 값과 비교하여 변경되었는지 확인
+            const isChanged =
+                title !== prevValues.title ||
+                type !== prevValues.type ||
+                alarm !== prevValues.alarm ||
+                explain !== prevValues.explain;
+            setIsActive(isChanged);
+        } else {
+            // schedule이 없을 때는 title이 비어있지 않으면 active
+            setIsActive(title.trim() !== "");
+        }
+    }, [title, type, alarm, explain, schedule, prevValues]);
+
+    const addCalendarSchedule = async () => {
+        const startDateTime = formatDateTimeForApi(startDate, startTime);
+        const endDateTime = formatDateTimeForApi(endDate, endTime);
+
+        if (schedule) {
+            const roommateScheduleId = schedule.roommateScheduleId;
+            const response = await putCalendar({ roommateScheduleId, title, startDateTime, endDateTime, type, explain });
+            console.log(response);
+        } else {
+            const response = await postCalendar({ title, startDateTime, endDateTime, type, explain });
+            console.log(response);
+        }
+        navigate("/calendar");
+    }
 
     return (
         <c.Totalframe>
             <c.ScreenComponent navigation={false}>
-                <ScheduleHeader pathName={location.pathname} isActive={isActive}/>
+                <ScheduleHeader pathName={location.pathname} isActive={isActive} onClick={addCalendarSchedule} />
                 <Column gap={40} width="w-full">
-                    <ScheduleEditTitle title={title} setTitle={setTitle}/>
-                    <ScheduleEditType type={type} setType={setType}/>
+                    <ScheduleEditTitle title={title} setTitle={setTitle} />
+                    <ScheduleEditType type={type} setType={setType} />
                     <ScheduleEditDate
                         startDate={startDate}
                         endDate={endDate}
@@ -66,8 +104,8 @@ export default function ScheduleEdit() {
                         setEndDate={setEndDate}
                         setEndTime={setEndTime}
                     />
-                    <ScheduleEditAlarm alarm={alarm} setAlarm={setAlarm}/>
-                    <ScheduleEditExplain explain={explain} setExplain={setExplain}/>
+                    <ScheduleEditAlarm alarm={alarm} setAlarm={setAlarm} />
+                    <ScheduleEditExplain explain={explain} setExplain={setExplain} />
                 </Column>
             </c.ScreenComponent>
         </c.Totalframe>

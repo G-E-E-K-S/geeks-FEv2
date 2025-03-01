@@ -43,7 +43,6 @@ export const getDaysInWeek = (currentDate: Dayjs): (string | number)[] => {
         const day: Dayjs = sunday.add(i, 'day');
         week.push(day.date());
     }
-
     return week;
 };
 
@@ -56,4 +55,15 @@ export const isToday = (currentDate: Dayjs, day: string | number): boolean => {
 export const floorToNearest30 = (date) => {
     const minutes = Math.floor(date.minute() / 30) * 30;
     return date.minute(minutes).second(0);
+};
+
+export const formatTimeRange = (startDate: string, endDate: string) => {
+    const start = dayjs(startDate).format("HH:mm");
+    const end = dayjs(endDate).format("HH:mm");
+    return `${start} - ${end}`;
+}
+
+export const isPreviousMonth = (currentDate, day: string | number) => {
+    const selectedDay = currentDate.date(Number(day));
+    return selectedDay.isBefore(currentDate, 'month');
 };

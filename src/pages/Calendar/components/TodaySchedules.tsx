@@ -8,10 +8,12 @@ import Row from "../../../components/Common/Layouts/Row";
 import {ScheduleMark} from "../utils/styles/ScheduleMark.styled";
 import {useLocation, useNavigate} from "react-router-dom";
 import test from "../../../assets/img/Home/Alarm/roommate.svg";
+import {Schedule, ScheduleType} from "../utils/types";
+import {formatTimeRange} from "../utils";
 
 interface TodaySchedulesProps {
     selectedDate: string | null;
-    todayScheduleDatas: { scheduleId: number; title: string; type: string; content: string; time: string }[];
+    todayScheduleDatas: Schedule[];
 }
 
 export default function TodaySchedules({selectedDate, todayScheduleDatas}: TodaySchedulesProps) {
@@ -28,21 +30,26 @@ export default function TodaySchedules({selectedDate, todayScheduleDatas}: Today
                 {todayScheduleDatas?.map((schedule, index) => (
                     <Column gap={2} key={index} onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/schedule/${schedule.scheduleId}`)
+                        navigate(`/schedule/${schedule.roommateScheduleId}`, {state: {schedule, formattedDate}});
                     }}>
                         <Row gap={12} verticalAlign="center">
                             <Row gap={8} verticalAlign="center">
                                 <ScheduleMark $type={schedule.type}/>
-                                <Typography typoSize="T4_medium" color="Gray500">{schedule.time}</Typography>
+                                {schedule.type === "SLEEPOVER" ? (
+                                    <Typography typoSize="T4_medium" color="Gray500">외박</Typography>
+                                ) : (
+                                    <Typography typoSize="T4_medium"
+                                                color="Gray500">{formatTimeRange(schedule.startDate, schedule.endDate)}</Typography>
+                                )}
                             </Row>
                             <Row gap={6} verticalAlign="center">
                                 <UserImage src={test}/>
-                                <Typography typoSize="B2_medium" color="Gray600">유저 닉네임</Typography>
+                                <Typography typoSize="B2_medium" color="Gray600">{schedule.nickname}</Typography>
                             </Row>
                         </Row>
                         <Column gap={2} style={{marginLeft: "16px"}}>
                             <Typography typoSize="T4_semibold" color="Gray800">{schedule.title}</Typography>
-                            <Typography typoSize="B2_medium" color="Gray600">{schedule?.content}</Typography>
+                            <Typography typoSize="B2_medium" color="Gray600">{schedule?.description}</Typography>
                         </Column>
                     </Column>
                 ))}

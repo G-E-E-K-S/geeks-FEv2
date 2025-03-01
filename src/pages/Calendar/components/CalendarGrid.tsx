@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import {theme} from "../../../styles/theme";
 import Typography from "../../../components/Common/Layouts/Typography";
-import {getDaysInMonth, getDaysInWeek, isToday} from "../utils";
+import {getDaysInMonth, getDaysInWeek, isPreviousMonth, isToday} from "../utils";
 import {ReactComponent as AddIcon} from "../.././../assets/img/Calendar/AddIcon.svg";
 import Row from "../../../components/Common/Layouts/Row";
 import {Dayjs} from "dayjs";
-import {ScheduleMark, ScheduleType} from "../utils/styles/ScheduleMark.styled";
-import {Calendar} from "../utils/types";
+import * as S from "../utils/styles/ScheduleMark.styled";
+import {Calendar, Schedule, ScheduleDay, ScheduleType} from "../utils/types";
 
 interface DayProps {
     $isEmpty: boolean;
@@ -14,6 +14,7 @@ interface DayProps {
     $isSunday: boolean;
     $isToday: boolean;
     $isSelected: boolean;
+    $isPreviousMonth?: boolean;
     $type: Calendar;
 }
 
@@ -22,10 +23,15 @@ interface CalendarGridProps {
     currentDate: Dayjs;
     selectedDate: string | null;
     handleDayClick: (day: string | number) => void;
-    scheduleData?: { [key: string]: { title: string, type: string; content: string; time: string }[] };
+    scheduleData?: (ScheduleDay | null)[];
 }
 
-const scheduleTypes = ["외출", "외박", "공동 일정", "기타"];
+const scheduleTextMap: Record<ScheduleType, string> = {
+    OUTING: "외출",
+    SLEEPOVER: "외박",
+    TOGETHER: "공동 일정",
+    ETC: "기타",
+};
 
 export default function CalendarGrid({
                                          type,
@@ -36,21 +42,24 @@ export default function CalendarGrid({
                                      }: CalendarGridProps) {
     const getScheduleForDay = (day: string | number) => {
         if (day === "") return [];
-        const dateString = currentDate.date(Number(day)).format("YYYY.M.D");
-        return scheduleData?.[dateString] || [];
+        return scheduleData?.[day] ? scheduleData[day]?.schedules : [];
     };
 
-    const renderScheduleMarks = (schedules: { type: string; content: string; time: string }[]) => {
+    const getScheduleForDayHome = (day: string | number) => {
+        return scheduleData?.[day] ? scheduleData[day]?.schedules : [];
+    };
+
+    const renderScheduleMarks = (schedules: Schedule[]) => {
         if (schedules.length >= 4) {
             return (
                 <ScheduleMarkWrapper style={{flexDirection: "column", alignItems: "center"}}>
                     <Row gap={2}>
-                        {schedules.slice(0, 2).map((scheduleType, index) => (
-                            <ScheduleMark key={index} $type={scheduleType.type}/>
+                        {schedules.slice(0, 2).map((scheduleType) => (
+                            <S.ScheduleMark key={scheduleType.roommateScheduleId} $type={scheduleType.type}/>
                         ))}
                     </Row>
                     <Row gap={2}>
-                        <ScheduleMark $type={schedules[2].type}/>
+                        <S.ScheduleMark $type={schedules[2].type}/>
                         <AddIcon/>
                     </Row>
                 </ScheduleMarkWrapper>
@@ -59,8 +68,8 @@ export default function CalendarGrid({
 
         return (
             <ScheduleMarkWrapper>
-                {schedules.map((scheduleType, index) => (
-                    <ScheduleMark key={index} $type={scheduleType.type}/>
+                {schedules.map((scheduleType) => (
+                    <S.ScheduleMark key={scheduleType.roommateScheduleId} $type={scheduleType.type}/>
                 ))}
             </ScheduleMarkWrapper>
         );
@@ -70,11 +79,11 @@ export default function CalendarGrid({
         <CalendarContainer>
             {type === "calendar" && (
                 <ScheduleHeader>
-                    {scheduleTypes.map((scheduleType: string) => (
-                        <ScheduleType key={scheduleType} $type={scheduleType}>
-                            <ScheduleMark $type={scheduleType}/>
-                            <Typography typoSize="B2_medium">{scheduleType}</Typography>
-                        </ScheduleType>
+                    {["OUTING", "SLEEPOVER", "TOGETHER", "ETC"].map((type: any) => (
+                        <S.ScheduleTypeDiv key={type} $type={type}>
+                            <S.ScheduleMark $type={type}/>
+                            <Typography typoSize="B2_medium">{scheduleTextMap[type]}</Typography>
+                        </S.ScheduleTypeDiv>
                     ))}
                 </ScheduleHeader>
             )}
@@ -116,10 +125,11 @@ export default function CalendarGrid({
                                 $isToday={isToday(currentDate, day)}
                                 $isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
                                 $type={type}
+                                $isPreviousMonth={isPreviousMonth(currentDate, day)}
                                 onClick={() => handleDayClick(day)}
                             >
                                 <Typography typoSize="B1_medium">{day}</Typography>
-                                {type === "home" && scheduleData && renderScheduleMarks(getScheduleForDay(day))}
+                                {type === "home" && scheduleData && renderScheduleMarks(getScheduleForDayHome(dayIdx))}
                             </Day>
                         ))}
                     </Week>
@@ -177,12 +187,9 @@ const Day = styled.div<DayProps>`
         }
         return theme.Gray800;
     }};
-
-    ${(props) =>
-            !props.$isEmpty &&
-            props.$isSelected &&
-            props.$type === "calendar" &&
-            `
+    opacity: ${(props) => (props.$isPreviousMonth ? 0.3 : 1)};
+    
+    ${(props) => !props.$isEmpty && props.$isSelected && props.$type === "calendar" && `
         &::after {
             content: "";
             position: absolute;
@@ -197,10 +204,7 @@ const Day = styled.div<DayProps>`
         }
     `}
 
-    ${(props) =>
-            !props.$isEmpty &&
-            props.$type === "modal" &&
-            `
+    ${(props) => !props.$isEmpty && props.$type === "modal" && `
         &:active::after {
             content: "";
             position: absolute;

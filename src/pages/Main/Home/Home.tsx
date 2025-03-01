@@ -31,7 +31,7 @@ import CalendarHeader from "../../Calendar/ui/CalendarHeader";
 import CalendarGrid from "../../Calendar/components/CalendarGrid";
 import TodaySchedules from "../../Calendar/components/TodaySchedules";
 import {useCalendar} from "../../Calendar/hooks/useCalendar";
-import {scheduleData} from "../../Calendar/utils/mock";
+import {useWeekSchedules} from "../../Calendar/hooks/useWeekSchedules";
 
 export default function Home() {
 	const MAIN_HEADER = [
@@ -54,10 +54,6 @@ export default function Home() {
 		selectedDate,
 		handleDayClick,
 	} = useCalendar();
-
-	const todayScheduleDatas = selectedDate
-		? scheduleData[selectedDate]
-		: scheduleData[currentDate.format("YYYY.M.D")];
 
 	const handleHeader = (headerKey: string) => {
 		switch (headerKey) {
@@ -132,6 +128,11 @@ export default function Home() {
 		setNickname(mydata.nickname);
 		setIsRoommateApply(receiveRommateData?.length);
 	}, [top3UserData, mydata, receiveRommateData]);
+
+	const {data:weekData, isLoading:isCalendarLoading} = useWeekSchedules();
+	if (isCalendarLoading) return <Loading/>;
+	const scheduleData = weekData?.data || [];
+	const todayScheduleDatas = scheduleData[currentDate.day()].schedules;
 
 	const isVisited = localStorage.getItem("vap");
 
