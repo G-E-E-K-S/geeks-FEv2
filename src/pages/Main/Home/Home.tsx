@@ -27,6 +27,11 @@ import Tooltip from "../../../components/DesignStuff/ToolTip/ToolTip";
 import { useUserInfo } from "../../../store/useUserInfo";
 import UserProfile from "../../../components/Main/UserProfile/UserProfile";
 import { UserProfileType } from "../../../types/userProfileType";
+import CalendarHeader from "../../Calendar/ui/CalendarHeader";
+import CalendarGrid from "../../Calendar/components/CalendarGrid";
+import TodaySchedules from "../../Calendar/components/TodaySchedules";
+import { useCalendarStore } from "../../../store/calendarStore";
+import { useWeekSchedules } from "../../Calendar/hooks/useWeekSchedules";
 
 export default function Home() {
 	const MAIN_HEADER = [
@@ -43,6 +48,11 @@ export default function Home() {
 	const [matchingTop3User, setMatchingTop3User] = useState<UserProfileType[]>([]);
 	const [isSendMessage, setIsSendMessgae] = useState(false);
 	const navigate = useNavigate();
+
+	const {
+		currentDate,
+		selectedDate
+	} = useCalendarStore();
 
 	const handleHeader = (headerKey: string) => {
 		switch (headerKey) {
@@ -118,6 +128,11 @@ export default function Home() {
 		setNickname(mydata.nickname);
 		setIsRoommateApply(receiveRommateData?.length);
 	}, [top3UserData, mydata, receiveRommateData]);
+
+	const { data: weekData, isLoading: isCalendarLoading } = useWeekSchedules();
+	if (isCalendarLoading) return <Loading />;
+	const scheduleData = weekData?.data || [];
+	const todayScheduleDatas = scheduleData[currentDate.day()].schedules;
 
 	const isVisited = localStorage.getItem("vap");
 
@@ -265,6 +280,18 @@ export default function Home() {
 							</Row>
 						</ButtonBox>
 					)}
+					<ButtonBox backgroundColor="White" onClick={() => navigate("/calendar")}>
+						<CalendarHeader
+							type="home"
+						/>
+						<CalendarGrid
+							type="home"
+							scheduleData={scheduleData}
+						/>
+						<TodaySchedules
+							todayScheduleDatas={todayScheduleDatas}
+						/>
+					</ButtonBox>
 				</Column>
 			</CS.ScreenComponent>
 			<NavigationBar type={`home`} />
