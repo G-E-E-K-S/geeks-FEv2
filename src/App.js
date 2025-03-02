@@ -25,7 +25,6 @@ import {
 } from "./pages/Join/Index";
 import { LiveRule, Home, Search, Alarm } from "./pages/Main/Index";
 import { FindRoommate, CompareUserInfo, RoommateSendText, FinishRoommate } from "./pages/FindRoommate/Index";
-import { ComingSoon, Suggestion, WriteSuggestion, DetailSuggestion } from "./pages/Suggestion/Index";
 import { Chat, ChatRoom } from "./pages/Chat/Index";
 import {
 	MyPage,
@@ -105,10 +104,6 @@ function App() {
 					<Route path="/roommate/apply" element={<RoommateApply />} />
 					<Route path="/loading" element={<Loading />} />
 					<Route path="/reviewevent" element={<ReviewEvent />} />
-					<Route path="/comingsoon" element={<ComingSoon />} />
-					<Route path="/suggestion" element={<Suggestion />} />
-					<Route path="/writesuggestion" element={<WriteSuggestion />} />
-					<Route path="/suggestion/show/:pagenum" element={<DetailSuggestion />} />
 					<Route path="/managermain" element={<Manager />} />
 					<Route path="/termpolicy" element={<TermPolicy />} />
 					<Route path="/calendar" element={<Calendar />} />
