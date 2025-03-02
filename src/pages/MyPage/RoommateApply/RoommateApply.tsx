@@ -304,6 +304,7 @@ export default function RoommateApply() {
 												<Typography
 													typoSize="T2_bold"
 													color="Gray800"
+													textAlign="center"
 												>{`룸메이트가 맺어졌어요!`}</Typography>
 												<S.OpponentProfileBox horizonAlign="center" verticalAlign="center">
 													<S.ProfileImg
@@ -359,7 +360,7 @@ export default function RoommateApply() {
 					bottom={`9.95`}
 					isShowPopup={showPopup}
 					setShowPopup={setShowPopup}
-					message={`룸메이트 신청을 취소하였습니다`}
+					message={`룸메이트 신청을 거절했어요`}
 				/>
 			</CS.ScreenComponent>
 		</CS.Totalframe>

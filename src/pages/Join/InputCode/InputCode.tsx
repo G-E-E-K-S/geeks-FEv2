@@ -9,7 +9,6 @@ import JoinButton from "../../../components/Join/JoinButton";
 import MainText from "../../../components/Join/MainText";
 import ErrorPopup from "../../../components/Common/ErrorPopup";
 import Timmer from "../../../assets/img/Join/timmer.svg";
-import Loading from "../../Loading";
 import { useUserInfo } from "../../../store/useUserInfo";
 
 const TotalSendMail = styled.div`
@@ -212,6 +211,7 @@ const InputCode = () => {
 								// @ts-ignore
 								ref={ref}
 								type="text"
+								inputMode="numeric"
 								maxLength={1}
 								pattern="\d*"
 								onChange={(e) => handleInputChange(index, e)}

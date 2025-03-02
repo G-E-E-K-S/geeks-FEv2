@@ -33,7 +33,7 @@ export default function FinalPage() {
 		refetch().then((val) => {
 			if (val.data.success) {
 				localStorage.setItem("token", val.data.data);
-				navigate("/home");
+				navigate("/home", { replace: true });
 			}
 		});
 	};

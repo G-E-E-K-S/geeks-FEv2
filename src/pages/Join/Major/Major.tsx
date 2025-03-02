@@ -133,12 +133,6 @@ const MajorTotal = styled.div`
 	width: 100%;
 	border-bottom: 2px solid #efefef;
 `;
-// const MajorText = styled.div`
-// 	color: ${(props) => (props.major ? "#d0d0d0" : "#333333")};
-// 	font-size: 1.5rem;
-// 	font-style: normal;
-// 	font-weight: 600;
-// `;
 
 const StudentNumTotal = styled(MajorTotal)`
 	width: fit-content;

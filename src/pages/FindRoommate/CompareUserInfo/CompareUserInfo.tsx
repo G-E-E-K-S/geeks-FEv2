@@ -47,7 +47,7 @@ export default function CompareUserInfo() {
 		{ name: "잠버릇", key: "habit", HABIT: "잠버릇 있어요", NONHABIT: "잠버릇 없어요" },
 		{ name: "잠귀", key: "ear", BRIGHT: "귀 밝아요", DARK: "귀 어두워요" },
 		{ name: "활동시간", key: "activityTime", MORNING: "일찍 자요", DAWN: "늦게 자요" },
-		{ name: "외출", key: "outing", INSIDE: "집순이에요", OUTSIDE: "밖순이에요" },
+		{ name: "외출", key: "outing", INSIDE: "집에 있는 걸\n좋아해요", OUTSIDE: "나가는 걸\n좋아해요" },
 		{
 			name: "청소",
 			key: "cleaning",
@@ -390,7 +390,7 @@ export default function CompareUserInfo() {
 				message={opponentInfo.nickname + `님께\n룸메이트를 신청할까요?`}
 				subMessage={`상대방이 수락하기 전까지는\n언제든지 취소 가능해요`}
 				btnName={`신청하기`}
-				isOpen={applyRoommate && !roommateApplyState && !roommateState}
+				isOpen={applyRoommate}
 				onClick={() => ApplyRoommate()}
 				applyRoommate={() => setApplyRommate(false)}
 			/>

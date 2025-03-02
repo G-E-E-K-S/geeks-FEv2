@@ -31,6 +31,7 @@ const SameLifeStyle = styled.div`
 	line-height: 24px;
 	margin: 0 auto;
 	width: max-content;
+	white-space: pre-wrap;
 `;
 const OpponentLifeStyle = styled(SameLifeStyle)`
 	background: linear-gradient(0deg, rgba(255, 184, 184, 0.2) 0%, rgba(255, 184, 184, 0.2) 100%), #fcede8;

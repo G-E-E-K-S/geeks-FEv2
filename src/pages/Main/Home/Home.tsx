@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
@@ -76,7 +76,8 @@ export default function Home() {
 		queryFn: async () => {
 			const response = await API.get(`/api/v1/roommate/receive/list`);
 			return response.data.data;
-		}
+		},
+		retry: 2
 	});
 
 	// React.useEffect(() => {
@@ -172,21 +173,27 @@ export default function Home() {
 							</Column>
 						))}
 					</Row>
-					<ButtonBox backgroundColor="YellowGray100">
-						<Row horizonAlign="distribute">
-							<Column gap={4}>
-								<Typography typoSize="T3_bold" color="YellowGray800">
-									{"귀가 알림 보내기"}
-								</Typography>
-								<Typography typoSize="B2_medium" color="YellowGray600">
-									{"룸메이트에게 미리 알림을 보낼 수 있어요"}
-								</Typography>
-							</Column>
-							<Tooltip message="누르면 알림이 전송돼요" isVisible={isVisited !== "true"}>
-								<img src={SendAlarm} onClick={() => setIsSendMessgae(true)} alt="sendAlarmToRoommate" />
-							</Tooltip>
-						</Row>
-					</ButtonBox>
+					{mydata.myRoommate && (
+						<ButtonBox backgroundColor="YellowGray100">
+							<Row horizonAlign="distribute">
+								<Column gap={4}>
+									<Typography typoSize="T3_bold" color="YellowGray800">
+										{"귀가 알림 보내기"}
+									</Typography>
+									<Typography typoSize="B2_medium" color="YellowGray600">
+										{"룸메이트에게 미리 알림을 보낼 수 있어요"}
+									</Typography>
+								</Column>
+								<Tooltip message="누르면 알림이 전송돼요" isVisible={isVisited !== "true"}>
+									<img
+										src={SendAlarm}
+										onClick={() => setIsSendMessgae(true)}
+										alt="sendAlarmToRoommate"
+									/>
+								</Tooltip>
+							</Row>
+						</ButtonBox>
+					)}
 
 					{isRoommateApply !== 0 && (
 						<ButtonBox backgroundColor="Yellow100" onClick={() => navigate("/roommate/apply")}>

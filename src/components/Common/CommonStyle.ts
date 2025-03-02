@@ -15,6 +15,7 @@ export const Totalframe = styled.div<{ background?: string }>`
 		display: none;
 	}
 	background: ${(props) => props.background};
+	overflow-x: hidden;
 `;
 
 export const ScreenComponent = styled.div<{ navigation?: boolean }>`
@@ -62,7 +63,7 @@ export const Header = styled.div<{ backgroundColor: Color | string }>`
 	margin-bottom: 16px;
 	position: sticky;
 	top: 0px;
-	padding: 52px 20px 0 20px;
+	padding: 0px 20px 0 20px;
 	width: calc(100% + 42px);
 	z-index: 10;
 	margin-left: calc(-50vw + 50%);

@@ -30,7 +30,9 @@ export default function FindRoommate() {
 		queryFn: async () => {
 			const response = await API.get(`/api/v1/matching/points`);
 			return response.data.data;
-		}
+		},
+		retry: 2,
+		retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)
 	});
 
 	useMemo(() => {
@@ -70,7 +72,7 @@ export default function FindRoommate() {
 								ID={user.studentNum}
 								score={user.point}
 								hasBackground
-								intro={user.introduction ?? "this is sample"}
+								intro={user.introduction}
 								hasPadding
 								onClick={() => navigate(`/detail/details/${user.matchingPointId}/${user.opponentId}`)}
 							/>

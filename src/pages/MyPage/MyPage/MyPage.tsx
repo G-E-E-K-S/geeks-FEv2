@@ -75,6 +75,7 @@ export default function MyPage() {
 		if (!data) return;
 		setUserInfo(data);
 		setRoommateIinfo(data.myRoommate);
+		setToggle(data.open);
 	}, [data]);
 
 	const Logout = () => {

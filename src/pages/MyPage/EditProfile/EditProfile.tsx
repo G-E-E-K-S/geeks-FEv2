@@ -436,6 +436,7 @@ export default function EditProfile() {
 					inputLen={introduction?.length ?? 0}
 					totalNum={25}
 					text={introduction}
+					pageType="myPage"
 				/>
 			</CS.ScreenComponent>
 		</CS.Totalframe>
