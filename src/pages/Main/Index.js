@@ -1,5 +1,5 @@
 import Home from "./Home/Home";
-import LiveRule from "./LiveRule";
+import LiveRule from "./LiveRule/LiveRule";
 import Search from "./Search/Search";
 import Alarm from "./Alarm/Alarm";
 

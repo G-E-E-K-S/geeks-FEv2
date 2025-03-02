@@ -48,7 +48,6 @@ import {
 } from "./pages/MyPage/Index";
 import "./index.css";
 import Loading from "./pages/Loading";
-import Manager from "./pages/Manager/ManagerMain";
 import Calendar from "./pages/Calendar/Calendar";
 import Schedule from "./pages/Schedule/Schedule";
 import ScheduleEdit from "./pages/Schedule/ScheduleEdit/ScheduleEdit";
