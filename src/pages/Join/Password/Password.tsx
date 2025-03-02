@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../../../axios/BaseUrl";
+
 import * as CS from "../../../components/Common/CommonStyle";
 import HeaderMenu from "../../../components/Common/HeaderMenu";
 import JoinButton from "../../../components/Join/JoinButton";
-import MainText from "../../../components/Join/MainText";
-import NoneCheck from "../../../assets/img/Join/noneCheck.svg";
-import Check from "../../../assets/img/Join/Check.svg";
-import NoShowPwd from "../../../assets/img/Join/NoShowPwd.svg";
-import ShowPwd from "../../../assets/img/Join/ShowPwd.svg";
 import Typography from "../../../components/Common/Layouts/Typography";
 import TextFields from "../../../components/DesignStuff/TextFields/TextFields";
 import Row from "../../../components/Common/Layouts/Row";
 import { useUserInfo } from "../../../store/useUserInfo";
 import TopNumber from "../../../components/Join/TopNumber";
+
+import NoneCheck from "../../../assets/img/Join/noneCheck.svg";
+import Check from "../../../assets/img/Join/Check.svg";
+import NoShowPwd from "../../../assets/img/Join/NoShowPwd.svg";
+import ShowPwd from "../../../assets/img/Join/ShowPwd.svg";
 
 export default function Password() {
 	const [showPwd, setShowPwd] = useState(false);
@@ -66,7 +66,9 @@ export default function Password() {
 					<HeaderMenu />
 				</CS.Header>
 				<TopNumber page={3} />
-				<MainText maintitle={`로그인 시 사용할\n비밀번호를 입력해 주세요`} />
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`로그인 시 사용할\n비밀번호를 입력해 주세요`}
+				</Typography>
 				<TextFields
 					isError={false}
 					onChange={(val) => setPassword(val)}

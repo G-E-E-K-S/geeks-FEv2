@@ -1,91 +1,17 @@
 import { useState, useRef, useEffect } from "react";
-import API from "../../../axios/BaseUrl";
 import { useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
+
+import API from "../../../axios/BaseUrl";
+import * as S from "./style";
 import * as CS from "../../../components/Common/CommonStyle";
 import HeaderMenu from "../../../components/Common/HeaderMenu";
 import TopNumber from "../../../components/Join/TopNumber";
 import JoinButton from "../../../components/Join/JoinButton";
-import MainText from "../../../components/Join/MainText";
 import ErrorPopup from "../../../components/Common/ErrorPopup";
-import Timmer from "../../../assets/img/Join/timmer.svg";
 import { useUserInfo } from "../../../store/useUserInfo";
+import Typography from "../../../components/Common/Layouts/Typography";
 
-const TotalSendMail = styled.div`
-	display: flex;
-	margin-top: 2.25vh;
-`;
-
-const SendMailText = styled.div`
-	margin-right: 8px;
-	color: #949494;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 600;
-	line-height: 24px;
-`;
-
-const ReSendBtn = styled.div<{ isResend: boolean }>`
-	display: flex;
-	padding: 4px 12px;
-	justify-content: center;
-	align-items: center;
-	color: ${({ isResend }) => (isResend ? "#D0D0D0" : "#525252")};
-	border-radius: 6px;
-	background-color: ${({ isResend }) => (isResend ? "#F7F7F7" : "#efefef")};
-	cursor: pointer;
-	pointer-events: ${({ isResend }) => isResend && "none"};
-	font-size: 14px;
-	font-style: normal;
-	font-weight: 600;
-	&:active {
-		background: #d0d0d0;
-	}
-`;
-
-const InputNumber = styled.div`
-	display: flex;
-	margin-top: 55px;
-`;
-const InputInfos = styled.div<{ isSelected: boolean }>`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding-bottom: 7px;
-	border-bottom: 2px solid ${({ isSelected }) => (isSelected ? "#ECAA00" : "#EFEFEF")};
-	color: #c4c7c7;
-	width: 18.46vw;
-	margin-right: 20px;
-`;
-const Code = styled.input`
-	border: none;
-	outline: none;
-	width: 19.46vw;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	font-size: 3rem;
-	font-weight: 700;
-	&::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-	}
-`;
-const TimeImg = styled.img`
-	width: 16px;
-	height: 16px;
-	margin-top: 13px;
-	margin-right: 4px;
-`;
-
-const Time = styled.div`
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 18px;
-	color: #b7b7b7;
-	text-align: left;
-	margin-top: 12px;
-`;
+import Timmer from "../../../assets/img/Join/timmer.svg";
 
 const InputCode = () => {
 	// @ts-ignore
@@ -196,17 +122,19 @@ const InputCode = () => {
 					<HeaderMenu />
 				</CS.Header>
 				<TopNumber page={2} />
-				<MainText maintitle={`수신된 메일에 적힌\n4자리 코드를 입력해 주세요`} />
-				<TotalSendMail>
-					<SendMailText>메일이 도착하지 않았나요?</SendMailText>
-					<ReSendBtn onClick={() => ReSendEmail()} isResend={isResend}>
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`수신된 메일에 적힌\n4자리 코드를 입력해 주세요`}
+				</Typography>
+				<S.TotalSendMail>
+					<S.SendMailText>메일이 도착하지 않았나요?</S.SendMailText>
+					<S.ReSendBtn onClick={() => ReSendEmail()} isResend={isResend}>
 						인증 메일 재전송
-					</ReSendBtn>
-				</TotalSendMail>
-				<InputNumber>
+					</S.ReSendBtn>
+				</S.TotalSendMail>
+				<S.InputNumber>
 					{inputRefs.map((ref, index) => (
-						<InputInfos isSelected={isSelected}>
-							<Code
+						<S.InputInfos isSelected={isSelected}>
+							<S.Code
 								key={index}
 								// @ts-ignore
 								ref={ref}
@@ -218,14 +146,14 @@ const InputCode = () => {
 								onKeyUp={(e) => handleKeydown(index, e)}
 								onFocus={() => ChangeBarColor()}
 							/>
-						</InputInfos>
+						</S.InputInfos>
 					))}
-				</InputNumber>
+				</S.InputNumber>
 				<CS.Flex>
-					<TimeImg src={Timmer} />
-					<Time>
+					<S.TimeImg src={Timmer} />
+					<S.Time>
 						{min}:{sec < 10 ? "0" + sec : sec}
-					</Time>
+					</S.Time>
 				</CS.Flex>
 				<ErrorPopup
 					message={`코드가 일치하지 않아요`}

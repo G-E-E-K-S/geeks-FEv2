@@ -1,15 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
 import API from "../../../axios/BaseUrl";
-import * as c from "../../../components/Common/CommonStyle";
+import * as CS from "../../../components/Common/CommonStyle";
 import HeaderMenu from "../../../components/Common/HeaderMenu";
-import MainText from "../../../components/Join/MainText";
 import ErrorPopup from "../../../components/Common/ErrorPopup";
 import TextFields from "../../../components/DesignStuff/TextFields/TextFields";
 import Button from "../../../components/DesignStuff/Button/Button";
 import { useUserInfo } from "../../../store/useUserInfo";
-import { useQuery } from "@tanstack/react-query";
 import TopNumber from "../../../components/Join/TopNumber";
+import Typography from "../../../components/Common/Layouts/Typography";
 
 const NickName = () => {
 	const [isNextPage, setIsNextPage] = useState(false);
@@ -53,13 +54,15 @@ const NickName = () => {
 	}, []);
 
 	return (
-		<c.Totalframe>
-			<c.ScreenComponent>
-				<c.Header backgroundColor="White">
+		<CS.Totalframe>
+			<CS.ScreenComponent>
+				<CS.Header backgroundColor="White">
 					<HeaderMenu />
-				</c.Header>
+				</CS.Header>
 				<TopNumber page={4} />
-				<MainText maintitle={`회원님을 표현할\n닉네임을 알려주세요`} />
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`회원님을 표현할\n닉네임을 알려주세요`}
+				</Typography>
 				<TextFields
 					maxLength={8}
 					onChange={(val) => handleInputChange(val)}
@@ -80,8 +83,8 @@ const NickName = () => {
 					bottom={"18.72"}
 				/>
 				<Button text={"다음"} onClick={() => navigate("/questiontext")} isNextPage={isNextPage} />
-			</c.ScreenComponent>
-		</c.Totalframe>
+			</CS.ScreenComponent>
+		</CS.Totalframe>
 	);
 };
 

@@ -1,4 +1,4 @@
-import Intro from "./Intro";
+import Intro from "./Intro/Intro";
 import Agree from "./Agree/Agree";
 import ServiceTxt from "./ServiceTxt";
 import PersonalInfoTxt from "./PersonalInfoTxt";

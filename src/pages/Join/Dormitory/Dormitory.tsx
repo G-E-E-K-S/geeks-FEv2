@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import * as CS from "../../../components/Common/CommonStyle";
 import HeaderMenu from "../../../components/Common/HeaderMenu";
-import MainText from "../../../components/Join/MainText";
 import DormitoryBox from "../../../components/Join/DormitoryBox";
 import Button from "../../../components/DesignStuff/Button/Button";
+import Typography from "../../../components/Common/Layouts/Typography";
 import { useUserInfo } from "../../../store/useUserInfo";
 
 const DormitoryTotal = styled.div`
@@ -29,7 +30,9 @@ const Dormitory = () => {
 				<CS.Header backgroundColor="White">
 					<HeaderMenu />
 				</CS.Header>
-				<MainText maintitle={`어떤 기숙사에서 생활하시나요?`} />
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`어떤 기숙사에서 생활하시나요?`}
+				</Typography>
 				<DormitoryTotal>
 					<DormitoryBox
 						disable={false}

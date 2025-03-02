@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+
 import * as CS from "../../../components/Common/CommonStyle";
 import HeaderMenu from "../../../components/Common/HeaderMenu";
-import MainText from "../../../components/Join/MainText";
 import GenderBox from "../../../components/Join/GenderBox";
+import Row from "../../../components/Common/Layouts/Row";
+import Button from "../../../components/DesignStuff/Button/Button";
+import { useUserInfo } from "../../../store/useUserInfo";
+import Typography from "../../../components/Common/Layouts/Typography";
+
 import Girl from "../../../assets/img/Join/girl.svg";
 import SelectGirl from "../../../assets/img/Join/selectGirl.svg";
 import Boy from "../../../assets/img/Join/man.svg";
 import SelectBoy from "../../../assets/img/Join/selectMan.svg";
-import Row from "../../../components/Common/Layouts/Row";
-import Button from "../../../components/DesignStuff/Button/Button";
-import { useUserInfo } from "../../../store/useUserInfo";
 
 export default function Gender() {
 	const [isNextPage, setIsNextPage] = useState(false);
@@ -33,7 +34,9 @@ export default function Gender() {
 				<CS.Header backgroundColor="background">
 					<HeaderMenu />
 				</CS.Header>
-				<MainText maintitle={`성별을 알려주세요`} />
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`성별을 알려주세요`}
+				</Typography>
 				<Row gap={10}>
 					<GenderBox
 						gender={"남자"}

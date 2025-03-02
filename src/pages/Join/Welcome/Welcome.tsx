@@ -7,7 +7,6 @@ import Modal from "../../../components/Common/Modal";
 
 import * as CS from "../../../components/Common/CommonStyle";
 import * as S from "./style";
-import JoinButton from "../../../components/Join/JoinButton";
 import Popup from "../../../components/Common/Popup";
 import House from "../../../assets/gif/house.gif";
 import Logo from "../../../assets/img/Common/mainLogo.png";
