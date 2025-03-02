@@ -1,13 +1,8 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as c from "../../components/Common/CommonStyle";
 import Header from "../../components/Join/Header";
-import JoinButton from "../../components/Join/JoinButton";
-import MainText from "../../components/Join/MainText";
-import Check from "../../assets/img/Join/agreeCheck.svg";
-import FillCheck from "../../assets/img/Join/agreeFillCheck.svg";
+import Typography from "../../components/Common/Layouts/Typography";
+
 
 const Title = styled.div`
 	font-size: 0.875rem;
@@ -36,7 +31,9 @@ const Agree = () => {
 				<c.Header backgroundColor="White">
 					<Header />
 				</c.Header>
-				<MainText maintitle={`긱스 서비스 이용 약관`} />
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`긱스 서비스 이용 약관`}
+				</Typography>
 				<Title>{`제1조(목적)`}</Title>
 				<Content>{`이 약관은 긱스 (이하 ‘회사' 라고 합니다)가 제공하는 제반 서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.`}</Content>
 				<Title>{`제2조(정의)`}</Title>

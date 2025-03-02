@@ -33,15 +33,11 @@ import {
 	SettingUserInfo,
 	SaveList,
 	Notice,
-	FAQ,
-	FaqContent,
 	RoommateApply,
 	MyProfile,
 	SecessionReason,
 	NoticeDetail,
-	EventNoticeDetail,
 	ChangePassword,
-	ReviewEvent,
 	Notification,
 	TermPolicy
 } from "./pages/MyPage/Index";
@@ -92,9 +88,6 @@ function App() {
 					<Route path="/notification" element={<Notification />} />
 					<Route path="/changepassword" element={<ChangePassword />} />
 					<Route path="/notice/details/:noticenum" element={<NoticeDetail />} />
-					<Route path="/notice/details/event" element={<EventNoticeDetail />} />
-					<Route path="/faq" element={<FAQ />} />
-					<Route path="/faq/:type/:pageNum" element={<FaqContent />} />
 					<Route path="/roommate" element={<FindRoommate />} />
 					<Route path="/finishroommate" element={<FinishRoommate />} />
 					<Route path="/detail/details/:matchingId/:opponentId" element={<CompareUserInfo />} />
@@ -103,8 +96,6 @@ function App() {
 					<Route path="/chat/chatroom/:roomId" element={<ChatRoom />} />
 					<Route path="/roommate/apply" element={<RoommateApply />} />
 					<Route path="/loading" element={<Loading />} />
-					<Route path="/reviewevent" element={<ReviewEvent />} />
-					<Route path="/managermain" element={<Manager />} />
 					<Route path="/termpolicy" element={<TermPolicy />} />
 					<Route path="/calendar" element={<Calendar />} />
 					<Route path="/schedule/:scheduleId" element={<Schedule />} />

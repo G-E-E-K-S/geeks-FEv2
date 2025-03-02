@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as CS from "../../../components/Common/CommonStyle";
-import mainLogo from "../../assets/img/Join/mainLogo.svg";
+import mainLogo from "../../../assets/img/Join/mainLogo.svg";
 
 const IntroLogo = styled.div`
 	height: 100vh;

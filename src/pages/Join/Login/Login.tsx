@@ -4,7 +4,6 @@ import styled from "styled-components";
 import API from "../../../axios/BaseUrl";
 import * as CS from "../../../components/Common/CommonStyle";
 import HeaderMenu from "../../../components/Common/HeaderMenu";
-import MainText from "../../../components/Join/MainText";
 import ErrorPopup from "../../../components/Common/ErrorPopup";
 import TextFields from "../../../components/DesignStuff/TextFields/TextFields";
 import Button from "../../../components/DesignStuff/Button/Button";
@@ -69,7 +68,9 @@ const InputEmail = () => {
 				<CS.Header backgroundColor="White">
 					<HeaderMenu />
 				</CS.Header>
-				<MainText maintitle={"학교 이메일 주소로\n로그인 해주세요"} />
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`학교 이메일 주소로\n로그인 해주세요`}
+				</Typography>
 				<Column gap={20}>
 					<TextFields
 						isError={isEmailError}

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as c from "../../components/Common/CommonStyle";
-import MainText from "../../components/Join/MainText";
 import HeaderMenu from "../../components/Common/HeaderMenu";
+import Typography from "../../components/Common/Layouts/Typography";
 
 const Title = styled.div`
 	font-size: 0.875rem;
@@ -30,7 +30,9 @@ const LocationTxt = () => {
 				<c.Header backgroundColor="White">
 					<HeaderMenu />
 				</c.Header>
-				<MainText maintitle={`위치정보 수집 및 이용`} />
+				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+					{`위치정보 수집 및 이용`}
+				</Typography>
 				<Title>{`제1조(목적)`}</Title>
 				<Content>{`본 약관은 회원(긱스의 서비스 약관에 동의한 자를 말하며 이하 '회원'이라고 합니다)이 긱스(이하 '회사'라고 합니다)가 제공하는 웹페이지 및 '긱스' (회사가 개발 운영하는 모바일 애플리케이션을 말합니다. 이하 '모바일앱'이라고 합니다)의 서비스를 이용함에 있어 회원 과 회사의 권리 및 의무, 기타 제반 사항을 정하는 것을 목적으로 합니다.`}</Content>
 				<Title>{`제2조(가입자격)`}</Title>

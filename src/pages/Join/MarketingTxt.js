@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import * as c from "../../components/Common/CommonStyle";
 import HeaderMenu from "../../components/Common/HeaderMenu";
-import MainText from "../../components/Join/MainText";
 import Row from "../../components/Common/Layouts/Row";
 import Typography from "../../components/Common/Layouts/Typography";
 

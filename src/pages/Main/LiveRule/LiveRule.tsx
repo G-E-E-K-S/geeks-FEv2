@@ -3,13 +3,13 @@ import ColHeaderMenu from "../../../components/Common/ColHeaderMenu";
 import LiveRuleCategory from "../../../components/Main/LiveRuleCategory";
 import Typography from "../../../components/Common/Layouts/Typography";
 
-import Window from "../../assets/img/Home/window.svg";
-import Food from "../../assets/img/Home/food.svg";
-import Time from "../../assets/img/Home/time.svg";
-import Diffuser from "../../assets/img/Home/diffuser.svg";
-import Sleep from "../../assets/img/Home/sleep.svg";
-import Call from "../../assets/img/Home/call.svg";
-import Phone from "../../assets/img/Home/phone.svg";
+import Window from "../../../assets/img/Home/window.svg";
+import Food from "../../../assets/img/Home/food.svg";
+import Time from "../../../assets/img/Home/time.svg";
+import Diffuser from "../../../assets/img/Home/diffuser.svg";
+import Sleep from "../../../assets/img/Home/sleep.svg";
+import Call from "../../../assets/img/Home/call.svg";
+import Phone from "../../../assets/img/Home/phone.svg";
 
 export default function LiveRule() {
 	return (
