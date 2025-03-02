@@ -1,5 +1,3 @@
-import React from "react";
-import { GlobalStyle } from "./styles/GlobalStyle";
 import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
@@ -29,7 +27,6 @@ import { LiveRule, Home, Search, Alarm } from "./pages/Main/Index";
 import { FindRoommate, CompareUserInfo, RoommateSendText, FinishRoommate } from "./pages/FindRoommate/Index";
 import { ComingSoon, Suggestion, WriteSuggestion, DetailSuggestion } from "./pages/Suggestion/Index";
 import { Chat, ChatRoom } from "./pages/Chat/Index";
-import { WritePost, Post, Community, MyCommunity, ScrapPost, CommunityWrite, OpenGroup } from "./pages/Community/Index";
 import {
 	MyPage,
 	LifeStyles,
@@ -52,7 +49,7 @@ import {
 import "./index.css";
 import Loading from "./pages/Loading";
 import Manager from "./pages/Manager/ManagerMain";
-import Calendar from './pages/Calendar/Calendar';
+import Calendar from "./pages/Calendar/Calendar";
 import Schedule from "./pages/Schedule/Schedule";
 import ScheduleEdit from "./pages/Schedule/ScheduleEdit/ScheduleEdit";
 
@@ -107,13 +104,6 @@ function App() {
 					<Route path="/chat" element={<Chat />} />
 					<Route path="/chat/chatroom/:roomId" element={<ChatRoom />} />
 					<Route path="/roommate/apply" element={<RoommateApply />} />
-					<Route path="/writepost" element={<WritePost />} />
-					<Route path="/post/:postId" element={<Post />} />
-					<Route path="/community" element={<Community />} />
-					<Route path="/myCommunity" element={<MyCommunity />} />
-					<Route path="/scrappost" element={<ScrapPost />} />
-					<Route path="/communitywrite" element={<CommunityWrite />} />
-					<Route path="/opengroup" element={<OpenGroup />} />
 					<Route path="/loading" element={<Loading />} />
 					<Route path="/reviewevent" element={<ReviewEvent />} />
 					<Route path="/comingsoon" element={<ComingSoon />} />
