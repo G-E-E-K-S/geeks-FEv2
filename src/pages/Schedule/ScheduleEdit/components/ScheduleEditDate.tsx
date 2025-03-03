@@ -13,6 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useCalendarStore } from "../../../../store/calendarStore";
 import CloseModalIcon from "../../../../assets/img/Join/closeModal.svg";
+import dayjs from "dayjs";
 
 interface ScheduleEditDateProps {
 	startDate: string;
@@ -27,16 +28,16 @@ interface ScheduleEditDateProps {
 }
 
 export default function ScheduleEditDate({
-	startDate,
-	endDate,
-	startTime,
-	endTime,
-	type,
-	setStartDate,
-	setStartTime,
-	setEndDate,
-	setEndTime
-}: ScheduleEditDateProps) {
+											 startDate,
+											 endDate,
+											 startTime,
+											 endTime,
+											 type,
+											 setStartDate,
+											 setStartTime,
+											 setEndDate,
+											 setEndTime
+										 }: ScheduleEditDateProps) {
 	const { currentDate, handleDayClick } = useCalendarStore();
 
 	const [isStartTimeOpen, setIsStartTimeOpen] = useState(false);
@@ -49,23 +50,45 @@ export default function ScheduleEditDate({
 	const handleDateClick = (day: string | number) => {
 		if (day === "") return;
 		const selectedDate = currentDate.date(Number(day)).format("YYYY.M.D");
+		const selectedMoment = dayjs(selectedDate, "YYYY.M.D");
 
 		if (isStartDateOpen) {
+			const endMoment = dayjs(endDate, "YYYY.M.D");
+
 			setStartDate(selectedDate);
+			if (selectedMoment.isAfter(endMoment)) {
+				setEndDate(selectedDate);
+			}
 			setIsStartDateOpen(false);
 		} else if (isEndDateOpen) {
+			const startMoment = dayjs(startDate, "YYYY.M.D");
+
+			if (selectedMoment.isBefore(startMoment)) {
+				setStartDate(selectedDate);
+			}
 			setEndDate(selectedDate);
 			setIsEndDateOpen(false);
 		}
 	};
 
-	const handleClick = () => {
+	const handleTimeClick = () => {
 		const time = `${selectedHour}:${selectedMinute}`;
+		const selectedTimeMoment = dayjs(`2000-01-01 ${time}`);
 
 		if (isStartTimeOpen) {
+			const endTimeMoment = dayjs(`2000-01-01 ${endTime}`);
+
 			setStartTime(time);
+			if (selectedTimeMoment.isAfter(endTimeMoment) && startDate === endDate) {
+				setEndTime(time);
+			}
 			setIsStartTimeOpen(false);
 		} else if (isEndTimeOpen) {
+			const startTimeMoment = dayjs(`2000-01-01 ${startTime}`);
+
+			if (selectedTimeMoment.isBefore(startTimeMoment) && startDate === endDate) {
+				setStartTime(time);
+			}
 			setEndTime(time);
 			setIsEndTimeOpen(false);
 		}
@@ -201,7 +224,7 @@ export default function ScheduleEditDate({
 						))}
 					</Swiper>
 				</Row>
-				<Button onClick={handleClick}>
+				<Button onClick={handleTimeClick}>
 					<Typography typoSize="T3_semibold" color="Gray800">
 						확인
 					</Typography>
@@ -212,24 +235,24 @@ export default function ScheduleEditDate({
 }
 
 const CloseButton = styled.button`
-	border: none;
-	cursor: pointer;
-	padding: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
 `;
 
 // 합치고 버튼 바꿔
 const Button = styled.button`
-	margin-top: 20px;
-	border: none;
-	cursor: pointer;
-	justify-content: center;
-	align-items: center;
-	background-color: ${theme.Yellow500};
-	padding: 20px 0;
-	border-radius: 12px;
-	width: 100%;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    background-color: ${theme.Yellow500};
+    padding: 20px 0;
+    border-radius: 12px;
+    width: 100%;
 `;
