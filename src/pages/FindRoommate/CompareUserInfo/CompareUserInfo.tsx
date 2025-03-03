@@ -208,7 +208,7 @@ export default function CompareUserInfo() {
 						<S.UserProfileImage
 							src={
 								opponentInfo?.image
-									? process.env.REACT_APP_BUCKET_BASEURL + opponentInfo.image
+									? import.meta.env.VITE_APP_BUCKET_BASEURL + opponentInfo.image
 									: BasicProfile
 							}
 						/>

@@ -40,7 +40,7 @@ export default function Home() {
 		{ key: "dormitorynoti", menuName: "기숙사 공지", Icon: dormiNoti },
 		{ key: "dormitoryCall", menuName: "문의하기", Icon: Call }
 	];
-	const { nickname, setNickname } = useUserInfo();
+	// const { nickname, setNickname } = useUserInfo();
 	const [showPopup, setShowPopup] = useState(false);
 	const [isShowWriteReview, setIsShowWriteReview] = useState(localStorage.getItem("show") !== "false");
 	const [isExist, setIsExist] = useState(false);
@@ -49,10 +49,7 @@ export default function Home() {
 	const [isSendMessage, setIsSendMessgae] = useState(false);
 	const navigate = useNavigate();
 
-	const {
-		currentDate,
-		selectedDate
-	} = useCalendarStore();
+	const { currentDate, selectedDate } = useCalendarStore();
 
 	const handleHeader = (headerKey: string) => {
 		switch (headerKey) {
@@ -125,7 +122,7 @@ export default function Home() {
 		if (!top3UserData || !mydata) return;
 		setIsExist(top3UserData.exists);
 		setMatchingTop3User(top3UserData.opponentInfos);
-		setNickname(mydata.nickname);
+		// setNickname(mydata.nickname);
 		setIsRoommateApply(receiveRommateData?.length);
 	}, [top3UserData, mydata, receiveRommateData]);
 
@@ -212,8 +209,8 @@ export default function Home() {
 						<Row horizonAlign="distribute">
 							<Typography typoSize="H3" color="Gray800" style={{ marginBottom: "32px" }}>
 								{isExist
-									? `${nickname} 님과 딱 맞는\n룸메이트를 찾았어요`
-									: `${nickname} 님과 딱 맞는\n룸메이트를 찾아드려요`}
+									? `${11} 님과 딱 맞는\n룸메이트를 찾았어요`
+									: `${11} 님과 딱 맞는\n룸메이트를 찾아드려요`}
 							</Typography>
 							<img src={ForwardArrow} style={{ width: "20px", height: "20px" }} />
 						</Row>
@@ -281,16 +278,9 @@ export default function Home() {
 						</ButtonBox>
 					)}
 					<ButtonBox backgroundColor="White" onClick={() => navigate("/calendar")}>
-						<CalendarHeader
-							type="home"
-						/>
-						<CalendarGrid
-							type="home"
-							scheduleData={scheduleData}
-						/>
-						<TodaySchedules
-							todayScheduleDatas={todayScheduleDatas}
-						/>
+						<CalendarHeader type="home" />
+						<CalendarGrid type="home" scheduleData={scheduleData} />
+						<TodaySchedules todayScheduleDatas={todayScheduleDatas} />
 					</ButtonBox>
 				</Column>
 			</CS.ScreenComponent>

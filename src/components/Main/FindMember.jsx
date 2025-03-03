@@ -30,7 +30,7 @@ const FindMember = (props) => {
   return (
     <FindMemberTotal onClick={props.onClick}>
       <c.Flex>
-        <ProfileImg src={props.profileImg.length === 0 ? BasicProfile : process.env.REACT_APP_BUCKET_BASEURL + props.profileImg} />
+        <ProfileImg src={props.profileImg.length === 0 ? BasicProfile : import.meta.env.VITE_APP_BUCKET_BASEURL + props.profileImg} />
         <div>
           <UserName>{props.userName}</UserName>
           <Major>{props.major}</Major>

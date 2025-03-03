@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import BottomSheet from "../../../components/DesignStuff/BottomSheet/BottomSheet";
 import Row from "../../../components/Common/Layouts/Row";
 import Typography from "../../../components/Common/Layouts/Typography";
-import { ReactComponent as CloseModal } from "../../../assets/img/Join/closeModal.svg";
+import CloseModal from "../../../assets/img/Join/closeModal.svg";
 import ScrollPicker from "../../../components/DesignStuff/ScrollPicker/ScrollPicker";
 import styled from "styled-components";
 
@@ -28,24 +28,20 @@ export default function ScrollPickerBottomSheet<TId extends string | number, TOp
 					{title}
 				</Typography>
 				<Button onClick={onClose}>
-					<CloseModal />
+					<img src={CloseModal} />
 				</Button>
 			</Row>
-			<ScrollPicker<TId, TOption>
-				options={options}
-				onOptionSelect={onSelect}
-				height={220}
-			/>
+			<ScrollPicker<TId, TOption> options={options} onOptionSelect={onSelect} height={220} />
 		</BottomSheet>
 	);
 }
 
 const Button = styled.button`
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: transparent;
 `;

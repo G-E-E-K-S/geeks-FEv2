@@ -30,7 +30,7 @@ const Title = styled.div`
 const BottomMenu = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 2.38vh; 20px 0px 20px;
+  padding: 2.38vh 20px 0px 20px;
   height: 148px;
   border-top: 1px solid #EFEFEF;
   background: #FFF;

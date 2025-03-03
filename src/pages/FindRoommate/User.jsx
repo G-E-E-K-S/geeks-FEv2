@@ -491,7 +491,7 @@ const User = () => {
 									src={
 										opponentUser?.photoName.length === 0
 											? BasicProfile
-											: process.env.REACT_APP_BUCKET_BASEURL + opponentUser?.photoName
+											: import.meta.env.VITE_APP_BUCKET_BASEURL + opponentUser?.photoName
 									}
 								/>
 								<c.Flex>

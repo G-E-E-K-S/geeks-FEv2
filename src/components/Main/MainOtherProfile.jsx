@@ -62,7 +62,7 @@ const MainOtherProfile = (props) => {
     <TotalProfile activeCheck={props.activeCheck} myProfile={props.myProfile} onClick={props.onClick} marginBottom={props.marginBottom}>
       <c.SpaceBetween>
         <c.Flex>
-          <UserProfile src={props.userprofile?.length === 0 ? BasicProfile : process.env.REACT_APP_BUCKET_BASEURL + props.userprofile} />
+          <UserProfile src={props.userprofile?.length === 0 ? BasicProfile : import.meta.env.VITE_APP_BUCKET_BASEURL + props.userprofile} />
           <div>
             <c.Flex>
               <NickName>{props.nickName}</NickName>

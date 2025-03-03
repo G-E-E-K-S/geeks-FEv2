@@ -300,7 +300,7 @@ export default function EditProfile() {
 				<UploadProfile>
 					<ProfileImg
 						key={1}
-						src={profileImage ? photo : photo ? process.env.REACT_APP_BUCKET_BASEURL + photo : Profile}
+						src={profileImage ? photo : photo ? import.meta.env.VITE_APP_BUCKET_BASEURL + photo : Profile}
 						isProfile={!!photo}
 					/>
 					<HiddenFileInput type="file" accept="image/*" onChange={handleFile} />

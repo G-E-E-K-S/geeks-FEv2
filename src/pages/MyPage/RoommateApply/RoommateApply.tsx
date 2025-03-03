@@ -310,7 +310,8 @@ export default function RoommateApply() {
 													<S.ProfileImg
 														src={
 															userData.image
-																? process.env.REACT_APP_BUCKET_BASEURL + userData.image
+																? import.meta.env.VITE_APP_BUCKET_BASEURL +
+																  userData.image
 																: BasicrProfile
 														}
 													/>

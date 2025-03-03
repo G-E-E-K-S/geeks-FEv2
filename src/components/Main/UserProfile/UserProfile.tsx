@@ -62,7 +62,7 @@ export default function UserProfile({
 		>
 			<Row horizonAlign="distribute">
 				<Row gap={14}>
-					<S.UserProfile src={image ? process.env.REACT_APP_BUCKET_BASEURL + image : BasicProfile} />
+					<S.UserProfile src={image ? import.meta.env.VITE_APP_BUCKET_BASEURL + image : BasicProfile} />
 					<Column gap={6}>
 						<Row horizonAlign="center" verticalAlign="center">
 							<Typography color="Gray800" typoSize="T3_semibold">

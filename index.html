@@ -2,12 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- CRA -> Vite로 변경될 때 %PUBLIC_URL%불필요함 -->
+    <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
     <link rel="manifest" href="./manifest.json" crossorigin="anonymous"/>
     <link rel="apple-icon" href="icons/apple-icon-144x144.png"/>
-    <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"></meta>
-    <meta name="apple-mobile-web-app-capable" content="yes"></meta>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"></meta>
+    <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
     <meta name="theme-color" content="#fff"/>
@@ -128,7 +129,7 @@
     </script>
     <script src="%PUBLIC_URL%/config.js"></script> -->
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root">
-    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
   </body>
 </html>
