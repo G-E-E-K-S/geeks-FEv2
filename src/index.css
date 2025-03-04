@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css");
+
 @font-face {
 	font-family: "Pretendard-Regular";
 	src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
@@ -5,7 +7,6 @@
 	font-style: normal;
 	font-size: 16px;
 }
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css");
 body {
 	margin: 0;
 	font-family: "Pretendard", sans-serif;
