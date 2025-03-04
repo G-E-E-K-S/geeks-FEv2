@@ -129,7 +129,7 @@ export default function Home() {
 	const { data: weekData, isLoading: isCalendarLoading } = useWeekSchedules();
 	if (isCalendarLoading) return <Loading />;
 	const scheduleData = weekData?.data || [];
-	const todayScheduleDatas = scheduleData[currentDate.day()].schedules;
+	const todayScheduleDatas = scheduleData[currentDate.day()]?.schedules || [];
 
 	const isVisited = localStorage.getItem("vap");
 

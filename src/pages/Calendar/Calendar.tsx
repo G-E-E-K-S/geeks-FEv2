@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import * as c from "../../components/Common/CommonStyle";
@@ -18,6 +18,8 @@ import Loading from "../Loading";
 
 import CloseModal from "../../assets/img/Join/closeModal.svg";
 import AddIcon from ".././../assets/img/Calendar/AddIcon.svg";
+import BlurImg from "../../assets/img/Roommate/blurImg.svg";
+import * as S from "../FindRoommate/FindRoommate/style";
 
 export default function Calendar() {
 	let navigate = useNavigate();
@@ -42,7 +44,19 @@ export default function Calendar() {
 		? scheduleData[selectedDate.split(".")[2]]?.schedules
 		: scheduleData[currentDate.format("YYYY.M.D").split(".")[2]]?.schedules;
 
-	return (
+	return data?.data === null ? (
+		<>
+			<S.BlurIcon src={BlurImg} />
+			<S.EnrollLifeStyle>
+				<Typography typoSize={"B1_semibold"} color={"Gray800"} textAlign="center">
+					{"룸메이트를 맺고\n일정 공유 캘린더를 사용해보세요!"}
+				</Typography>
+				<S.EnroolLifeStyleBtn
+					onClick={() => navigate("/roommate")}
+				>{`룸메이트 찾기`}</S.EnroolLifeStyleBtn>
+			</S.EnrollLifeStyle>
+		</>
+	) : (
 		<c.Totalframe>
 			<c.ScreenComponent navigation={true}>
 				<c.SubScreen>
@@ -73,35 +87,35 @@ export default function Calendar() {
 					</ScheduleAddButton>
 				</c.SubScreen>
 			</c.ScreenComponent>
-		</c.Totalframe>
-	);
+		</c.Totalframe>)
+		;
 }
 
 const Line = styled.div`
-	height: 1px;
-	background-color: ${theme.Gray100};
-	margin-bottom: 16px;
+    height: 1px;
+    background-color: ${theme.Gray100};
+    margin-bottom: 16px;
 `;
 
 const Button = styled.button`
-	border: none;
-	cursor: pointer;
-	padding: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
 `;
 
 const ScheduleAddButton = styled(Button)`
-	z-index: 10;
-	position: fixed;
-	right: 20px;
-	bottom: calc(11.84vh + 20px);
-	border: 1px solid ${theme.Gray300};
-	box-shadow: 2px 2px 8px 0 #00000014;
-	border-radius: 12px;
-	padding: 14px 20px;
-	gap: 8px;
-	background-color: ${theme.White};
+    z-index: 10;
+    position: fixed;
+    right: 20px;
+    bottom: calc(11.84vh + 20px);
+    border: 1px solid ${theme.Gray300};
+    box-shadow: 2px 2px 8px 0 #00000014;
+    border-radius: 12px;
+    padding: 14px 20px;
+    gap: 8px;
+    background-color: ${theme.White};
 `;
