@@ -1,14 +1,17 @@
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import Row from "../../../components/Common/Layouts/Row";
 import Typography from "../../../components/Common/Layouts/Typography";
 import { theme } from "../../../styles/theme";
-import { useNavigate, useParams } from "react-router-dom";
 import { Schedule } from "../../Calendar/utils/types";
 import { useScheduleStore } from "../../../store/scheduleStore";
+import { useDeleteCalendar } from "../hooks/useDeleteCalendar";
 
 import BackIcon from "../.././../assets/img/Calendar/BackIcon.svg";
 import EditIcon from "../.././../assets/img/Calendar/EditIcon.svg";
+import TrashIcon from "../../../assets/img/Calendar/TrashIcon.svg";
+
 interface ScheduleHeaderProps {
 	pathName: string;
 	isActive?: boolean;
@@ -20,6 +23,8 @@ export default function ScheduleHeader({ pathName, isActive, onClick }: Schedule
 	const navigate = useNavigate();
 	const { scheduleId } = useParams<{ scheduleId: string }>();
 	const { currentSchedule, setCurrentSchedule } = useScheduleStore();
+
+	const deleteCalendar = useDeleteCalendar();
 
 	const getTitle = () => {
 		if (pathName === `/schedule/${scheduleId}/modify`) {
@@ -44,6 +49,13 @@ export default function ScheduleHeader({ pathName, isActive, onClick }: Schedule
 		navigate(-1);
 	};
 
+	const handleTrashClick = async () => {
+		if (!scheduleId) return;
+		const response = await deleteCalendar(scheduleId);
+		console.log(response);
+		navigate("/calendar");
+	};
+
 	return (
 		<ScheduleHeaderWrapper>
 			<Row gap={8} verticalAlign="center">
@@ -61,40 +73,45 @@ export default function ScheduleHeader({ pathName, isActive, onClick }: Schedule
 				</CompleteButton>
 			)}
 			{pathName === `/schedule/${scheduleId}` && (
-				<Button onClick={handleEditClick}>
-					<img src={EditIcon} />
-				</Button>
+				<Row gap={16}>
+					<Button onClick={handleEditClick}>
+						<img src={EditIcon} />
+					</Button>
+					<Button onClick={handleTrashClick}>
+						<img src={TrashIcon} />
+					</Button>
+				</Row>
 			)}
 		</ScheduleHeaderWrapper>
 	);
 }
 
 const ScheduleHeaderWrapper = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 16px;
-	height: 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    height: 52px;
 `;
 
 const Button = styled.button`
-	border: none;
-	cursor: pointer;
-	padding: 0;
-	display: flex;
-	background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    background-color: transparent;
 `;
 
 const CompleteButton = styled(Button)<{ $isActive: boolean }>`
-	border: none;
-	cursor: pointer;
-	padding: 8px 12px;
-	border-radius: 8px;
-	display: flex;
-	color: ${({ $isActive }) => ($isActive ? theme.Gray800 : theme.Gray400)};
-	background-color: ${({ $isActive }) => ($isActive ? theme.Yellow500 : theme.Gray50)};
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    color: ${({ $isActive }) => ($isActive ? theme.Gray800 : theme.Gray400)};
+    background-color: ${({ $isActive }) => ($isActive ? theme.Yellow500 : theme.Gray50)};
 
-	&:active {
-		background-color: ${({ $isActive }) => ($isActive ? theme.Yellow600 : theme.Gray50)};
-	}
+    &:active {
+        background-color: ${({ $isActive }) => ($isActive ? theme.Yellow600 : theme.Gray50)};
+    }
 `;
