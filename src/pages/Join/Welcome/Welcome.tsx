@@ -20,6 +20,7 @@ export default function Welcome() {
 	const [showPopup, setShowPopup] = useState(false);
 	const location = useLocation();
 	const [popupMessage, setPopupMessage] = useState("");
+	const [isInstalled, setIsInstalled] = useState(window.matchMedia("(display-mode: standalone)").matches);
 	//@ts-ignore
 	const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
 
@@ -73,7 +74,10 @@ export default function Welcome() {
 	};
 
 	useEffect(() => {
-		window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+		const checkStandaloneMode = () => {
+			setIsInstalled(window.matchMedia("(display-mode: standalone)").matches);
+		};
+		window.addEventListener("visibilitychange", checkStandaloneMode);
 		setPopupMessage(location.state?.prev);
 		setShowPopup(location.state?.prev === "logout" || location.state?.prev === "withdrawal" ? true : false);
 
@@ -94,7 +98,7 @@ export default function Welcome() {
 		fetchAutoLogin();
 
 		return () => {
-			window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+			window.removeEventListener("visibilitychange", checkStandaloneMode);
 		};
 	}, []);
 
@@ -119,7 +123,7 @@ export default function Welcome() {
 				<Button text="이메일 회원가입" isNextPage={true} onClick={() => navigate("/agree")} />
 				<S.LoginButton onClick={() => navigate("/login")}>로그인</S.LoginButton>
 				{/* {deferredPrompt && <button onClick={handleInstall}>앱 설치</button>} */}
-				{(!!deferredPrompt || updateState || !isStandalone) && (
+				{!isInstalled && (deferredPrompt || updateState || /iPad|iPhone|iPod/.test(navigator.userAgent)) && (
 					<Modal padding={`40px 24px 28px 24px`} isWelcome={true}>
 						<Column horizonAlign="center" verticalAlign="center" gap={12}>
 							<S.LogoImg src={Logo} />
@@ -136,7 +140,7 @@ export default function Welcome() {
 						{navigator.userAgent.toLowerCase().indexOf("android") > -1 ? (
 							<S.DownLoadApp onClick={() => handleInstall()}>{`앱 내려받기`}</S.DownLoadApp>
 						) : (
-							// @ts-ignore
+							//@ts-ignore
 							<pwa-install
 								installbuttontext={"앱 내려받기"}
 								iosinstallinfotext={'공유 버튼 클릭 후 "홈 화면에 추가" 를 눌러주세요!'}
