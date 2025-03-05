@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import * as c from "../../components/Common/CommonStyle";
 import CalendarGrid from "./components/CalendarGrid";
@@ -15,6 +15,7 @@ import ScrollPicker from "../../components/DesignStuff/ScrollPicker/ScrollPicker
 import { MONTHS } from "./utils/const";
 import { useCalendarSchedules } from "./hooks/useCalendarSchedules";
 import Loading from "../Loading";
+import Popup from "../../components/Common/Popup";
 
 import CloseModal from "../../assets/img/Join/closeModal.svg";
 import AddIcon from ".././../assets/img/Calendar/AddIcon.svg";
@@ -26,6 +27,8 @@ export default function Calendar() {
 
 	const { currentDate, selectedDate, setCurrentDate } = useCalendarStore();
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isDeletePopup, setIsDeletePopup] = useState(false);
+
 	const toggleIsOpen = () => {
 		setIsOpen((prevState) => !prevState);
 	};
@@ -87,8 +90,14 @@ export default function Calendar() {
 					</ScheduleAddButton>
 				</c.SubScreen>
 			</c.ScreenComponent>
-		</c.Totalframe>)
-		;
+			<Popup
+				message={`일정이 삭제됐어요`}
+				setShowPopup={setIsDeletePopup}
+				isShowPopup={isDeletePopup}
+				bottom={`18.72`}
+			/>
+		</c.Totalframe>
+	);
 }
 
 const Line = styled.div`

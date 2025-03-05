@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import API from "../../../axios/BaseUrl";
 import * as S from "./style";
@@ -100,6 +100,19 @@ export default function Home() {
 	// 	fetchEmailPage();
 	// 	const isVisited = localStorage.getItem("vap"); //VisitedAlarmPage
 
+	const { mutate: homeComingMutate } = useMutation({
+		mutationFn: async () => {
+			return await API.post(`/api/v1/roommate/homecoming`);
+		},
+		onSuccess: (data) => {
+			console.log("Success: ", data);
+			if (data?.data === "success") setIsSendMessgae(true);
+		},
+		onError: (error) => {
+			console.error("Error: ", error);
+		}
+	});
+
 	const { data: top3UserData, isLoading } = useQuery({
 		queryKey: ["getTop3User"],
 		queryFn: async () => {
@@ -112,7 +125,7 @@ export default function Home() {
 	const { data: mydata } = useQuery({
 		queryKey: ["myData"],
 		queryFn: async () => {
-			const response = await API.get(`/api/v1/user/profile`);
+			const response = await API.get(`/api/v1/user/mypage`);
 			return response.data.data;
 		},
 		retry: 2
@@ -130,6 +143,11 @@ export default function Home() {
 	if (isCalendarLoading) return <Loading />;
 	const scheduleData = weekData?.data || [];
 	const todayScheduleDatas = scheduleData[currentDate.day()]?.schedules || [];
+
+	// 귀가 알림 onClick
+	const handleHomeComing = () => {
+		homeComingMutate();
+	};
 
 	const isVisited = localStorage.getItem("vap");
 
@@ -170,7 +188,7 @@ export default function Home() {
 							</Column>
 						))}
 					</Row>
-					{mydata.myRoommate && (
+					{mydata?.myRoommate && (
 						<ButtonBox backgroundColor="YellowGray100">
 							<Row horizonAlign="distribute">
 								<Column gap={4}>
@@ -184,7 +202,7 @@ export default function Home() {
 								<Tooltip message="누르면 알림이 전송돼요" isVisible={isVisited !== "true"}>
 									<img
 										src={SendAlarm}
-										onClick={() => setIsSendMessgae(true)}
+										onClick={handleHomeComing}
 										alt="sendAlarmToRoommate"
 									/>
 								</Tooltip>

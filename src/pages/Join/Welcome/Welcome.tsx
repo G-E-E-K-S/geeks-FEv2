@@ -15,6 +15,7 @@ import Column from "../../../components/Common/Layouts/Column";
 import "@pwabuilder/pwainstall";
 import Button from "../../../components/DesignStuff/Button/Button";
 import { useGetToken } from "../../../store/useGetToken";
+import { replace } from "lodash";
 
 export default function Welcome() {
 	const [showPopup, setShowPopup] = useState(false);
@@ -86,13 +87,12 @@ export default function Welcome() {
 				const res = await API.get("/api/v1/user/validate");
 				if (res.data.success) {
 					// localStorage.setItem("token", res.data.data);
-					navigate("/home");
+					navigate("/home", { replace: true });
 				}
 			} catch (error) {
 				console.error(error);
 			}
-
-			window.history.replaceState({ prev: "" }, "", "/welcome");
+			// window.history.replaceState({ prev: "" }, "", "/welcome");
 		}
 
 		fetchAutoLogin();
