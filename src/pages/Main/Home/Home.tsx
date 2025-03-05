@@ -105,8 +105,8 @@ export default function Home() {
 			return await API.post(`/api/v1/roommate/homecoming`);
 		},
 		onSuccess: (data) => {
-			console.log("Success: ", data);
-			if (data?.data === "success") setIsSendMessgae(true);
+			console.log("Success: ", data?.data);
+			if (data?.data.data === "success") setIsSendMessgae(true);
 		},
 		onError: (error) => {
 			console.error("Error: ", error);
