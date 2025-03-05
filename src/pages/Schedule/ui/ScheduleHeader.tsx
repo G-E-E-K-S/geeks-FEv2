@@ -24,8 +24,6 @@ export default function ScheduleHeader({ pathName, isActive, onClick }: Schedule
 	const { scheduleId } = useParams<{ scheduleId: string }>();
 	const { currentSchedule, setCurrentSchedule } = useScheduleStore();
 
-	const deleteCalendar = useDeleteCalendar();
-
 	const getTitle = () => {
 		if (pathName === `/schedule/${scheduleId}/modify`) {
 			return "일정 수정";
@@ -49,12 +47,7 @@ export default function ScheduleHeader({ pathName, isActive, onClick }: Schedule
 		navigate(-1);
 	};
 
-	const handleTrashClick = async () => {
-		if (!scheduleId) return;
-		const response = await deleteCalendar(scheduleId);
-		console.log(response);
-		navigate("/calendar");
-	};
+	const isMySchedule = currentSchedule?.writerStatus;
 
 	return (
 		<ScheduleHeaderWrapper>
@@ -72,12 +65,12 @@ export default function ScheduleHeader({ pathName, isActive, onClick }: Schedule
 					<Typography typoSize="T4_semibold">완료</Typography>
 				</CompleteButton>
 			)}
-			{pathName === `/schedule/${scheduleId}` && (
+			{pathName === `/schedule/${scheduleId}` && isMySchedule && (
 				<Row gap={16}>
 					<Button onClick={handleEditClick}>
 						<img src={EditIcon} />
 					</Button>
-					<Button onClick={handleTrashClick}>
+					<Button onClick={onClick}>
 						<img src={TrashIcon} />
 					</Button>
 				</Row>
