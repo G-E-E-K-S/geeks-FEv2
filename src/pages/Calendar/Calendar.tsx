@@ -21,21 +21,28 @@ import CloseModal from "../../assets/img/Join/closeModal.svg";
 import AddIcon from ".././../assets/img/Calendar/AddIcon.svg";
 import BlurImg from "../../assets/img/Roommate/blurImg.svg";
 import * as S from "../FindRoommate/FindRoommate/style";
+import { useScheduleStore } from "../../store/scheduleStore";
 
 export default function Calendar() {
 	let navigate = useNavigate();
 
 	const { currentDate, selectedDate, setCurrentDate } = useCalendarStore();
+	const { setCurrentSchedule } = useScheduleStore();
+
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isDeletePopup, setIsDeletePopup] = useState(false);
 
-	const toggleIsOpen = () => {
-		setIsOpen((prevState) => !prevState);
-	};
+	useEffect(() => {
+		setCurrentSchedule(null);
+	}, []);
 
 	const { data, isLoading } = useCalendarSchedules(currentDate.year(), currentDate.month() + 1);
 	if (isLoading) return <Loading />;
 	const scheduleData = data?.data || [];
+
+	const toggleIsOpen = () => {
+		setIsOpen((prevState) => !prevState);
+	};
 
 	const handleMonthSelect = (month: number) => {
 		const newDate = currentDate.month(month - 1);
