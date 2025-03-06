@@ -1,11 +1,8 @@
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
-
 import * as S from "./style";
 import Typography from "../../components/Common/Layouts/Typography";
 
 import MyPage from "../../assets/img/Navigation/myPage.svg?react";
-import CalendarIcon from "../../assets/img/Navigation/myPage.svg?react";
+import CalendarIcon from "../../assets/img/Navigation/CalendarIcon.svg?react";
 import Home from "../../assets/img/Navigation/home.svg?react";
 
 export default function NavigationBar() {

@@ -14,7 +14,7 @@ import Phone from "../../../assets/img/Home/phone.svg";
 export default function LiveRule() {
 	return (
 		<>
-			<CS.Header backgroundColor="Background">
+			<CS.Header backgroundColor="White">
 				<ColHeaderMenu>
 					<Typography
 						typoSize="H3"

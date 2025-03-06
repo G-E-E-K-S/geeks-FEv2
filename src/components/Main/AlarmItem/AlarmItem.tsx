@@ -22,19 +22,19 @@ export default function AlarmItem({ alarmType }: AlarmType) {
 
 	return (
 		<S.AlarmWrapper gap={12}>
-			<img src={alarmIcons[alarmType]} />
+			{/* <img src={alarmIcons[alarmType]} /> */}
 			<Column gap={4} width="w-full">
 				<Row horizonAlign="distribute" width="w-full">
-					<Typography typoSize="T3_semibold" color="Gray800">
+					{/* <Typography typoSize="T3_semibold" color="Gray800">
 						{"룸메이트 신청 수락"}
 					</Typography>
 					<Typography typoSize="B3_medium" color="Gray400">
 						{"2분전"}
-					</Typography>
+					</Typography> */}
 				</Row>
-				<Typography typoSize="B2_medium" color="Gray600">
+				{/* <Typography typoSize="B2_medium" color="Gray600">
 					{"‘토윤’ 님이 룸메이트 신청을 수락했어요."}
-				</Typography>
+				</Typography> */}
 			</Column>
 		</S.AlarmWrapper>
 	);

@@ -71,9 +71,10 @@ export const router = createBrowserRouter([
 					{ path: "/inputcode", element: <InputCode /> },
 					{ path: "/password", element: <Password /> },
 					{ path: "/nickname", element: <NickName /> },
+					{ path: "/questiontext", element: <QuesText /> },
 					{ path: "/major", element: <Major /> },
-					{ path: "/finalpage", element: <FindPassword /> },
-					{ path: "/findPassword", element: <InputEmail /> },
+					{ path: "/finalpage", element: <FinalPage /> },
+					{ path: "/findPassword", element: <FindPassword /> },
 					{ path: "/alreadyregist", element: <AlreadyRegist /> },
 					{ path: "/gender", element: <Gender /> },
 					{ path: "/dormitory", element: <Dormitory /> },
@@ -90,7 +91,7 @@ export const router = createBrowserRouter([
 					{ path: "/notification", element: <Notification /> },
 					{ path: "/changepassword", element: <ChangePassword /> },
 					{ path: "/notice/details/:noticenum", element: <NoticeDetail /> },
-					{ path: "/finishroommate", element: <FindRoommate /> },
+					{ path: "/finishroommate", element: <FinishRoommate /> },
 					{ path: "/detail/details/:matchingId/:opponentId", element: <CompareUserInfo /> },
 					{ path: "/roommatesendtext", element: <RoommateSendText /> },
 					{ path: "/chat/chatroom/:roomId", element: <ChatRoom /> },
@@ -107,7 +108,8 @@ export const router = createBrowserRouter([
 				children: [
 					{ path: "/home", element: <Home /> },
 					{ path: "/calendar", element: <Calendar /> },
-					{ path: "/mypage", element: <MyPage /> }
+					{ path: "/mypage", element: <MyPage /> },
+					{ path: "/roommate", element: <FindRoommate /> }
 				]
 			}
 		]
