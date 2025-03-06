@@ -60,43 +60,41 @@ export default function Calendar() {
 			</S.EnrollLifeStyle>
 		</>
 	) : (
-		<c.Totalframe>
-			<c.ScreenComponent navigation={true}>
-				<c.SubScreen>
-					<CalendarHeader type="calendar" toggleIsOpen={toggleIsOpen} />
-					<CalendarGrid type="calendar" scheduleData={scheduleData} />
-					<Line />
-					<TodaySchedules todayScheduleDatas={todayScheduleDatas} />
-					<BottomSheet isOpen={isOpen} height="45.73vh">
-						<Row horizonAlign="distribute" style={{ marginBottom: "1.25rem" }}>
-							<Typography color="Gray800" typoSize="T2_bold">
-								{"월 선택"}
-							</Typography>
-							<Button onClick={toggleIsOpen}>
-								<img src={CloseModal} />
-							</Button>
-						</Row>
-						<ScrollPicker<number, string>
-							options={MONTHS}
-							onOptionSelect={handleMonthSelect}
-							height={220}
-						/>
-					</BottomSheet>
-					<ScheduleAddButton onClick={() => navigate("/schedule/add")}>
-						<img src={AddIcon} style={{ width: "20px", height: "20px" }} />
-						<Typography typoSize="T4_semibold" color="Gray700">
-							일정 추가
+		<>
+			<c.SubScreen>
+				<CalendarHeader type="calendar" toggleIsOpen={toggleIsOpen} />
+				<CalendarGrid type="calendar" scheduleData={scheduleData} />
+				<Line />
+				<TodaySchedules todayScheduleDatas={todayScheduleDatas} />
+				<BottomSheet isOpen={isOpen} height="45.73vh">
+					<Row horizonAlign="distribute" style={{ marginBottom: "1.25rem" }}>
+						<Typography color="Gray800" typoSize="T2_bold">
+							{"월 선택"}
 						</Typography>
-					</ScheduleAddButton>
-				</c.SubScreen>
-			</c.ScreenComponent>
+						<Button onClick={toggleIsOpen}>
+							<img src={CloseModal} />
+						</Button>
+					</Row>
+					<ScrollPicker<number, string>
+						options={MONTHS}
+						onOptionSelect={handleMonthSelect}
+						height={220}
+					/>
+				</BottomSheet>
+				<ScheduleAddButton onClick={() => navigate("/schedule/add")}>
+					<img src={AddIcon} style={{ width: "20px", height: "20px" }} />
+					<Typography typoSize="T4_semibold" color="Gray700">
+						일정 추가
+					</Typography>
+				</ScheduleAddButton>
+			</c.SubScreen>
 			<Popup
 				message={`일정이 삭제됐어요`}
 				setShowPopup={setIsDeletePopup}
 				isShowPopup={isDeletePopup}
 				bottom={`18.72`}
 			/>
-		</c.Totalframe>
+		</>
 	);
 }
 

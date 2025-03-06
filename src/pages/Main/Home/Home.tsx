@@ -221,8 +221,8 @@ export default function Home() {
 					<Row horizonAlign="distribute">
 						<Typography typoSize="H3" color="Gray800" style={{ marginBottom: "32px" }}>
 							{isExist
-								? `${mydata.nickname} 님과 딱 맞는\n룸메이트를 찾았어요`
-								: `${mydata.nickname} 님과 딱 맞는\n룸메이트를 찾아드려요`}
+								? `${mydata?.nickname} 님과 딱 맞는\n룸메이트를 찾았어요`
+								: `${mydata?.nickname} 님과 딱 맞는\n룸메이트를 찾아드려요`}
 						</Typography>
 						<img src={ForwardArrow} style={{ width: "20px", height: "20px" }} />
 					</Row>
