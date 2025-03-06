@@ -51,64 +51,62 @@ const Major = () => {
 	}, [major, studentNum]);
 
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor={isBottomSheetOpen || isDepartmentOpen ? " rgba(0, 0, 0, 0.5)" : "White"}>
-					<HeaderMenu />
-				</CS.Header>
-				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
-					{`전공/학과와\n학번을 알려주세요`}
+		<>
+			<CS.Header backgroundColor={isBottomSheetOpen || isDepartmentOpen ? " rgba(0, 0, 0, 0.5)" : "White"}>
+				<HeaderMenu />
+			</CS.Header>
+			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+				{`전공/학과와\n학번을 알려주세요`}
+			</Typography>
+			<S.MajorTotal onClick={() => handleBottomSheet()}>
+				<Typography typoSize="T1" color={major ? "Gray800" : "Gray400"}>
+					{major || "학과/전공"}
 				</Typography>
-				<S.MajorTotal onClick={() => handleBottomSheet()}>
-					<Typography typoSize="T1" color={major ? "Gray800" : "Gray400"}>
-						{major || "학과/전공"}
-					</Typography>
-					<img src={UnderArrow} />
-				</S.MajorTotal>
+				<img src={UnderArrow} />
+			</S.MajorTotal>
 
-				<S.StudentNumTotal onClick={() => openStudentNumBottomSheet()}>
-					<Typography typoSize="T1" color={studentNum ? "Gray800" : "Gray400"}>
-						{studentNum || "학번"}
-					</Typography>
-					<img src={UnderArrow} />
-				</S.StudentNumTotal>
-				<BottomSheet isOpen={isStudentNumOpen} height={"390px"}>
-					<CS.SpaceBetween>
-						<S.MajorBtsTxt>{`학번`}</S.MajorBtsTxt>
-						<S.CloseImg src={Close} onClick={() => openStudentNumBottomSheet()} />
-					</CS.SpaceBetween>
-					<ScrollPicker options={STUDENT_NUM} height={220} onOptionSelect={handleStudentNum} />
-				</BottomSheet>
+			<S.StudentNumTotal onClick={() => openStudentNumBottomSheet()}>
+				<Typography typoSize="T1" color={studentNum ? "Gray800" : "Gray400"}>
+					{studentNum || "학번"}
+				</Typography>
+				<img src={UnderArrow} />
+			</S.StudentNumTotal>
+			<BottomSheet isOpen={isStudentNumOpen} height={"390px"}>
+				<CS.SpaceBetween>
+					<S.MajorBtsTxt>{`학번`}</S.MajorBtsTxt>
+					<S.CloseImg src={Close} onClick={() => openStudentNumBottomSheet()} />
+				</CS.SpaceBetween>
+				<ScrollPicker options={STUDENT_NUM} height={220} onOptionSelect={handleStudentNum} />
+			</BottomSheet>
 
-				<BottomSheet isOpen={isBottomSheetOpen} height={"487px"}>
-					<CS.SpaceBetween>
-						<S.MajorBtsTxt>{`학과/전공`}</S.MajorBtsTxt>
-						<S.CloseImg src={Close} onClick={() => handleBottomSheet()} />
-					</CS.SpaceBetween>
-					{DepartmentList.departmentList.map((department) => (
-						<Department
-							department={department}
-							onClick={() => openBottomSheet(department)}
-							isDepartment={true}
-						/>
+			<BottomSheet isOpen={isBottomSheetOpen} height={"487px"}>
+				<CS.SpaceBetween>
+					<S.MajorBtsTxt>{`학과/전공`}</S.MajorBtsTxt>
+					<S.CloseImg src={Close} onClick={() => handleBottomSheet()} />
+				</CS.SpaceBetween>
+				{DepartmentList.departmentList.map((department) => (
+					<Department
+						department={department}
+						onClick={() => openBottomSheet(department)}
+						isDepartment={true}
+					/>
+				))}
+			</BottomSheet>
+			{isDepartmentOpen && (
+				<BottomSheet height={`630px`} isOpen={isDepartmentOpen}>
+					<Row horizonAlign="distribute">
+						<Typography typoSize="T2_bold" color="Gray800">
+							{"학과/전공"}
+						</Typography>
+						<S.CloseImg src={Close} onClick={() => setIsDepartmentOpen(!isDepartmentOpen)} />
+					</Row>
+					{DepartmentList.departmentMajors[department].map((major: string) => (
+						<Department department={major} onClick={() => handleMajor(major)} />
 					))}
 				</BottomSheet>
-				{isDepartmentOpen && (
-					<BottomSheet height={`630px`} isOpen={isDepartmentOpen}>
-						<Row horizonAlign="distribute">
-							<Typography typoSize="T2_bold" color="Gray800">
-								{"학과/전공"}
-							</Typography>
-							<S.CloseImg src={Close} onClick={() => setIsDepartmentOpen(!isDepartmentOpen)} />
-						</Row>
-						{DepartmentList.departmentMajors[department].map((major: string) => (
-							<Department department={major} onClick={() => handleMajor(major)} />
-						))}
-					</BottomSheet>
-				)}
-				<Button text={"다음"} isNextPage={isNextPage} onClick={() => navigate("/gender")} />
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+			)}
+			<Button text={"다음"} isNextPage={isNextPage} onClick={() => navigate("/gender")} />
+		</>
 	);
 };
 

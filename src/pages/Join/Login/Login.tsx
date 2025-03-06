@@ -63,46 +63,44 @@ const InputEmail = () => {
 		setShowPwd(!showPwd);
 	};
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<HeaderMenu />
-				</CS.Header>
-				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
-					{`학교 이메일 주소로\n로그인 해주세요`}
-				</Typography>
-				<Column gap={20}>
-					<TextFields
-						isError={isEmailError}
-						onChange={(val) => setEmail(val)}
-						fixedText={"@sangmyung.kr"}
-						placeholder={"학번"}
-						inputType="number"
-						maxLength={9}
-					/>
-					<TextFields
-						isError={isPwdError}
-						onChange={(val) => setPassword(val)}
-						placeholder={"비밀번호"}
-						inputType={showPwd ? "text" : "password"}
-						maxLength={15}
-						icon={showPwd ? ShowPwd : NoShowPwd}
-						onClick={handlePwd}
-					/>
-					<Row verticalAlign="center" gap={4} onClick={() => navigate("/findPassword")}>
-						<Typography typoSize="B2_medium" color="Gray600">{`비밀번호를 잊어버리셨나요?`}</Typography>
-						<ForgetPwdIcon src={ForgetPwdImg} />
-					</Row>
-				</Column>
-				<ErrorPopup
-					message={`위 이메일로 가입된 정보가 없어요`}
-					bottom={`38.98`}
-					setShowPopup={setIsErrorPopUp}
-					isShowPopup={isErrorPopup}
+		<>
+			<CS.Header backgroundColor="White">
+				<HeaderMenu />
+			</CS.Header>
+			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+				{`학교 이메일 주소로\n로그인 해주세요`}
+			</Typography>
+			<Column gap={20}>
+				<TextFields
+					isError={isEmailError}
+					onChange={(val) => setEmail(val)}
+					fixedText={"@sangmyung.kr"}
+					placeholder={"학번"}
+					inputType="number"
+					maxLength={9}
 				/>
-				<Button text={"로그인"} isNextPage={isNextPage} onClick={() => handleEmail()} />
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+				<TextFields
+					isError={isPwdError}
+					onChange={(val) => setPassword(val)}
+					placeholder={"비밀번호"}
+					inputType={showPwd ? "text" : "password"}
+					maxLength={15}
+					icon={showPwd ? ShowPwd : NoShowPwd}
+					onClick={handlePwd}
+				/>
+				<Row verticalAlign="center" gap={4} onClick={() => navigate("/findPassword")}>
+					<Typography typoSize="B2_medium" color="Gray600">{`비밀번호를 잊어버리셨나요?`}</Typography>
+					<ForgetPwdIcon src={ForgetPwdImg} />
+				</Row>
+			</Column>
+			<ErrorPopup
+				message={`위 이메일로 가입된 정보가 없어요`}
+				bottom={`38.98`}
+				setShowPopup={setIsErrorPopUp}
+				isShowPopup={isErrorPopup}
+			/>
+			<Button text={"로그인"} isNextPage={isNextPage} onClick={() => handleEmail()} />
+		</>
 	);
 };
 

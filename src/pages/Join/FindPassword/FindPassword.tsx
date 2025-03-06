@@ -41,7 +41,7 @@ export default function FindPassword() {
 	const [email, setEmail] = useState("");
 	const navigate = useNavigate();
 
-    //TODO API연결
+	//TODO API연결
 	const handleEmail = () => {
 		//useQuery쓸 예정
 		// async function fetchLogin() {
@@ -70,17 +70,15 @@ export default function FindPassword() {
 	}
 
 	return (
-		<c.Totalframe>
-			<c.ScreenComponent>
-				<HeaderMenu />
-				<Typography
-					typoSize="H3"
-					color="Gray800"
-					style={{ marginTop: "32px", marginBottom: "6.27vh" }}
-				>{`비밀번호를 찾아드릴게요\n\n기존에 가입하셨던\n이메일 주소를 입력해 주세요`}</Typography>
-				<TextFields fixedText={"@sangmyung.kr"} placeholder={"학번"} onChange={(value) => setEmail(value)} />
-				<Button onClick={() => handleEmail()} isNextPage={isNextPage} text={"메일 받기"}></Button>
-			</c.ScreenComponent>
-		</c.Totalframe>
+		<>
+			<HeaderMenu />
+			<Typography
+				typoSize="H3"
+				color="Gray800"
+				style={{ marginTop: "32px", marginBottom: "6.27vh" }}
+			>{`비밀번호를 찾아드릴게요\n\n기존에 가입하셨던\n이메일 주소를 입력해 주세요`}</Typography>
+			<TextFields fixedText={"@sangmyung.kr"} placeholder={"학번"} onChange={(value) => setEmail(value)} />
+			<Button onClick={() => handleEmail()} isNextPage={isNextPage} text={"메일 받기"}></Button>
+		</>
 	);
 }

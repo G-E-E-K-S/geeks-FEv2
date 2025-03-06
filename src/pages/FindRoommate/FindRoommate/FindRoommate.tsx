@@ -6,7 +6,6 @@ import API from "../../../axios/BaseUrl";
 import * as S from "./style";
 import * as CS from "../../../components/Common/CommonStyle";
 import Condition from "../../../components/Roommate/Condition";
-import NavigationBar from "../../../components/Main/NavigationBar/NavigationBar";
 import basicProfile from "../../../assets/img/MyPage/basicProfile.svg";
 import BlurImg from "../../../assets/img/Roommate/blurImg.svg";
 import Loading from "../../Loading";
@@ -44,8 +43,8 @@ export default function FindRoommate() {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<CS.Totalframe background={`linear-gradient(180deg, #FFF 0%, #F7F7F7 71%)`}>
-			<CS.ScreenComponent navigation={true}>
+		<>
+			<>
 				<CS.Header backgroundColor={isOpen ? "linear-gradient(180deg, #FFF 0%, #F7F7F7 71%)" : "White"}>
 					<Header />
 				</CS.Header>
@@ -91,11 +90,10 @@ export default function FindRoommate() {
 						</S.EnrollLifeStyle>
 					</>
 				)}
-			</CS.ScreenComponent>
+			</>
 			<BottomSheet height={"84.83vh"} isOpen={isOpen}>
 				<ChoiceCondition onClick={() => setIsOpen(false)} />
 			</BottomSheet>
-			{!isOpen && <NavigationBar type={`rommate`} />}
-		</CS.Totalframe>
+		</>
 	);
 }

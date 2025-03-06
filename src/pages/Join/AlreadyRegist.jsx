@@ -65,17 +65,15 @@ const AlreadyRegist = () => {
 	const location = useLocation();
 
 	return (
-		<c.Totalframe>
-			<c.ScreenComponent>
-				<HeaderMenu />
-				<NoticeTitle>{`아래 이메일로\n이미 가입한 이력이 있어요`}</NoticeTitle>
-				{/* <EnrollDate>{`2023년 9월 23일 가입`}</EnrollDate> */}
-				<UserEmail>{location.state?.userEmail + "@sangmyung.kr"}</UserEmail>
-				<ForgetPWD>{`비밀번호를 잊어버리셨나요?`}</ForgetPWD>
-				<FindPWD onClick={() => navigate("/findPassword")}>{`비밀번호 찾기`}</FindPWD>
-				<JoinButton handleClick={() => navigate("/login")} isNextPage={true} btnName={`로그인하기`} />
-			</c.ScreenComponent>
-		</c.Totalframe>
+		<>
+			<HeaderMenu />
+			<NoticeTitle>{`아래 이메일로\n이미 가입한 이력이 있어요`}</NoticeTitle>
+			{/* <EnrollDate>{`2023년 9월 23일 가입`}</EnrollDate> */}
+			<UserEmail>{location.state?.userEmail + "@sangmyung.kr"}</UserEmail>
+			<ForgetPWD>{`비밀번호를 잊어버리셨나요?`}</ForgetPWD>
+			<FindPWD onClick={() => navigate("/findPassword")}>{`비밀번호 찾기`}</FindPWD>
+			<JoinButton handleClick={() => navigate("/login")} isNextPage={true} btnName={`로그인하기`} />
+		</>
 	);
 };
 

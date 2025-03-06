@@ -1,5 +1,5 @@
-declare module "*.jpg";
-declare module "*.png";
-declare module "*.jpeg";
-declare module "*.gif";
-declare module "*.svg";
+declare module "*.svg?react" {
+    import * as React from 'react';
+    const Component: React.FC<React.SVGProps<SVGSVGElement>>;
+    export default Component;
+}

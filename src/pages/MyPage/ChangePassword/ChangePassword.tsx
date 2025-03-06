@@ -56,94 +56,92 @@ export default function ChangePassword() {
 	}, [password]);
 
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<Header subtitle={`비밀번호 변경`} />
-				<Column gap={8} style={{ marginBottom: "24px" }}>
-					<Typography color="Gray600" typoSize="B2_medium">{`현재 비밀번호`}</Typography>
-					<TextFields
-						isError={false}
-						onChange={(val) => setPrevPassword(val)}
-						placeholder={"현재 비밀번호"}
-						inputType={prevPasswordState ? "text" : "password"}
-						maxLength={15}
-						icon={prevPasswordState ? ShowPwd : NoShowPwd}
-						onClick={() => setPrevPasswordState(!prevPasswordState)}
-					/>
-				</Column>
-				<Row gap={8} style={{ marginBottom: "1.42vh" }}>
-					{/* TODO API통신 후 한번 더 작업*/}
-					{prevPassword ? <img src={Check} /> : <img src={NoneCheck} />}
-					<Typography typoSize="B2_medium" color={prevPassword ? "Teal600" : "Gray700"}>
-						{"일치해요"}
+		<>
+			<Header subtitle={`비밀번호 변경`} />
+			<Column gap={8} style={{ marginBottom: "24px" }}>
+				<Typography color="Gray600" typoSize="B2_medium">{`현재 비밀번호`}</Typography>
+				<TextFields
+					isError={false}
+					onChange={(val) => setPrevPassword(val)}
+					placeholder={"현재 비밀번호"}
+					inputType={prevPasswordState ? "text" : "password"}
+					maxLength={15}
+					icon={prevPasswordState ? ShowPwd : NoShowPwd}
+					onClick={() => setPrevPasswordState(!prevPasswordState)}
+				/>
+			</Column>
+			<Row gap={8} style={{ marginBottom: "1.42vh" }}>
+				{/* TODO API통신 후 한번 더 작업*/}
+				{prevPassword ? <img src={Check} /> : <img src={NoneCheck} />}
+				<Typography typoSize="B2_medium" color={prevPassword ? "Teal600" : "Gray700"}>
+					{"일치해요"}
+				</Typography>
+			</Row>
+			{/* 새로운 비밀번호 입력 */}
+			<Column gap={8} style={{ marginBottom: "24px", marginTop: "48px" }}>
+				<Typography color="Gray600" typoSize="B2_medium">{`새로운 비밀번호`}</Typography>
+				<TextFields
+					isError={false}
+					onChange={(val) => setPassword(val)}
+					placeholder={"새로운 비밀번호"}
+					inputType={passwordState ? "text" : "password"}
+					maxLength={15}
+					icon={passwordState ? ShowPwd : NoShowPwd}
+					onClick={() => setPasswordState(!passwordState)}
+				/>
+			</Column>
+			{/* TODO map돌리면 깔끔해질듯 */}
+			<Column gap={8}>
+				<Row gap={8}>
+					{pwdValidate.pwdLen ? <img src={Check} /> : <img src={NoneCheck} />}
+					<Typography typoSize="B2_medium" color={pwdValidate.pwdLen ? "Teal600" : "Gray700"}>
+						{"8자 이상, 15자 이하로 설정해 주세요"}
 					</Typography>
 				</Row>
-				{/* 새로운 비밀번호 입력 */}
-				<Column gap={8} style={{ marginBottom: "24px", marginTop: "48px" }}>
-					<Typography color="Gray600" typoSize="B2_medium">{`새로운 비밀번호`}</Typography>
-					<TextFields
-						isError={false}
-						onChange={(val) => setPassword(val)}
-						placeholder={"새로운 비밀번호"}
-						inputType={passwordState ? "text" : "password"}
-						maxLength={15}
-						icon={passwordState ? ShowPwd : NoShowPwd}
-						onClick={() => setPasswordState(!passwordState)}
-					/>
-				</Column>
-				{/* TODO map돌리면 깔끔해질듯 */}
-				<Column gap={8}>
+				<Row gap={8}>
+					{pwdValidate.pwdSpecial ? <img src={Check} /> : <img src={NoneCheck} />}
+					<Typography typoSize="B2_medium" color={pwdValidate.pwdSpecial ? "Teal600" : "Gray700"}>
+						{"특수 문자를 사용해 주세요"}
+					</Typography>
+				</Row>
+				<Row gap={8}>
+					{pwdValidate.pwdSame ? <img src={Check} /> : <img src={NoneCheck} />}
+					<Typography typoSize="B2_medium" color={pwdValidate.pwdSame ? "Teal600" : "Gray700"}>
+						{"똑같은 문자가 4번 반복되면 안돼요"}
+					</Typography>
+				</Row>
+			</Column>
+			{pwdValidate.pwdLen && pwdValidate.pwdSame && pwdValidate.pwdSpecial && (
+				<>
+					<Column gap={8} style={{ marginTop: "40px", marginBottom: "24px" }}>
+						<Typography color="Gray600" typoSize="B2_medium">{`새로운 비밀번호 확인`}</Typography>
+						<TextFields
+							isError={false}
+							onChange={(val) => setRePassword(val)}
+							placeholder={"새로운 비밀번호"}
+							inputType={rePasswordState ? "text" : "password"}
+							maxLength={15}
+							icon={rePasswordState ? ShowPwd : NoShowPwd}
+							onClick={() => setRePasswordState(!rePasswordState)}
+						/>
+					</Column>
 					<Row gap={8}>
-						{pwdValidate.pwdLen ? <img src={Check} /> : <img src={NoneCheck} />}
-						<Typography typoSize="B2_medium" color={pwdValidate.pwdLen ? "Teal600" : "Gray700"}>
-							{"8자 이상, 15자 이하로 설정해 주세요"}
+						{password === rePassword ? <img src={Check} /> : <img src={NoneCheck} />}
+						<Typography typoSize="B2_medium" color={password === rePassword ? "Teal600" : "Gray700"}>
+							{"일치해요"}
 						</Typography>
 					</Row>
-					<Row gap={8}>
-						{pwdValidate.pwdSpecial ? <img src={Check} /> : <img src={NoneCheck} />}
-						<Typography typoSize="B2_medium" color={pwdValidate.pwdSpecial ? "Teal600" : "Gray700"}>
-							{"특수 문자를 사용해 주세요"}
-						</Typography>
-					</Row>
-					<Row gap={8}>
-						{pwdValidate.pwdSame ? <img src={Check} /> : <img src={NoneCheck} />}
-						<Typography typoSize="B2_medium" color={pwdValidate.pwdSame ? "Teal600" : "Gray700"}>
-							{"똑같은 문자가 4번 반복되면 안돼요"}
-						</Typography>
-					</Row>
-				</Column>
-				{pwdValidate.pwdLen && pwdValidate.pwdSame && pwdValidate.pwdSpecial && (
-					<>
-						<Column gap={8} style={{ marginTop: "40px", marginBottom: "24px" }}>
-							<Typography color="Gray600" typoSize="B2_medium">{`새로운 비밀번호 확인`}</Typography>
-							<TextFields
-								isError={false}
-								onChange={(val) => setRePassword(val)}
-								placeholder={"새로운 비밀번호"}
-								inputType={rePasswordState ? "text" : "password"}
-								maxLength={15}
-								icon={rePasswordState ? ShowPwd : NoShowPwd}
-								onClick={() => setRePasswordState(!rePasswordState)}
-							/>
-						</Column>
-						<Row gap={8}>
-							{password === rePassword ? <img src={Check} /> : <img src={NoneCheck} />}
-							<Typography typoSize="B2_medium" color={password === rePassword ? "Teal600" : "Gray700"}>
-								{"일치해요"}
-							</Typography>
-						</Row>
-					</>
-				)}
+				</>
+			)}
 
-				<Button
-					text="변경하기"
-					isNextPage={
-						Boolean(prevPassword) &&
-						password === rePassword &&
-						Boolean(pwdValidate.pwdLen && pwdValidate.pwdSame && pwdValidate.pwdSpecial)
-					}
-				/>
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+			<Button
+				text="변경하기"
+				isNextPage={
+					Boolean(prevPassword) &&
+					password === rePassword &&
+					Boolean(pwdValidate.pwdLen && pwdValidate.pwdSame && pwdValidate.pwdSpecial)
+				}
+			/>
+		</>
 	);
 }

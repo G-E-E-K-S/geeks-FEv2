@@ -51,7 +51,6 @@ export default function Notification() {
 				const roommateNotifyStatus = await patchUserServiceNotification();
 				console.log(roommateNotifyStatus);
 			}
-
 		}
 
 		// console.log(";;clickToggle");
@@ -80,57 +79,55 @@ export default function Notification() {
 		});
 	};
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<Header subtitle={`알림 설정`} />
-				</CS.Header>
-				<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+		<>
+			<CS.Header backgroundColor="White">
+				<Header subtitle={`알림 설정`} />
+			</CS.Header>
+			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+				<Typography typoSize="T3_semibold" color="Gray800">
+					{"전체 알림"}
+				</Typography>
+				<Toggle isToggle={toggleState.total} onClick={() => handleToggle("total")} />
+			</S.MenuWrapper>
+			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+				<Column gap={4}>
 					<Typography typoSize="T3_semibold" color="Gray800">
-						{"전체 알림"}
+						{"룸메이트 맺기 알림"}
 					</Typography>
-					<Toggle isToggle={toggleState.total} onClick={() => handleToggle("total")} />
-				</S.MenuWrapper>
-				<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
-					<Column gap={4}>
-						<Typography typoSize="T3_semibold" color="Gray800">
-							{"룸메이트 맺기 알림"}
-						</Typography>
-						<Typography typoSize="B2_medium" color="Gray600">
-							{"룸메이트 신청을 받거나 맺어졌을 시 알려드려요"}
-						</Typography>
-					</Column>
-					<Toggle isToggle={toggleState.roommate} onClick={() => handleToggle("roommate")} />
-				</S.MenuWrapper>
-				<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+					<Typography typoSize="B2_medium" color="Gray600">
+						{"룸메이트 신청을 받거나 맺어졌을 시 알려드려요"}
+					</Typography>
+				</Column>
+				<Toggle isToggle={toggleState.roommate} onClick={() => handleToggle("roommate")} />
+			</S.MenuWrapper>
+			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+				<Typography typoSize="T3_semibold" color="Gray800">
+					{"새로운 대화 알림"}
+				</Typography>
+				<Toggle isToggle={toggleState.chat} onClick={() => handleToggle("chat")} />
+			</S.MenuWrapper>
+			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+				<Column gap={4}>
 					<Typography typoSize="T3_semibold" color="Gray800">
-						{"새로운 대화 알림"}
+						{"서비스 알림"}
 					</Typography>
-					<Toggle isToggle={toggleState.chat} onClick={() => handleToggle("chat")} />
-				</S.MenuWrapper>
-				<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
-					<Column gap={4}>
-						<Typography typoSize="T3_semibold" color="Gray800">
-							{"서비스 알림"}
-						</Typography>
-						<Typography typoSize="B2_medium" color="Gray600">
-							{"외박 신청, 어쩌구를 알려드려요"}
-						</Typography>
-					</Column>
-					<Toggle isToggle={toggleState.service} onClick={() => handleToggle("service")} />
-				</S.MenuWrapper>
-				<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
-					<Column gap={4}>
-						<Typography typoSize="T3_semibold" color="Gray800">
-							{"마케팅 알림"}
-						</Typography>
-						<Typography typoSize="B2_medium" color="Gray600">
-							{"긱스의 새로운 소식을 알려드려요"}
-						</Typography>
-					</Column>
-					<Toggle isToggle={toggleState.marketing} onClick={() => handleToggle("marketing")} />
-				</S.MenuWrapper>
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+					<Typography typoSize="B2_medium" color="Gray600">
+						{"외박 신청, 어쩌구를 알려드려요"}
+					</Typography>
+				</Column>
+				<Toggle isToggle={toggleState.service} onClick={() => handleToggle("service")} />
+			</S.MenuWrapper>
+			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+				<Column gap={4}>
+					<Typography typoSize="T3_semibold" color="Gray800">
+						{"마케팅 알림"}
+					</Typography>
+					<Typography typoSize="B2_medium" color="Gray600">
+						{"긱스의 새로운 소식을 알려드려요"}
+					</Typography>
+				</Column>
+				<Toggle isToggle={toggleState.marketing} onClick={() => handleToggle("marketing")} />
+			</S.MenuWrapper>
+		</>
 	);
 }

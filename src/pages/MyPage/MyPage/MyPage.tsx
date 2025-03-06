@@ -7,7 +7,6 @@ import * as CS from "../../../components/Common/CommonStyle";
 import PageName from "../../../components/Main/PageName";
 import UserInfo from "../../../components/Main/UserInfo";
 import MyPageMenu from "../../../components/Main/MyPageMenu";
-import NavigationBar from "../../../components/Main/NavigationBar/NavigationBar";
 import Br from "../../../components/Common/Br";
 import basicProfile from "../../../assets/img/MyPage/basicProfile.svg";
 import enrollLifeStyle from "../../../assets/img/MyPage/Menu/enrollLIfeStyle.svg";
@@ -100,84 +99,81 @@ export default function MyPage() {
 	return isLoading || !userInfo ? (
 		<Loading />
 	) : (
-		<CS.Totalframe>
-			<CS.ScreenComponent navigation={true}>
-				<CS.Header backgroundColor="White">
-					<Typography typoSize="H3" color="Gray800">
-						{"마이"}
+		<>
+			<CS.Header backgroundColor="White">
+				<Typography typoSize="H3" color="Gray800">
+					{"마이"}
+				</Typography>
+			</CS.Header>
+			<UserProfile
+				image={userInfo.image}
+				ID={userInfo?.studentNum}
+				major={userInfo.major}
+				nickName={userInfo.nickname}
+				smoke={userInfo.smoke}
+				intro={userInfo.introduction}
+				activeCheck={false}
+				isMe
+			/>
+			{roommateInfo && (
+				<S.RoommateWrapper
+					onClick={() =>
+						navigate(`/detail/details/${roommateInfo.matchingPointId}/${roommateInfo.opponentId}`)
+					}
+				>
+					<Typography typoSize="B3_medium" color="Gray700" style={{ marginBottom: "10px" }}>
+						{"내 룸메이트"}
 					</Typography>
-				</CS.Header>
-				<UserProfile
-					image={userInfo.image}
-					ID={userInfo?.studentNum}
-					major={userInfo.major}
-					nickName={userInfo.nickname}
-					smoke={userInfo.smoke}
-					intro={userInfo.introduction}
-					activeCheck={false}
-					isMe
-				/>
-				{roommateInfo && (
-					<S.RoommateWrapper
-						onClick={() =>
-							navigate(`/detail/details/${roommateInfo.matchingPointId}/${roommateInfo.opponentId}`)
-						}
-					>
-						<Typography typoSize="B3_medium" color="Gray700" style={{ marginBottom: "10px" }}>
-							{"내 룸메이트"}
+					<UserProfile
+						image={roommateInfo?.image}
+						ID={roommateInfo?.studentNum}
+						major={roommateInfo.major}
+						nickName={roommateInfo.nickname}
+						smoke={roommateInfo.smoke}
+						activeCheck={false}
+					/>
+				</S.RoommateWrapper>
+			)}
+			<div style={{ padding: "16px 0", marginTop: "20px" }}>
+				<Row horizonAlign="distribute">
+					<Column gap={4}>
+						<Typography typoSize="T3_semibold" color="Gray800">
+							{"내 프로필 노출하기"}
 						</Typography>
-						<UserProfile
-							image={roommateInfo?.image}
-							ID={roommateInfo?.studentNum}
-							major={roommateInfo.major}
-							nickName={roommateInfo.nickname}
-							smoke={roommateInfo.smoke}
-							activeCheck={false}
-						/>
-					</S.RoommateWrapper>
-				)}
-				<div style={{ padding: "16px 0", marginTop: "20px" }}>
-					<Row horizonAlign="distribute">
-						<Column gap={4}>
-							<Typography typoSize="T3_semibold" color="Gray800">
-								{"내 프로필 노출하기"}
-							</Typography>
-							<Typography typoSize="B2_medium" color="Gray600">
-								{"룸메이트가 맺어지면 내 프로필이 숨겨져요"}
-							</Typography>
-						</Column>
-						<Toggle onClick={clickedToggle} isToggle={toggle} />
-					</Row>
-				</div>
+						<Typography typoSize="B2_medium" color="Gray600">
+							{"룸메이트가 맺어지면 내 프로필이 숨겨져요"}
+						</Typography>
+					</Column>
+					<Toggle onClick={clickedToggle} isToggle={toggle} />
+				</Row>
+			</div>
 
-				<Br />
-				<MenuList
-					icon={enrollLifeStyle}
-					menuName={`생활 습관 등록하기`}
-					onClick={() => navigate("/lifestyle")}
-					isEnroolListStyle={!top3UserData?.exists}
-				/>
-				<MenuList icon={saveList} menuName={`룸메이트 저장 목록`} onClick={() => navigate("/savelist")} />
-				<MenuList
-					icon={roommateApply}
-					menuName={`룸메이트 신청 목록`}
-					onClick={() => navigate("/roommate/apply")}
-				/>
-				<Br />
-				<MenuList icon={userInfoImg} menuName={`회원 정보 설정`} onClick={() => navigate("/settinguserinfo")} />
-				<MenuList icon={notice} menuName={`알림 설정`} onClick={() => navigate("/notification")} />
-				<MenuList icon={announce} menuName={`공지사항`} onClick={() => navigate("/notice")} />
-				<MenuList icon={HeadPhone} menuName={`문의하기`} onClick={() => navigate("/notice")} />
-				{/* <MenuList icon={question} menuName={`자주 묻는 질문`} onClick={() => navigate("/faq")} /> */}
-				<MenuList icon={List} menuName={`약관 및 정책`} onClick={() => navigate("/termpolicy")} />
-				<MenuList icon={logout} menuName={`로그아웃`} onClick={() => Logout()} />
-				{/* <MenuList
+			<Br />
+			<MenuList
+				icon={enrollLifeStyle}
+				menuName={`생활 습관 등록하기`}
+				onClick={() => navigate("/lifestyle")}
+				isEnroolListStyle={!top3UserData?.exists}
+			/>
+			<MenuList icon={saveList} menuName={`룸메이트 저장 목록`} onClick={() => navigate("/savelist")} />
+			<MenuList
+				icon={roommateApply}
+				menuName={`룸메이트 신청 목록`}
+				onClick={() => navigate("/roommate/apply")}
+			/>
+			<Br />
+			<MenuList icon={userInfoImg} menuName={`회원 정보 설정`} onClick={() => navigate("/settinguserinfo")} />
+			<MenuList icon={notice} menuName={`알림 설정`} onClick={() => navigate("/notification")} />
+			<MenuList icon={announce} menuName={`공지사항`} onClick={() => navigate("/notice")} />
+			<MenuList icon={HeadPhone} menuName={`문의하기`} onClick={() => navigate("/notice")} />
+			{/* <MenuList icon={question} menuName={`자주 묻는 질문`} onClick={() => navigate("/faq")} /> */}
+			<MenuList icon={List} menuName={`약관 및 정책`} onClick={() => navigate("/termpolicy")} />
+			<MenuList icon={logout} menuName={`로그아웃`} onClick={() => Logout()} />
+			{/* <MenuList
 					icon={closeIcon}
 					menuName={`서비스 탈퇴`}
 					// onClick={() => navigate("/secessionreason", { state: { userName: userInfo.nickname } })}
 				/> */}
-			</CS.ScreenComponent>
-			<NavigationBar type={`mypage`} />
-		</CS.Totalframe>
+		</>
 	);
 }

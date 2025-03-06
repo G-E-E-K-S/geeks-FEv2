@@ -116,59 +116,57 @@ const InputCode = () => {
 	}, [timer]);
 
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<HeaderMenu />
-				</CS.Header>
-				<TopNumber page={2} />
-				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
-					{`수신된 메일에 적힌\n4자리 코드를 입력해 주세요`}
-				</Typography>
-				<S.TotalSendMail>
-					<S.SendMailText>메일이 도착하지 않았나요?</S.SendMailText>
-					<S.ReSendBtn onClick={() => ReSendEmail()} isResend={isResend}>
-						인증 메일 재전송
-					</S.ReSendBtn>
-				</S.TotalSendMail>
-				<S.InputNumber>
-					{inputRefs.map((ref, index) => (
-						<S.InputInfos isSelected={isSelected}>
-							<S.Code
-								key={index}
-								// @ts-ignore
-								ref={ref}
-								type="text"
-								inputMode="numeric"
-								maxLength={1}
-								pattern="\d*"
-								onChange={(e) => handleInputChange(index, e)}
-								onKeyUp={(e) => handleKeydown(index, e)}
-								onFocus={() => ChangeBarColor()}
-							/>
-						</S.InputInfos>
-					))}
-				</S.InputNumber>
-				<CS.Flex>
-					<S.TimeImg src={Timmer} />
-					<S.Time>
-						{min}:{sec < 10 ? "0" + sec : sec}
-					</S.Time>
-				</CS.Flex>
-				<ErrorPopup
-					message={`코드가 일치하지 않아요`}
-					bottom={`18.72`}
-					setShowPopup={setIsErrorPopup}
-					isShowPopup={isErrorPopup}
-				/>
-				<JoinButton
-					btnName={"코드 확인하기"}
-					select={() => ChangeBarColor()}
-					handleClick={() => checkCode()}
-					isNextPage={isNextPage}
-				/>
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+		<>
+			<CS.Header backgroundColor="White">
+				<HeaderMenu />
+			</CS.Header>
+			<TopNumber page={2} />
+			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+				{`수신된 메일에 적힌\n4자리 코드를 입력해 주세요`}
+			</Typography>
+			<S.TotalSendMail>
+				<S.SendMailText>메일이 도착하지 않았나요?</S.SendMailText>
+				<S.ReSendBtn onClick={() => ReSendEmail()} isResend={isResend}>
+					인증 메일 재전송
+				</S.ReSendBtn>
+			</S.TotalSendMail>
+			<S.InputNumber>
+				{inputRefs.map((ref, index) => (
+					<S.InputInfos isSelected={isSelected}>
+						<S.Code
+							key={index}
+							// @ts-ignore
+							ref={ref}
+							type="text"
+							inputMode="numeric"
+							maxLength={1}
+							pattern="\d*"
+							onChange={(e) => handleInputChange(index, e)}
+							onKeyUp={(e) => handleKeydown(index, e)}
+							onFocus={() => ChangeBarColor()}
+						/>
+					</S.InputInfos>
+				))}
+			</S.InputNumber>
+			<CS.Flex>
+				<S.TimeImg src={Timmer} />
+				<S.Time>
+					{min}:{sec < 10 ? "0" + sec : sec}
+				</S.Time>
+			</CS.Flex>
+			<ErrorPopup
+				message={`코드가 일치하지 않아요`}
+				bottom={`18.72`}
+				setShowPopup={setIsErrorPopup}
+				isShowPopup={isErrorPopup}
+			/>
+			<JoinButton
+				btnName={"코드 확인하기"}
+				select={() => ChangeBarColor()}
+				handleClick={() => checkCode()}
+				isNextPage={isNextPage}
+			/>
+		</>
 	);
 };
 

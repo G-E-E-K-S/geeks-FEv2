@@ -54,110 +54,114 @@ export default function Schedule() {
 	}
 
 	return (
-		<c.Totalframe>
-			<c.ScreenComponent navigation={false}>
-				<c.SubScreen>
-					<ScheduleHeader pathName={location.pathname} onClick={() => setIsDelete(true)} />
-					<Column>
-						<S.ScheduleTypeDiv $type={currentSchedule.type}>
-							<S.ScheduleMark $type={currentSchedule.type} />
-							<Typography typoSize="B2_medium">{scheduleTextMap[currentSchedule.type]}</Typography>
-						</S.ScheduleTypeDiv>
-						{/*<Row horizonAlign="distribute" width="w-full">*/}
-						{/*<SendNotificationButton*/}
-						{/*	gap={8} verticalAlign="center"*/}
-						{/*	onClick={() => setIsDeletePopup(true)}*/}
-						{/*>*/}
-						{/*	<img src={BellIcon} />*/}
-						{/*	<Typography typoSize="T4_semibold" color="Gray700">알림 보내기</Typography>*/}
-						{/*</SendNotificationButton>*/}
-						{/*</Row>*/}
-						<Column gap={16} style={{ margin: "24px 0 48px 0" }}>
-							<Column gap={6}>
-								<Row gap={6} verticalAlign="center">
-									<UserImage src={test} />
-									<Typography typoSize="B2_medium" color="Gray600">
-										{currentSchedule.nickname}
+		<>
+			<c.SubScreen>
+				<ScheduleHeader pathName={location.pathname} onClick={() => setIsDelete(true)} />
+				<Column>
+					<S.ScheduleTypeDiv $type={currentSchedule.type}>
+						<S.ScheduleMark $type={currentSchedule.type} />
+						<Typography typoSize="B2_medium">{scheduleTextMap[currentSchedule.type]}</Typography>
+					</S.ScheduleTypeDiv>
+					{/*<Row horizonAlign="distribute" width="w-full">*/}
+					{/*<SendNotificationButton*/}
+					{/*	gap={8} verticalAlign="center"*/}
+					{/*	onClick={() => setIsDeletePopup(true)}*/}
+					{/*>*/}
+					{/*	<img src={BellIcon} />*/}
+					{/*	<Typography typoSize="T4_semibold" color="Gray700">알림 보내기</Typography>*/}
+					{/*</SendNotificationButton>*/}
+					{/*</Row>*/}
+					<Column gap={16} style={{ margin: "24px 0 48px 0" }}>
+						<Column gap={6}>
+							<Row gap={6} verticalAlign="center">
+								<UserImage src={test} />
+								<Typography typoSize="B2_medium" color="Gray600">
+									{currentSchedule.nickname}
+								</Typography>
+							</Row>
+							<Row gap={8}>
+								<Typography typoSize="T4_medium">{formattedDate}</Typography>
+								{currentSchedule.type === "SLEEPOVER" ? (
+									<Typography typoSize="T4_medium" color="Gray500">
+										외박
 									</Typography>
-								</Row>
-								<Row gap={8}>
-									<Typography typoSize="T4_medium">{formattedDate}</Typography>
-									{currentSchedule.type === "SLEEPOVER" ? (
-										<Typography typoSize="T4_medium" color="Gray500">
-											외박
-										</Typography>
-									) : (
-										<Typography typoSize="T4_medium" color="Gray500">
-											{formatTimeRange(currentSchedule.startDate, currentSchedule.endDate)}
-										</Typography>
-									)}
-								</Row>
-							</Column>
-							<Column gap={6}>
-								<Typography typoSize="T2_semibold" color="Gray800">
-									{currentSchedule.title}
-								</Typography>
-								<Typography typoSize="B1_medium" color="Gray600">
-									{currentSchedule?.description}
-								</Typography>
-							</Column>
+								) : (
+									<Typography typoSize="T4_medium" color="Gray500">
+										{formatTimeRange(currentSchedule.startDate, currentSchedule.endDate)}
+									</Typography>
+								)}
+							</Row>
 						</Column>
-						<Row gap={12}>
-							<Typography typoSize="B1_medium" color="Gray400">
-								알림
+						<Column gap={6}>
+							<Typography typoSize="T2_semibold" color="Gray800">
+								{currentSchedule.title}
 							</Typography>
-							<Typography typoSize="B1_medium" color="Gray800">
-								{"10분 전 알림"}
+							<Typography typoSize="B1_medium" color="Gray600">
+								{currentSchedule?.description}
 							</Typography>
-						</Row>
+						</Column>
 					</Column>
-				</c.SubScreen>
-			</c.ScreenComponent>
+					<Row gap={12}>
+						<Typography typoSize="B1_medium" color="Gray400">
+							알림
+						</Typography>
+						<Typography typoSize="B1_medium" color="Gray800">
+							{"10분 전 알림"}
+						</Typography>
+					</Row>
+				</Column>
+			</c.SubScreen>
 			{isDelete && (
 				<Background>
 					<Modal padding={`20px`}>
 						<Column gap={32}>
 							<Column gap={16} verticalAlign="center" width="w-full">
 								<img src={TrashRedIcon} />
-								<Typography typoSize="T2_bold" color="Gray800">일정을 삭제할까요?</Typography>
+								<Typography typoSize="T2_bold" color="Gray800">
+									일정을 삭제할까요?
+								</Typography>
 							</Column>
 							<Column gap={12} verticalAlign="center" width="w-full">
 								<ModalChoiceBtn onClick={handleTrashClick}>
-									<Typography typoSize="T3_semibold" color="Gray800">네,삭제할래요</Typography>
+									<Typography typoSize="T3_semibold" color="Gray800">
+										네,삭제할래요
+									</Typography>
 								</ModalChoiceBtn>
 								<ChoiceNo onClick={() => setIsDelete(false)}>
-									<Typography typoSize="T3_semibold" color="Gray800">아니요</Typography>
+									<Typography typoSize="T3_semibold" color="Gray800">
+										아니요
+									</Typography>
 								</ChoiceNo>
 							</Column>
 						</Column>
 					</Modal>
 				</Background>
 			)}
-		</c.Totalframe>
+		</>
 	);
 }
 
 const Background = styled.div`
-    background: #00000033;
-    position: relative;
-    z-index: 30;
+	background: #00000033;
+	position: relative;
+	z-index: 30;
 `;
 
 const ModalChoiceBtn = styled.div`
-    background-color: ${theme.Yellow500};
-    border-radius: 12px;
-    padding: 20px;
-    width: 100%;
-    text-align: center;
+	background-color: ${theme.Yellow500};
+	border-radius: 12px;
+	padding: 20px;
+	width: 100%;
+	text-align: center;
 `;
 
 const ChoiceNo = styled.div`
-    background-color: ${theme.White};
-    border: 1px solid ${theme.Gray200};
-    border-radius: 12px;
-    text-align: center;
-    width: 100%;
-    padding: 20px;
+	background-color: ${theme.White};
+	border: 1px solid ${theme.Gray200};
+	border-radius: 12px;
+	text-align: center;
+	width: 100%;
+	padding: 20px;
 `;
 
 // const SendNotificationButton = styled(Row)`
@@ -168,6 +172,6 @@ const ChoiceNo = styled.div`
 // `;
 
 const UserImage = styled.img`
-    width: 20px;
-    height: 20px;
+	width: 20px;
+	height: 20px;
 `;

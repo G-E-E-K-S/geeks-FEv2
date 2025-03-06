@@ -55,49 +55,41 @@ export default function Search() {
 	}, [inputKeyword]);
 
 	return (
-		<CS.Totalframe background={`#fff`}>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<Row horizonAlign="center" verticalAlign="center" gap={12}>
-						<GoBack />
-						<SearchBar
-							placeHolder="검색할 키워드를 입력하세요"
-							inputVal={(val) => handleSearchRoommate(val)}
+		<>
+			<CS.Header backgroundColor="White">
+				<Row horizonAlign="center" verticalAlign="center" gap={12}>
+					<GoBack />
+					<SearchBar placeHolder="검색할 키워드를 입력하세요" inputVal={(val) => handleSearchRoommate(val)} />
+				</Row>
+			</CS.Header>
+			{searchUser?.length === 0 ? (
+				<S.SearchTotalTxt>
+					<Typography typoSize="T3_semibold" color="Gray800">{`모든 키워드를 검색할 수 있어요`}</Typography>
+					<Typography
+						typoSize="T4_medium"
+						color="Gray400"
+						style={{ marginTop: "8px" }}
+					>{`예) 닉네임, 기능, 메뉴 등`}</Typography>
+				</S.SearchTotalTxt>
+			) : (
+				<>
+					<Typography typoSize="B2_medium" color="Gray500">
+						{"회원"}
+					</Typography>
+					<MemberNotice>{`같은 성별의 회원만 검색할 수 있어요`}</MemberNotice>
+					{searchUser?.map((val) => (
+						<UserProfile
+							ID={val.studentNum}
+							image={val.image}
+							major={val.major}
+							nickName={val.nickname}
+							smoke={val.smoke}
+							hasPadding
+							onClick={() => navigate(`/details/detail/${val.matchingPointId}/${val.opponentId}`)}
 						/>
-					</Row>
-				</CS.Header>
-				{searchUser?.length === 0 ? (
-					<S.SearchTotalTxt>
-						<Typography
-							typoSize="T3_semibold"
-							color="Gray800"
-						>{`모든 키워드를 검색할 수 있어요`}</Typography>
-						<Typography
-							typoSize="T4_medium"
-							color="Gray400"
-							style={{ marginTop: "8px" }}
-						>{`예) 닉네임, 기능, 메뉴 등`}</Typography>
-					</S.SearchTotalTxt>
-				) : (
-					<>
-						<Typography typoSize="B2_medium" color="Gray500">
-							{"회원"}
-						</Typography>
-						<MemberNotice>{`같은 성별의 회원만 검색할 수 있어요`}</MemberNotice>
-						{searchUser?.map((val) => (
-							<UserProfile
-								ID={val.studentNum}
-								image={val.image}
-								major={val.major}
-								nickName={val.nickname}
-								smoke={val.smoke}
-								hasPadding
-								onClick={() => navigate(`/details/detail/${val.matchingPointId}/${val.opponentId}`)}
-							/>
-						))}
-					</>
-				)}
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+					))}
+				</>
+			)}
+		</>
 	);
 }

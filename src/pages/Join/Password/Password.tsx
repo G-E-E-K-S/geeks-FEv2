@@ -60,44 +60,42 @@ export default function Password() {
 	}, [password]);
 
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<HeaderMenu />
-				</CS.Header>
-				<TopNumber page={3} />
-				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
-					{`로그인 시 사용할\n비밀번호를 입력해 주세요`}
+		<>
+			<CS.Header backgroundColor="White">
+				<HeaderMenu />
+			</CS.Header>
+			<TopNumber page={3} />
+			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+				{`로그인 시 사용할\n비밀번호를 입력해 주세요`}
+			</Typography>
+			<TextFields
+				isError={false}
+				onChange={(val) => setPassword(val)}
+				placeholder={"비밀번호"}
+				inputType={showPwd ? "text" : "password"}
+				maxLength={15}
+				icon={showPwd ? ShowPwd : NoShowPwd}
+				onClick={() => setShowPwd(!showPwd)}
+			/>
+			<Row gap={8} style={{ marginBottom: "8px", marginTop: "32px" }}>
+				{pwdValidate.pwdLen ? <img src={Check} /> : <img src={NoneCheck} />}
+				<Typography typoSize="B2_medium" color={pwdValidate.pwdLen ? "Teal600" : "Gray700"}>
+					{"8자 이상, 15자 이하로 설정해 주세요"}
 				</Typography>
-				<TextFields
-					isError={false}
-					onChange={(val) => setPassword(val)}
-					placeholder={"비밀번호"}
-					inputType={showPwd ? "text" : "password"}
-					maxLength={15}
-					icon={showPwd ? ShowPwd : NoShowPwd}
-					onClick={() => setShowPwd(!showPwd)}
-				/>
-				<Row gap={8} style={{ marginBottom: "8px", marginTop: "32px" }}>
-					{pwdValidate.pwdLen ? <img src={Check} /> : <img src={NoneCheck} />}
-					<Typography typoSize="B2_medium" color={pwdValidate.pwdLen ? "Teal600" : "Gray700"}>
-						{"8자 이상, 15자 이하로 설정해 주세요"}
-					</Typography>
-				</Row>
-				<Row gap={8} style={{ marginBottom: "8px" }}>
-					{pwdValidate.pwdSpecial ? <img src={Check} /> : <img src={NoneCheck} />}
-					<Typography typoSize="B2_medium" color={pwdValidate.pwdSpecial ? "Teal600" : "Gray700"}>
-						{"특수 문자를 사용해 주세요"}
-					</Typography>
-				</Row>
-				<Row gap={8} style={{ marginBottom: "8px" }}>
-					{pwdValidate.pwdSame ? <img src={Check} /> : <img src={NoneCheck} />}
-					<Typography typoSize="B2_medium" color={pwdValidate.pwdSame ? "Teal600" : "Gray700"}>
-						{"똑같은 문자가 4번 반복되면 안돼요"}
-					</Typography>
-				</Row>
-				<JoinButton btnName={"다음"} handleClick={() => navigate("/nickname")} isNextPage={isNextPage} />
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+			</Row>
+			<Row gap={8} style={{ marginBottom: "8px" }}>
+				{pwdValidate.pwdSpecial ? <img src={Check} /> : <img src={NoneCheck} />}
+				<Typography typoSize="B2_medium" color={pwdValidate.pwdSpecial ? "Teal600" : "Gray700"}>
+					{"특수 문자를 사용해 주세요"}
+				</Typography>
+			</Row>
+			<Row gap={8} style={{ marginBottom: "8px" }}>
+				{pwdValidate.pwdSame ? <img src={Check} /> : <img src={NoneCheck} />}
+				<Typography typoSize="B2_medium" color={pwdValidate.pwdSame ? "Teal600" : "Gray700"}>
+					{"똑같은 문자가 4번 반복되면 안돼요"}
+				</Typography>
+			</Row>
+			<JoinButton btnName={"다음"} handleClick={() => navigate("/nickname")} isNextPage={isNextPage} />
+		</>
 	);
 }

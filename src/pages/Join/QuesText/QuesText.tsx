@@ -15,20 +15,18 @@ export default function QuesText() {
 	const { nickname } = useUserInfo();
 
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<HeaderMenu />
-				</CS.Header>
-				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
-					{`${nickname}님 반가워요!\n\n기숙사 생활을 위한\n몇 가지만 여쭤볼게요`}
-				</Typography>
-				<Row horizonAlign="center" verticalAlign="center">
-					<QuestionIcon src={Question} />
-				</Row>
-				<Button text={"다음"} isNextPage onClick={() => navigate("/major")}></Button>
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+		<>
+			<CS.Header backgroundColor="White">
+				<HeaderMenu />
+			</CS.Header>
+			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+				{`${nickname}님 반가워요!\n\n기숙사 생활을 위한\n몇 가지만 여쭤볼게요`}
+			</Typography>
+			<Row horizonAlign="center" verticalAlign="center">
+				<QuestionIcon src={Question} />
+			</Row>
+			<Button text={"다음"} isNextPage onClick={() => navigate("/major")}></Button>
+		</>
 	);
 }
 

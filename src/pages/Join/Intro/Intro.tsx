@@ -24,10 +24,8 @@ export default function Intro() {
 	}, [navigation]);
 
 	return (
-		<CS.Totalframe>
-			<IntroLogo>
-				<img src={mainLogo} alt="Main Logo" />
-			</IntroLogo>
-		</CS.Totalframe>
+		<IntroLogo>
+			<img src={mainLogo} alt="Main Logo" />
+		</IntroLogo>
 	);
 }

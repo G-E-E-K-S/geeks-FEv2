@@ -29,32 +29,30 @@ export default function Gender() {
 	}, []);
 
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="background">
-					<HeaderMenu />
-				</CS.Header>
-				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
-					{`성별을 알려주세요`}
-				</Typography>
-				<Row gap={10}>
-					<GenderBox
-						gender={"남자"}
-						onClick={() => SelectGender("MALE")}
-						isSelected={gender === "MALE"}
-						GenderImg={Boy}
-						SelectGender={SelectBoy}
-					/>
-					<GenderBox
-						gender={"여자"}
-						onClick={() => SelectGender("FEMALE")}
-						isSelected={gender === "FEMALE"}
-						GenderImg={Girl}
-						SelectGender={SelectGirl}
-					/>
-				</Row>
-				<Button text={"다음"} onClick={() => navigate("/dormitory")} isNextPage={isNextPage} />
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+		<>
+			<CS.Header backgroundColor="background">
+				<HeaderMenu />
+			</CS.Header>
+			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+				{`성별을 알려주세요`}
+			</Typography>
+			<Row gap={10}>
+				<GenderBox
+					gender={"남자"}
+					onClick={() => SelectGender("MALE")}
+					isSelected={gender === "MALE"}
+					GenderImg={Boy}
+					SelectGender={SelectBoy}
+				/>
+				<GenderBox
+					gender={"여자"}
+					onClick={() => SelectGender("FEMALE")}
+					isSelected={gender === "FEMALE"}
+					GenderImg={Girl}
+					SelectGender={SelectGirl}
+				/>
+			</Row>
+			<Button text={"다음"} onClick={() => navigate("/dormitory")} isNextPage={isNextPage} />
+		</>
 	);
 }

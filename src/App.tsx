@@ -1,57 +1,16 @@
-import { Route, BrowserRouter as Router, Routes, useLocation } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router/router";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
-import {
-	Intro,
-	AccessRight,
-	PersonalInfoTxt,
-	ServiceTxt,
-	LocationTxt,
-	MarketingTxt,
-	Agree,
-	Login,
-	InputEmail,
-	InputCode,
-	Password,
-	NickName,
-	QuesText,
-	Major,
-	Gender,
-	Dormitory,
-	FindPassword,
-	FinalPage,
-	Welcome,
-	AlreadyRegist
-} from "./pages/Join/Index";
-import { LiveRule, Home, Search, Alarm } from "./pages/Main/Index";
-import { FindRoommate, CompareUserInfo, RoommateSendText, FinishRoommate } from "./pages/FindRoommate/Index";
-import { Chat, ChatRoom } from "./pages/Chat/Index";
-import {
-	MyPage,
-	LifeStyles,
-	EditProfile,
-	SettingUserInfo,
-	SaveList,
-	Notice,
-	RoommateApply,
-	MyProfile,
-	SecessionReason,
-	NoticeDetail,
-	ChangePassword,
-	Notification,
-	TermPolicy
-} from "./pages/MyPage/Index";
-import "./index.css";
-import Loading from "./pages/Loading";
-import Calendar from "./pages/Calendar/Calendar";
-import Schedule from "./pages/Schedule/Schedule";
-import ScheduleEdit from "./pages/Schedule/ScheduleEdit/ScheduleEdit";
+
+import GlobalStyle from "./styles/GlobalStyle";
 
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
-			{/* <GlobalStyle /> */}
-			<Router>
+			<GlobalStyle />
+			<RouterProvider router={router} />
+			{/* <Router>
 				<Routes>
 					<Route path="/" element={<Intro />} />
 					<Route path="/agree" element={<Agree />} />
@@ -102,7 +61,7 @@ function App() {
 					<Route path="/schedule/add" element={<ScheduleEdit />} />
 					<Route path="/schedule/:scheduleId/modify" element={<ScheduleEdit />} />
 				</Routes>
-			</Router>
+			</Router> */}
 		</ThemeProvider>
 	);
 }

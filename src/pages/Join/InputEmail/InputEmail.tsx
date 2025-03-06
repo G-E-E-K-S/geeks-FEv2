@@ -40,29 +40,27 @@ export default function InputEmail() {
 	});
 
 	return (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<HeaderMenu />
-				</CS.Header>
-				<TopNumber page={1} />
-				<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
-					{`재학생 인증을 위해\n학교 이메일 주소를 입력해 주세요`}
-				</Typography>
-				<TextFields
-					fixedText={"@sangmyung.kr"}
-					maxLength={9}
-					placeholder={"학번"}
-					onChange={(val) => handleEmailVal(val)}
-				/>
-				<Button text={"인증 메일 받기"} onClick={() => sendEmail()} isNextPage={isNextPage} />
-			</CS.ScreenComponent>
+		<>
+			<CS.Header backgroundColor="White">
+				<HeaderMenu />
+			</CS.Header>
+			<TopNumber page={1} />
+			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
+				{`재학생 인증을 위해\n학교 이메일 주소를 입력해 주세요`}
+			</Typography>
+			<TextFields
+				fixedText={"@sangmyung.kr"}
+				maxLength={9}
+				placeholder={"학번"}
+				onChange={(val) => handleEmailVal(val)}
+			/>
+			<Button text={"인증 메일 받기"} onClick={() => sendEmail()} isNextPage={isNextPage} />
 			<ErrorPopup
 				message={`이미 가입된 이메일 주소에요`}
 				bottom={`18.72`}
 				setShowPopup={setIsDuplicate}
 				isShowPopup={isDuplicate}
 			/>
-		</CS.Totalframe>
+		</>
 	);
 }

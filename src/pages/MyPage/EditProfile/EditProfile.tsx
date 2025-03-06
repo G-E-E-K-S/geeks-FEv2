@@ -289,46 +289,45 @@ export default function EditProfile() {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<CS.Totalframe>
-			<CS.ScreenComponent>
-				<CS.Header backgroundColor="White">
-					<S.Header>
-						<GoBack />
-						<S.EditBtn onClick={handlePostSubmit} isChange={isModified()}>{`수정`}</S.EditBtn>
-					</S.Header>
-				</CS.Header>
-				<UploadProfile>
-					<ProfileImg
-						key={1}
-						src={profileImage ? photo : photo ? import.meta.env.VITE_APP_BUCKET_BASEURL + photo : Profile}
-						isProfile={!!photo}
-					/>
-					<HiddenFileInput type="file" accept="image/*" onChange={handleFile} />
-					<CameraIcons>
-						<img src={Camera} />
-					</CameraIcons>
-				</UploadProfile>
-				{/* input nickname */}
-				<Row horizonAlign="distribute" style={{ marginTop: "32px" }}>
-					<Typography typoSize="B2_medium" color="Gray500">
-						{"닉네임"}
-					</Typography>
-					{isDuplicate && (
-						<Typography typoSize="B2_medium" color="Red500">
-							{"이미 사용 중인 닉네임이에요"}
-						</Typography>
-					)}
-				</Row>
-				<TextFields
-					maxLength={8}
-					onChange={(val) => setNickname(val)}
-					inputLen={nickname.length}
-					totalNum={8}
-					text={nickname}
-					pageType="myPage"
+		<>
+			<CS.Header backgroundColor="White">
+				<S.Header>
+					<GoBack />
+					<S.EditBtn onClick={handlePostSubmit} isChange={isModified()}>{`수정`}</S.EditBtn>
+				</S.Header>
+			</CS.Header>
+			<UploadProfile>
+				<ProfileImg
+					key={1}
+					src={profileImage ? photo : photo ? import.meta.env.VITE_APP_BUCKET_BASEURL + photo : Profile}
+					isProfile={!!photo}
 				/>
-				{/* 중복체크 */}
-				{/* {nickname !== null && (
+				<HiddenFileInput type="file" accept="image/*" onChange={handleFile} />
+				<CameraIcons>
+					<img src={Camera} />
+				</CameraIcons>
+			</UploadProfile>
+			{/* input nickname */}
+			<Row horizonAlign="distribute" style={{ marginTop: "32px" }}>
+				<Typography typoSize="B2_medium" color="Gray500">
+					{"닉네임"}
+				</Typography>
+				{isDuplicate && (
+					<Typography typoSize="B2_medium" color="Red500">
+						{"이미 사용 중인 닉네임이에요"}
+					</Typography>
+				)}
+			</Row>
+			<TextFields
+				maxLength={8}
+				onChange={(val) => setNickname(val)}
+				inputLen={nickname.length}
+				totalNum={8}
+				text={nickname}
+				pageType="myPage"
+			/>
+			{/* 중복체크 */}
+			{/* {nickname !== null && (
 				<InputSelf
 					borderColor={isDuplicate ? "#CB3D0B" : nickname.length > 0 ? "#ECAA00" : "#EFEFEF"}
 					setIsDuplicate={setIsDuplicate}
@@ -341,52 +340,52 @@ export default function EditProfile() {
 				/>
 			)} */}
 
-				{/* choose major */}
-				<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "40px" }}>
-					{"전공/학번"}
+			{/* choose major */}
+			<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "40px" }}>
+				{"전공/학번"}
+			</Typography>
+			<MajorTotal onClick={() => setIsMajorOpen(!isMajorOpen)}>
+				<MajorText major={major === null}>{major === null ? "학과/전공" : major}</MajorText>
+				<img src={UnderArrow} />
+			</MajorTotal>
+			<StudentNumTotal onClick={() => setIsStudentNumOpen(!isStudentNumOpen)}>
+				<Typography typoSize="T3_semibold" color={studentNum ? "Gray800" : "Gray400"}>
+					{studentNum || "학번"}
 				</Typography>
-				<MajorTotal onClick={() => setIsMajorOpen(!isMajorOpen)}>
-					<MajorText major={major === null}>{major === null ? "학과/전공" : major}</MajorText>
-					<img src={UnderArrow} />
-				</MajorTotal>
-				<StudentNumTotal onClick={() => setIsStudentNumOpen(!isStudentNumOpen)}>
-					<Typography typoSize="T3_semibold" color={studentNum ? "Gray800" : "Gray400"}>
-						{studentNum || "학번"}
-					</Typography>
-					<img src={UnderArrow} />
-				</StudentNumTotal>
-				<BottomSheet isOpen={isStudentNumOpen} height={"390px"}>
-					<CS.SpaceBetween>
-						<MajorBtsTxt>{`학번`}</MajorBtsTxt>
-						<CloseImg src={Close} onClick={() => setIsStudentNumOpen(!isStudentNumOpen)} />
-					</CS.SpaceBetween>
-					<ScrollPicker options={STUDENT_NUM} height={220} onOptionSelect={handleStudentNum} />
-				</BottomSheet>
-				<BottomSheet height={`487px`} isOpen={isMajorOpen}>
+				<img src={UnderArrow} />
+			</StudentNumTotal>
+			<BottomSheet isOpen={isStudentNumOpen} height={"390px"}>
+				<CS.SpaceBetween>
+					<MajorBtsTxt>{`학번`}</MajorBtsTxt>
+					<CloseImg src={Close} onClick={() => setIsStudentNumOpen(!isStudentNumOpen)} />
+				</CS.SpaceBetween>
+				<ScrollPicker options={STUDENT_NUM} height={220} onOptionSelect={handleStudentNum} />
+			</BottomSheet>
+			<BottomSheet height={`487px`} isOpen={isMajorOpen}>
+				<CS.SpaceBetween>
+					<MajorBtsTxt>{`학과/전공`}</MajorBtsTxt>
+					<CloseImg src={Close} onClick={() => setIsMajorOpen(!isMajorOpen)} />
+				</CS.SpaceBetween>
+				{DepartmentList.departmentList.map((department) => (
+					<Department
+						department={department}
+						onClick={() => openBottomSheet(department)}
+						isDepartment={true}
+					/>
+				))}
+			</BottomSheet>
+			{isDepartmentOpen && (
+				<BottomSheet height={`630px`} isOpen={isDepartmentOpen}>
 					<CS.SpaceBetween>
 						<MajorBtsTxt>{`학과/전공`}</MajorBtsTxt>
-						<CloseImg src={Close} onClick={() => setIsMajorOpen(!isMajorOpen)} />
+						<CloseImg src={Close} onClick={() => setIsDepartmentOpen(!isDepartmentOpen)} />
 					</CS.SpaceBetween>
-					{DepartmentList.departmentList.map((department) => (
-						<Department
-							department={department}
-							onClick={() => openBottomSheet(department)}
-							isDepartment={true}
-						/>
+					{DepartmentList.departmentMajors[department].map((major: string) => (
+						<Department department={major} onClick={() => handleMajor(major)} />
 					))}
 				</BottomSheet>
-				{isDepartmentOpen && (
-					<BottomSheet height={`630px`} isOpen={isDepartmentOpen}>
-						<CS.SpaceBetween>
-							<MajorBtsTxt>{`학과/전공`}</MajorBtsTxt>
-							<CloseImg src={Close} onClick={() => setIsDepartmentOpen(!isDepartmentOpen)} />
-						</CS.SpaceBetween>
-						{DepartmentList.departmentMajors[department].map((major: string) => (
-							<Department department={major} onClick={() => handleMajor(major)} />
-						))}
-					</BottomSheet>
-				)}
-				{/* <StudentIdTotal
+			)}
+			{/* <StudentIdTotal
 				onFocus={() => handleFocus(true)}
 				onBlur={() => handleFocus(false)}
 				isSelected={isSelected}
@@ -398,48 +397,44 @@ export default function EditProfile() {
 					value={studentID}
 				/>
 			</StudentIdTotal> */}
-				<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "40px" }}>
-					{"기숙사"}
-				</Typography>
-				<Row gap={8}>
-					{DormitoryKind.map(
-						(kind) => (
-							<DormitroyBox onClick={() => setDormitory(kind)} isSelect={dormitory === kind}>
-								<Typography
-									typoSize={"T4_semibold"}
-									color={dormitory === kind ? "Yellow900" : "Gray700"}
-								>
-									{kind}
-								</Typography>
-							</DormitroyBox>
-						)
-						// userInfo.gender === "MALE" && kind === "구관" ? null : (
-						// 	<DormitroyBox onClick={() => setDormitory(kind)} isSelect={dormitory === kind}>
-						// 		<Typography
-						// 			typoSize={"T4_semibold"}
-						// 			color={dormitory === kind ? "Yellow900" : "Gray700"}
-						// 		>
-						// 			{kind}
-						// 		</Typography>
-						// 	</DormitroyBox>
-						// )
-					)}
-				</Row>
-				<Br marginTop={`3.31vh`} />
-				{/* input introduce self */}
-				<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "24px" }}>
-					{"나를 소개하는 한 줄"}
-				</Typography>
-				<TextFields
-					maxLength={25}
-					onChange={(val) => setIntroduction(val)}
-					inputLen={introduction?.length ?? 0}
-					totalNum={25}
-					text={introduction}
-					pageType="myPage"
-				/>
-			</CS.ScreenComponent>
-		</CS.Totalframe>
+			<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "40px" }}>
+				{"기숙사"}
+			</Typography>
+			<Row gap={8}>
+				{DormitoryKind.map(
+					(kind) => (
+						<DormitroyBox onClick={() => setDormitory(kind)} isSelect={dormitory === kind}>
+							<Typography typoSize={"T4_semibold"} color={dormitory === kind ? "Yellow900" : "Gray700"}>
+								{kind}
+							</Typography>
+						</DormitroyBox>
+					)
+					// userInfo.gender === "MALE" && kind === "구관" ? null : (
+					// 	<DormitroyBox onClick={() => setDormitory(kind)} isSelect={dormitory === kind}>
+					// 		<Typography
+					// 			typoSize={"T4_semibold"}
+					// 			color={dormitory === kind ? "Yellow900" : "Gray700"}
+					// 		>
+					// 			{kind}
+					// 		</Typography>
+					// 	</DormitroyBox>
+					// )
+				)}
+			</Row>
+			<Br marginTop={`3.31vh`} />
+			{/* input introduce self */}
+			<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "24px" }}>
+				{"나를 소개하는 한 줄"}
+			</Typography>
+			<TextFields
+				maxLength={25}
+				onChange={(val) => setIntroduction(val)}
+				inputLen={introduction?.length ?? 0}
+				totalNum={25}
+				text={introduction}
+				pageType="myPage"
+			/>
+		</>
 	);
 }
 const StudentNumTotal = styled(MajorTotal)`
