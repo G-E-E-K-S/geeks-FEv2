@@ -11,6 +11,7 @@ import Button from "../../../components/DesignStuff/Button/Button";
 import { useUserInfo } from "../../../store/useUserInfo";
 import TopNumber from "../../../components/Join/TopNumber";
 import Typography from "../../../components/Common/Layouts/Typography";
+import { debounce } from "lodash";
 
 const NickName = () => {
 	const [isNextPage, setIsNextPage] = useState(false);
@@ -18,40 +19,56 @@ const NickName = () => {
 	const [errorPopup, setErrorPopup] = useState(false);
 	const letterCnt = useRef(0);
 	const { nickname, setNickname } = useUserInfo();
+	const [debouncedNickname, setDebouncedNickname] = useState("");
 	const navigate = useNavigate();
 
-	const handleInputChange = (value: string) => {
-		const regex = /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
-		if (value.length > 0 && !regex.test(value)) {
-			setErrorPopup(true);
-		}
-		setNickname(value);
-		const length = value.length;
-		letterCnt.current = length;
-		length > 0 && regex.test(value) ? setIsNextPage(true) : setIsNextPage(false);
-	};
+	useEffect(() => {
+		const debouncedUpdate = debounce(() => {
+			setDebouncedNickname(nickname);
+		}, 300);
 
-	const { refetch } = useQuery({
-		queryKey: ["useNickName", nickname],
+		debouncedUpdate();
+
+		return () => debouncedUpdate.cancel();
+	}, [nickname]);
+
+	const { data: userNickName } = useQuery({
+		queryKey: ["useNickName", debouncedNickname],
 		queryFn: async () => {
-			const res = await API.get(`/api/v1/user/check/nickname/` + nickname);
+			const res = await API.get(`/api/v1/user/check/nickname/` + debouncedNickname);
 			return res.data;
 		},
-		enabled: false
+		enabled: debouncedNickname !== "",
+		retry: 0
 	});
-
-	useEffect(() => {
-		const timeId = setTimeout(() => {
-			refetch();
-		}, 800);
-		return () => {
-			clearTimeout(timeId);
-		};
-	}, [nickname]);
 
 	useEffect(() => {
 		setNickname("");
 	}, []);
+
+
+	useEffect(() => {
+		const regex = /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
+		const length = nickname.length;
+		letterCnt.current = length;
+		const regexTest = regex.test(nickname);
+
+		if (!userNickName) return;
+
+		if (length > 0 && regexTest && userNickName?.data === "available") {
+			setIsNextPage(true);
+			setIsPopup(false);
+			setErrorPopup(false);
+		} else {
+			setIsNextPage(false);
+			if (length > 0 && regexTest) {
+				setIsPopup(true);
+			} else {
+				setErrorPopup(true);
+			}
+		}
+
+	}, [userNickName]);
 
 	return (
 		<>
@@ -64,7 +81,7 @@ const NickName = () => {
 			</Typography>
 			<TextFields
 				maxLength={8}
-				onChange={(val) => handleInputChange(val)}
+				onChange={(val) => setNickname(val)}
 				inputLen={nickname.length}
 				totalNum={8}
 			/>
