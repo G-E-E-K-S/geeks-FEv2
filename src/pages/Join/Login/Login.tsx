@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, use } from "react";
 import styled from "styled-components";
 import API from "../../../axios/BaseUrl";
 import * as CS from "../../../components/Common/CommonStyle";
@@ -16,10 +16,11 @@ import NoShowPwd from "../../../assets/img/Join/NoShowPwd.svg";
 import ShowPwd from "../../../assets/img/Join/ShowPwd.svg";
 import Column from "../../../components/Common/Layouts/Column";
 import { useGetToken } from "../../../store/useGetToken";
+import { AxiosError } from "axios";
 
 const ForgetPwdIcon = styled.img`
-	width: 16px;
-	height: 16px;
+    width: 16px;
+    height: 16px;
 `;
 const InputEmail = () => {
 	const [isEmailError, setIsEmailError] = useState(false);
@@ -30,6 +31,7 @@ const InputEmail = () => {
 	const [isErrorPopup, setIsErrorPopUp] = useState(false);
 	const [showPwd, setShowPwd] = useState(false);
 	const [automaticLogIn, setAutomaticLogIn] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 	const navigate = useNavigate();
 
 	useMemo(() => {
@@ -48,14 +50,27 @@ const InputEmail = () => {
 					localStorage.setItem("token", res.data.data);
 					setAutomaticLogIn(true);
 					navigate("/home", { replace: true });
-				} else {
-					setIsEmailError(true);
-					setIsPwdError(true);
 				}
 			} catch (error) {
-				console.error(error);
+				// 팝업 바꾸고 수정해야 함, 실험
+				if (error instanceof AxiosError) {
+					if (!error.response) return;
+
+					if (error.response.data.error.code === 40403) {
+						setIsErrorPopUp(true);
+						setIsEmailError(true);
+						setIsPwdError(false)
+						setErrorMessage(error.response.data.error.message);
+					} else {
+						setIsErrorPopUp(true);
+						setIsPwdError(true);
+						setIsEmailError(false);
+						setErrorMessage(error.response.data.error.message);
+					}
+				}
 			}
 		}
+
 		fetchLogin();
 	};
 
@@ -94,8 +109,8 @@ const InputEmail = () => {
 				</Row>
 			</Column>
 			<ErrorPopup
-				message={`위 이메일로 가입된 정보가 없어요`}
-				bottom={`38.98`}
+				message={errorMessage}
+				bottom={`20`}
 				setShowPopup={setIsErrorPopUp}
 				isShowPopup={isErrorPopup}
 			/>

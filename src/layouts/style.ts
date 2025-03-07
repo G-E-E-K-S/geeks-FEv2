@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Totalframe = styled.div<{ background?: string }>`
     width: 100vw;
-    height: calc(100vh - 76px);
+    height: 100vh;
     /* min-height: calc(var(--vh, 1vh) * 100);
 	height: -webkit-fill-available;
 	height: fill-available; */

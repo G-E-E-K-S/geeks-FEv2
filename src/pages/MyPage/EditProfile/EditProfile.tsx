@@ -27,123 +27,126 @@ import { useUserInfo } from "../../../store/useUserInfo";
 import ScrollPicker from "../../../components/DesignStuff/ScrollPicker/ScrollPicker";
 import { STUDENT_NUM } from "../../Join/const";
 import BottomSheet from "../../../components/DesignStuff/BottomSheet/BottomSheet";
+import { debounce } from "lodash";
 
 const UploadProfile = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 `;
 
 const HiddenFileInput = styled.input`
-	position: absolute;
-	bottom: -5px;
-	right: 33.66vw;
-	width: 28px;
-	height: 28px;
-	opacity: 0;
-	z-index: 20;
+    position: absolute;
+    bottom: -5px;
+    right: 33.66vw;
+    width: 28px;
+    height: 28px;
+    opacity: 0;
+    z-index: 20;
 `;
 
 const ProfileImg = styled.img<{ isProfile: boolean }>`
-	position: relative;
-	width: 104px;
-	height: 104px;
-	border-radius: 50%;
-	object-fit: ${({ isProfile }) => isProfile && "cover"};
+    position: relative;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    object-fit: ${({ isProfile }) => isProfile && "cover"};
 `;
 const CameraIcons = styled.div`
-	position: absolute;
-	bottom: -5px;
-	right: 33.66vw;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 28px;
-	height: 28px;
-	background: #fff;
-	border: 1px solid #d0d0d0;
-	border-radius: 50%;
-	cursor: pointer;
+    position: absolute;
+    bottom: -5px;
+    right: 33.66vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 50%;
+    cursor: pointer;
 `;
 const SubTitle = styled.div`
-	margin-top: 32px;
-	color: #707070;
-	font-size: 0.875rem;
-	font-style: normal;
-	font-weight: 500;
+    margin-top: 32px;
+    color: #707070;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
 `;
 const AlreadyUse = styled(SubTitle)`
-	color: #cb3d0b;
-	font-size: 0.75rem;
+    color: #cb3d0b;
+    font-size: 0.75rem;
 `;
 const IntroOneLine = styled(SubTitle)`
-	margin-top: 28px;
+    margin-top: 28px;
 `;
 const QuestionMark = styled.img`
-	margin-top: 28px;
-	margin-left: 4px;
+    margin-top: 28px;
+    margin-left: 4px;
 `;
 const StudentIdTotal = styled.div<{ isSelected: boolean }>`
-	margin-top: 4px;
-	padding: 13px 0px 10px 0px;
-	display: flex;
-	width: 12.05vw;
-	border-bottom: 2px solid ${({ isSelected }) => (isSelected ? "#ECAA00" : "#efefef")};
+    margin-top: 4px;
+    padding: 13px 0px 10px 0px;
+    display: flex;
+    width: 12.05vw;
+    border-bottom: 2px solid ${({ isSelected }) => (isSelected ? "#ECAA00" : "#efefef")};
 `;
 const InputStudentId = styled.input`
-	outline: none;
-	border: none;
-	color: #333;
-	font-size: 1.125rem;
-	font-weight: 600;
-	line-height: 24px;
-	&::placeholder {
-		color: #d0d0d0;
-		font-size: 1.125rem;
-		font-weight: 500;
-		line-height: 24px;
-	}
+    outline: none;
+    border: none;
+    color: #333;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 24px;
+
+    &::placeholder {
+        color: #d0d0d0;
+        font-size: 1.125rem;
+        font-weight: 500;
+        line-height: 24px;
+    }
 `;
 const MajorBtsTxt = styled.div`
-	color: #333;
-	font-size: 1.25rem;
-	font-weight: 700;
-	line-height: 28px;
-	margin-bottom: 20px;
+    color: #333;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 28px;
+    margin-bottom: 20px;
 `;
 const MajorTotal = styled.div`
-	margin-top: 4px;
-	padding: 7px 0px 8px 0px;
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	border-bottom: 2px solid #efefef;
+    margin-top: 4px;
+    padding: 7px 0px 8px 0px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 2px solid #efefef;
 `;
 const MajorText = styled.div<{ major: boolean }>`
-	color: ${({ major }) => (major ? "#d0d0d0" : "#333333")};
-	font-size: 1.125rem;
-	font-style: normal;
-	font-weight: 600;
+    color: ${({ major }) => (major ? "#d0d0d0" : "#333333")};
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 600;
 `;
 const CloseImg = styled.img`
-	width: 28px;
-	height: 28px;
+    width: 28px;
+    height: 28px;
 `;
 
 const DormitroyBox = styled.div<{ isSelect: boolean }>`
-	width: max-content;
-	border-radius: 20px;
-	padding: 8px 16px;
-	background: ${({ isSelect }) => (isSelect ? "#FFF4CD" : "transparent")};
-	border: 1px solid ${({ isSelect }) => (isSelect ? "#ECAA00" : "#E2E2E2")};
+    width: max-content;
+    border-radius: 20px;
+    padding: 8px 16px;
+    background: ${({ isSelect }) => (isSelect ? "#FFF4CD" : "transparent")};
+    border: 1px solid ${({ isSelect }) => (isSelect ? "#ECAA00" : "#E2E2E2")};
 `;
 export default function EditProfile() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [userInfo, setUserInfo] = useState<UserProfileType>();
 	const [nickname, setNickname] = useState<string>("");
 	const [isDuplicate, setIsDuplicate] = useState(false);
+	const [isRegexCorrect, setIsRegexCorrect] = useState(false);
 	const [isStudentNumOpen, setIsStudentNumOpen] = useState(false);
 	const [photo, setPhoto] = useState("");
 	const [inputPhoto] = useState("");
@@ -197,33 +200,50 @@ export default function EditProfile() {
 		setStudentNum(data.studentNum);
 	}, [data]);
 
-	// useEffect(() => {
-	// 	if (nickname === prevNickname) return;
-
-	// 	const timeId = setTimeout(() => {
-	// 		fetchCheckNickName();
-	// 	}, 800);
-
-	// 	return () => {
-	// 		clearTimeout(timeId);
-	// 	};
-
-	// 	async function fetchCheckNickName() {
-	// 		try {
-	// 			const res = await API.get("/member/check/nickname?nickname=" + nickname);
-
-	// 			if (res.data === "duplicate") {
-	// 				setIsDuplicate(true);
-	// 			} else {
-	// 				setIsDuplicate(false);
-	// 			}
-	// 		} catch (error) {
-	// 			console.error(error);
-	// 		}
-	// 	}
-	// }, [nickname]);
-
 	const [profileImage, setProfileImage] = useState("");
+
+	const [debouncedNickname, setDebouncedNickname] = useState("");
+
+	useEffect(() => {
+		const debouncedUpdate = debounce(() => {
+			setDebouncedNickname(nickname);
+		}, 300);
+
+		debouncedUpdate();
+
+		return () => debouncedUpdate.cancel();
+	}, [nickname]);
+
+	const { data: userNickName } = useQuery({
+		queryKey: ["useNickName", debouncedNickname],
+		queryFn: async () => {
+			const res = await API.get(`/api/v1/user/check/nickname/` + debouncedNickname);
+			return res.data;
+		},
+		enabled: debouncedNickname !== "",
+		retry: 0
+	});
+
+	useEffect(() => {
+		const regex = /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
+		const length = nickname.length;
+		const regexTest = regex.test(nickname);
+
+		if (!userNickName) return;
+		if (nickname === data?.nickname) return;
+
+		if (length > 0 && regexTest && userNickName?.data === "available") {
+			setIsDuplicate(false);
+			setIsRegexCorrect(false);
+		} else {
+			if (length > 0 && regexTest) {
+				setIsDuplicate(true);
+			} else {
+				setIsRegexCorrect(true);
+			}
+		}
+
+	}, [userNickName]);
 
 	const handleFile = (event) => {
 		const files = event.target.files;
@@ -293,7 +313,9 @@ export default function EditProfile() {
 			<CS.Header backgroundColor="White">
 				<S.Header>
 					<GoBack />
-					<S.EditBtn onClick={handlePostSubmit} isChange={isModified()}>{`수정`}</S.EditBtn>
+					<S.EditBtn onClick={() => {
+						if (isModified() && !isRegexCorrect && !isDuplicate) handlePostSubmit();
+					}} isChange={isModified() && !isRegexCorrect && !isDuplicate}>{`수정`}</S.EditBtn>
 				</S.Header>
 			</CS.Header>
 			<UploadProfile>
@@ -317,6 +339,11 @@ export default function EditProfile() {
 						{"이미 사용 중인 닉네임이에요"}
 					</Typography>
 				)}
+				{!isDuplicate && isRegexCorrect && (
+					<Typography typoSize="B2_medium" color="Red500">
+						{"닉네임은 한글 / 숫자 / 영어만 입력이 가능해요"}
+					</Typography>
+				)}
 			</Row>
 			<TextFields
 				maxLength={8}
@@ -325,6 +352,7 @@ export default function EditProfile() {
 				totalNum={8}
 				text={nickname}
 				pageType="myPage"
+				isError={isRegexCorrect || isDuplicate}
 			/>
 			{/* 중복체크 */}
 			{/* {nickname !== null && (
@@ -438,6 +466,6 @@ export default function EditProfile() {
 	);
 }
 const StudentNumTotal = styled(MajorTotal)`
-	width: fit-content;
-	gap: 30px;
+    width: fit-content;
+    gap: 30px;
 `;

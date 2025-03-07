@@ -8,7 +8,7 @@ import reset from "../../../assets/img/MyPage/reset.svg";
 import Typography from "../../../components/Common/Layouts/Typography";
 import Column from "../../../components/Common/Layouts/Column";
 import GoBack from "../../../components/Common/GoBack";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export default function LifeStyles() {
 	const navigate = useNavigate();
@@ -21,6 +21,8 @@ export default function LifeStyles() {
 		cleaning: "",
 		tendency: ""
 	});
+	console.log(lifestyleSelections["tendency"])
+	const [lifeStyleExist, setLifeStyleExist] = useState<boolean>(false);
 
 	const handleSelect = (title: string, value: string) => {
 		setLifestyleSelections((prev) => ({
@@ -41,12 +43,11 @@ export default function LifeStyles() {
 		});
 	};
 
-	const { refetch } = useQuery({
-		// TODO BE로 데이터 넘기는 방식 변경해야함.
-		queryKey: ["sendLifeStyles"],
-		queryFn: async () => {
-			const res = await API.post(`/api/v1/user/detail/create`, {
-				smoke: lifestyleSelections["smoke"] === "흡연자" ? "SMOKER" : "NONSMOKER",
+
+	const lifeStyleUpdateMutation = useMutation({
+		mutationFn: async () => {
+			const response = await API.put("/api/v1/user/detail/update", {
+				smoke: lifestyleSelections["smoke"] === "흡연자에요" ? "SMOKER" : "NONSMOKER",
 				habit: lifestyleSelections["habit"] === "잠버릇 있어요" ? "HABIT" : "NONHABIT",
 				ear: lifestyleSelections["ear"] === "귀 밝아요" ? "BRIGHT" : "DARK",
 				activityTime: lifestyleSelections["activityTime"] === "아침형이에요" ? "MORNING" : "DAWN",
@@ -54,10 +55,52 @@ export default function LifeStyles() {
 				cleaning: lifestyleSelections["cleaning"] === "주기적으로 청소해요" ? "CLEAN" : "DIRTY",
 				tendency: lifestyleSelections["tendency"] === "혼자 조용히 지내요" ? "ALONE" : "TOGETHER"
 			});
-			return res.data;
+			return response.data;
 		},
-		enabled: false
+		onSuccess: (data) => {
+			if (data.success === true) {
+				navigate("/mypage");
+			}
+		}
 	});
+
+	const lifeStyleCreateMutation = useMutation({
+		mutationFn: async () => {
+			const response = await API.put("/api/v1/user/detail/create", {
+				smoke: lifestyleSelections["smoke"] === "흡연자에요" ? "SMOKER" : "NONSMOKER",
+				habit: lifestyleSelections["habit"] === "잠버릇 있어요" ? "HABIT" : "NONHABIT",
+				ear: lifestyleSelections["ear"] === "귀 밝아요" ? "BRIGHT" : "DARK",
+				activityTime: lifestyleSelections["activityTime"] === "아침형이에요" ? "MORNING" : "DAWN",
+				outing: lifestyleSelections["outing"] === "집에 있는 걸 좋아해요" ? "INSIDE" : "OUTSIDE",
+				cleaning: lifestyleSelections["cleaning"] === "주기적으로 청소해요" ? "CLEAN" : "DIRTY",
+				tendency: lifestyleSelections["tendency"] === "혼자 조용히 지내요" ? "ALONE" : "TOGETHER"
+			});
+			return response.data;
+		},
+		onSuccess: (data) => {
+			if (data.success === true) {
+				navigate("/mypage");
+			}
+		}
+	});
+
+	// const { refetch } = useQuery({
+	// 	// TODO BE로 데이터 넘기는 방식 변경해야함.
+	// 	queryKey: ["sendLifeStyles"],
+	// 	queryFn: async () => {
+	// 		const res = await API.post(`/api/v1/user/detail/create`, {
+	// 			smoke: lifestyleSelections["smoke"] === "흡연자" ? "SMOKER" : "NONSMOKER",
+	// 			habit: lifestyleSelections["habit"] === "잠버릇 있어요" ? "HABIT" : "NONHABIT",
+	// 			ear: lifestyleSelections["ear"] === "귀 밝아요" ? "BRIGHT" : "DARK",
+	// 			activityTime: lifestyleSelections["activityTime"] === "아침형이에요" ? "MORNING" : "DAWN",
+	// 			outing: lifestyleSelections["outing"] === "집에 있는 걸 좋아해요" ? "INSIDE" : "OUTSIDE",
+	// 			cleaning: lifestyleSelections["cleaning"] === "주기적으로 청소해요" ? "CLEAN" : "DIRTY",
+	// 			tendency: lifestyleSelections["tendency"] === "혼자 조용히 지내요" ? "ALONE" : "TOGETHER"
+	// 		});
+	// 		return res.data;
+	// 	},
+	// 	enabled: false
+	// });
 
 	const { data } = useQuery({
 		queryKey: ["getLifeStyle"],
@@ -70,23 +113,30 @@ export default function LifeStyles() {
 
 	useEffect(() => {
 		if (!data) return;
-		if (data.success) {
+		if (data?.success) {
+			setLifeStyleExist(true);
 			setLifestyleSelections({
 				smoke: data.data.smoke === "SMOKER" ? "흡연자에요" : "비흡연자에요",
 				habit: data.data.habit === "NONHABIT" ? "잠버릇 없어요" : "잠버릇 있어요",
 				ear: data.data.ear === "DARK" ? "귀 어두워요" : "귀 밝아요",
 				activityTime: data.data.activityTime === "DAWN" ? "새벽형이에요" : "아침형이에요",
 				outing: data.data.outing === "OUTSIDE" ? "나가는 걸 좋아해요" : "집에 있는 걸 좋아해요",
-				cleaning: data.data.cleaning === "DIRTY" ? "주기적으로 청소해요" : "더러워지면 청소해요",
+				cleaning: data.data.cleaning === "CLEAN" ? "주기적으로 청소해요" : "더러워지면 청소해요",
 				tendency: data.data.tendency === "ALONE" ? "혼자 조용히 지내요" : "함께 놀고 싶어요"
 			});
 		}
 	}, [data]);
 
 	const handleApply = () => {
-		refetch().then((val) => {
-			val.status === "success" && navigate("/mypage");
-		});
+		// refetch().then((val) => {
+		// 	val.status === "success" && navigate("/mypage");
+		// });
+
+		if(lifeStyleExist) {
+			lifeStyleUpdateMutation.mutate();
+		} else {
+			lifeStyleCreateMutation.mutate();
+		}
 	};
 	const isAllSelected = Object.values(lifestyleSelections).every((value) => value !== "");
 

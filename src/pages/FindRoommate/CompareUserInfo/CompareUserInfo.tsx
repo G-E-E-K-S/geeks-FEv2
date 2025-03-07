@@ -31,6 +31,7 @@ import CompareLifeStyle from "../../../components/Roommate/CompareLifeStyle/Comp
 interface RoommateApplyType {
 	roommateStatus: "NONE" | "PENDING" | "ACCEPT";
 }
+
 export default function CompareUserInfo() {
 	const { matchingId, opponentId } = useParams();
 
@@ -174,213 +175,215 @@ export default function CompareUserInfo() {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<SC.Totalframe>
-			<SC.ScreenComponent>
-				{/* header */}
-				<SC.Header backgroundColor="White">
-					<HeaderMenu />
-				</SC.Header>
-				{roommateState === "ACCEPT" && (
-					<S.MyRoommateNoti>
-						<S.MyRoommateNotiTxt>{`현재 나의 룸메이트에요`}</S.MyRoommateNotiTxt>
-						<S.EndRoommate onClick={() => setCancelRoommate(true)}>{`룸메이트 끊기`}</S.EndRoommate>
-					</S.MyRoommateNoti>
-				)}
-				{cancelRoommate && (
-					<FinishRoommate
-						opponenNickname={opponentInfo.nickname}
-						onClick={() => handleRemoveRoommate()}
-						description={true}
-						choiceMent={"네, 그만둘래요"}
-						noOnClick={() => setCancelRoommate(false)}
-						ment={opponentInfo.nickname + ` 님과\n룸메이트를 그만둘까요?`}
+		<>
+			{/* header */}
+			<SC.Header backgroundColor="White">
+				<HeaderMenu />
+			</SC.Header>
+			{roommateState === "ACCEPT" && (
+				<S.MyRoommateNoti>
+					<S.MyRoommateNotiTxt>{`현재 나의 룸메이트에요`}</S.MyRoommateNotiTxt>
+					<S.EndRoommate onClick={() => setCancelRoommate(true)}>{`룸메이트 끊기`}</S.EndRoommate>
+				</S.MyRoommateNoti>
+			)}
+			{cancelRoommate && (
+				<FinishRoommate
+					opponenNickname={opponentInfo.nickname}
+					onClick={() => handleRemoveRoommate()}
+					description={true}
+					choiceMent={"네, 그만둘래요"}
+					noOnClick={() => setCancelRoommate(false)}
+					ment={opponentInfo.nickname + ` 님과\n룸메이트를 그만둘까요?`}
+				/>
+			)}
+			{roommateState === "ACCEPT" && (
+				<S.MyRoommateNoti>
+					<S.MyRoommateNotiTxt>{`현재 나의 룸메이트에요`}</S.MyRoommateNotiTxt>
+					<S.EndRoommate onClick={() => handleRemoveRoommate()}>{`룸메이트 끊기`}</S.EndRoommate>
+				</S.MyRoommateNoti>
+			)}
+			{/* user Profile */}
+			<Column gap={16}>
+				<Row horizonAlign="distribute" width="w-full">
+					<S.UserProfileImage
+						src={
+							opponentInfo?.image
+								? import.meta.env.VITE_APP_BUCKET_BASEURL + opponentInfo.image
+								: BasicProfile
+						}
 					/>
-				)}
-				{roommateState === "PENDING" && (
-					<S.MyRoommateNoti>
-						<S.MyRoommateNotiTxt>{`현재d 나의 룸메이트에요`}</S.MyRoommateNotiTxt>
-						<S.EndRoommate onClick={() => handleRemoveRoommate()}>{`룸메이트 끊기`}</S.EndRoommate>
-					</S.MyRoommateNoti>
-				)}
-				{/* user Profile */}
-				<Column gap={16}>
-					<Row horizonAlign="distribute" width="w-full">
-						<S.UserProfileImage
-							src={
-								opponentInfo?.image
-									? import.meta.env.VITE_APP_BUCKET_BASEURL + opponentInfo.image
-									: BasicProfile
-							}
-						/>
-						<S.Chat gap={8}>
-							{/* onClick={() => startChat()} */}
-							<img src={ChatImg} />
-							<Typography typoSize="T4_semibold" color="Gray700" style={{ whiteSpace: "nowrap" }}>
-								{"대화하기"}
-							</Typography>
-						</S.Chat>
-					</Row>
-					<div>
-						<Row>
-							<Typography typoSize="T2_bold" color="Gray800">
-								{opponentInfo?.nickname}
-							</Typography>
-							{opponentInfo?.smoke === "SMOKER" && <S.Smoke>{`흡연자`}</S.Smoke>}
-						</Row>
-						<Typography typoSize="T4_medium" color="Gray600">
-							{opponentInfo?.major} · {opponentInfo?.studentNum}
+					<S.Chat gap={8}>
+						{/* onClick={() => startChat()} */}
+						<img src={ChatImg} />
+						<Typography typoSize="T4_semibold" color="Gray700" style={{ whiteSpace: "nowrap" }}>
+							{"대화하기"}
 						</Typography>
-					</div>
-					{opponentInfo?.introduction && (
-						<S.Introduce>
-							<Typography typoSize="B2_medium" color="Gray700">
-								{opponentInfo?.introduction}
-							</Typography>
-						</S.Introduce>
-					)}
-				</Column>
-				<Br style={{ marginTop: "20px" }} />
+					</S.Chat>
+				</Row>
+				<div>
+					<Row>
+						<Typography typoSize="T2_bold" color="Gray800">
+							{opponentInfo?.nickname}
+						</Typography>
+						{opponentInfo?.smoke === "SMOKER" && <S.Smoke>{`흡연자`}</S.Smoke>}
+					</Row>
+					<Typography typoSize="T4_medium" color="Gray600">
+						{opponentInfo?.major} · {opponentInfo?.studentNum}
+					</Typography>
+				</div>
+				{opponentInfo?.introduction && (
+					<S.Introduce>
+						<Typography typoSize="B2_medium" color="Gray700">
+							{opponentInfo?.introduction}
+						</Typography>
+					</S.Introduce>
+				)}
+			</Column>
+			<Br style={{ marginTop: "20px" }} />
 
-				{/* match score */}
-				<S.MatchText horizonAlign="center" verticalAlign="center">
-					<div>{opponentInfo.point >= 40 && opponentInfo.point <= 60 ? "서로" : "나와"}</div>
-					<Typography
-						typoSize="H2"
-						color={
-							opponentInfo.point >= 70
-								? "Blue600"
-								: opponentInfo?.point >= 40 && opponentInfo?.point <= 60
+			{/* match score */}
+			<S.MatchText horizonAlign="center" verticalAlign="center">
+				<div>{opponentInfo.point >= 40 && opponentInfo.point <= 60 ? "서로" : "나와"}</div>
+				<Typography
+					typoSize="H2"
+					color={
+						opponentInfo.point >= 70
+							? "Blue600"
+							: opponentInfo?.point >= 40 && opponentInfo?.point <= 60
 								? "Yellow700"
 								: "YellowGray600"
-						}
-						style={{ marginLeft: "7px" }}
-					>
-						{opponentInfo.point >= 70
-							? "잘 맞아요!"
-							: opponentInfo?.point >= 40 && opponentInfo?.point <= 60
+					}
+					style={{ marginLeft: "7px" }}
+				>
+					{opponentInfo.point >= 70
+						? "잘 맞아요!"
+						: opponentInfo?.point >= 40 && opponentInfo?.point <= 60
 							? "맞춰가면 좋아요!"
 							: "잘 맞지 않아요"}
-					</Typography>
-				</S.MatchText>
-				<div style={{ width: "140px", height: "140px", margin: "0 auto" }}>
-					<Chart
-						type="doughnut"
-						data={{
-							datasets: [
-								{
-									data: [opponentInfo?.point ?? 0, 100 - (opponentInfo?.point ?? 0)],
-									borderColor: [
-										opponentInfo?.point >= 70
-											? "#2B75CB"
-											: opponentInfo?.point >= 40
-											? "#FFD540"
-											: "#B5AA99",
-										"#EFEFEF"
-									],
-									backgroundColor: [
-										opponentInfo?.point >= 70
-											? "#2B75CB"
-											: opponentInfo?.point >= 40
-											? "#FFD540"
-											: "#B5AA99",
-										"#EFEFEF"
-									],
-									borderWidth: 0
-								}
-							]
-						}}
-						options={{
-							responsive: true,
-							cutout: "80%",
-							plugins: {
-								legend: {
-									display: false
-								},
-								tooltip: {
-									enabled: false
-								}
-							}
-						}}
-						plugins={[
+				</Typography>
+			</S.MatchText>
+			<div style={{ width: "140px", height: "140px", margin: "0 auto" }}>
+				<Chart
+					type="doughnut"
+					data={{
+						datasets: [
 							{
-								id: "textCenter",
-								afterDatasetsDraw(chart) {
-									const { ctx } = chart;
-									const datasetMeta = chart.getDatasetMeta(0);
+								data: [opponentInfo?.point ?? 0, 100 - (opponentInfo?.point ?? 0)],
+								borderColor: [
+									opponentInfo?.point >= 70
+										? "#2B75CB"
+										: opponentInfo?.point >= 40
+											? "#FFD540"
+											: "#B5AA99",
+									"#EFEFEF"
+								],
+								backgroundColor: [
+									opponentInfo?.point >= 70
+										? "#2B75CB"
+										: opponentInfo?.point >= 40
+											? "#FFD540"
+											: "#B5AA99",
+									"#EFEFEF"
+								],
+								borderWidth: 0
+							}
+						]
+					}}
+					options={{
+						responsive: true,
+						cutout: "80%",
+						plugins: {
+							legend: {
+								display: false
+							},
+							tooltip: {
+								enabled: false
+							}
+						}
+					}}
+					plugins={[
+						{
+							id: "textCenter",
+							afterDatasetsDraw(chart) {
+								const { ctx } = chart;
+								const datasetMeta = chart.getDatasetMeta(0);
 
-									if (!datasetMeta || datasetMeta.data.length === 0) return;
+								if (!datasetMeta || datasetMeta.data.length === 0) return;
 
-									const { x, y } = datasetMeta.data[0];
+								const { x, y } = datasetMeta.data[0];
 
-									ctx.save();
-									ctx.font = "700 1.75rem Pretendard";
-									ctx.fillStyle =
-										opponentInfo.point >= 70
-											? "#2B75CB"
-											: opponentInfo.point >= 40
+								ctx.save();
+								ctx.font = "700 1.75rem Pretendard";
+								ctx.fillStyle =
+									opponentInfo.point >= 70
+										? "#2B75CB"
+										: opponentInfo.point >= 40
 											? "#D68D00"
 											: "#B5AA99";
-									ctx.textAlign = "center";
-									ctx.textBaseline = "middle";
-									ctx.fillText(`${opponentInfo.point}점`, x, y);
-									ctx.restore();
-								}
+								ctx.textAlign = "center";
+								ctx.textBaseline = "middle";
+								ctx.fillText(`${opponentInfo.point}점`, x, y);
+								ctx.restore();
 							}
-						]}
-					/>
-				</div>
-
-				{/* Compare Section */}
-				<Row style={{ marginTop: "56.75px" }}>
-					<Typography
-						typoSize="T4_semibold"
-						color="Gray600"
-						style={{ marginLeft: "28.46vw", marginRight: "32.45vw" }}
-					>
-						{"상대방"}
-					</Typography>
-					<Typography typoSize="T4_semibold" color="Gray600">
-						{"나"}
-					</Typography>
-				</Row>
-				{lifeStyleList?.map((list) => (
-					<CompareLifeStyle
-						lifeStyle={list.name}
-						isSame={opponentLifeStyle?.[list.key] === myListStyle?.[list.key]}
-						opponentLifeStyle={
-							lifeStyleList.find((item) => item.key === list.key)?.[opponentLifeStyle?.[list.key]]
 						}
-						myLifeStyle={lifeStyleList.find((item) => item.key === list.key)?.[myListStyle?.[list.key]]}
+					]}
+				/>
+			</div>
+
+			{/* Compare Section */}
+			<Row style={{ marginTop: "56.75px" }}>
+				<Typography
+					typoSize="T4_semibold"
+					color="Gray600"
+					style={{ marginLeft: "28.46vw", marginRight: "32.45vw" }}
+				>
+					{"상대방"}
+				</Typography>
+				<Typography typoSize="T4_semibold" color="Gray600">
+					{"나"}
+				</Typography>
+			</Row>
+			{lifeStyleList?.map((list) => (
+				<CompareLifeStyle
+					lifeStyle={list.name}
+					isSame={opponentLifeStyle?.[list.key] === myListStyle?.[list.key]}
+					opponentLifeStyle={
+						lifeStyleList.find((item) => item.key === list.key)?.[opponentLifeStyle?.[list.key]]
+					}
+					myLifeStyle={lifeStyleList.find((item) => item.key === list.key)?.[myListStyle?.[list.key]]}
+				/>
+			))}
+			<S.BottomEnroll horizonAlign="distribute" verticalAlign="center">
+				<Column horizonAlign="center" verticalAlign="center">
+					<img
+						src={isSave ? FillSave : Save}
+						style={{ width: "28px", height: "28px" }}
+						onClick={() => saveRoommate()}
 					/>
-				))}
-				<S.BottomEnroll horizonAlign="distribute" verticalAlign="center">
-					<Column horizonAlign="center" verticalAlign="center">
-						<img
-							src={isSave ? FillSave : Save}
-							style={{ width: "28px", height: "28px" }}
-							onClick={() => saveRoommate()}
-						/>
-						<Typography typoSize="B2_medium" color="Gray500">
-							{"저장"}
-						</Typography>
-					</Column>
-					<S.EnrollBtn
-						horizonAlign="center"
-						verticalAlign="center"
-						state={roommateApplyState || roommateState !== "NONE" || acceptRoommate}
-						onClick={() => setApplyRommate(true)}
+					<Typography typoSize="B2_medium" color="Gray500">
+						{"저장"}
+					</Typography>
+				</Column>
+				<S.EnrollBtn
+					horizonAlign="center"
+					verticalAlign="center"
+					state={roommateApplyState || roommateState !== "NONE" || acceptRoommate}
+					onClick={() => {
+						if (!(roommateApplyState || roommateState !== "NONE" || acceptRoommate)) {
+							setApplyRommate(true);
+						}
+					}}
+				>
+					<Typography
+						typoSize="T3_semibold"
+						color={
+							roommateApplyState || roommateState !== "NONE" || acceptRoommate ? "Gray400" : "Black"
+						}
 					>
-						<Typography
-							typoSize="T3_semibold"
-							color={
-								roommateApplyState || roommateState !== "NONE" || acceptRoommate ? "Gray400" : "Black"
-							}
-						>
-							{"룸메이트 신청하기"}
-						</Typography>
-					</S.EnrollBtn>
-				</S.BottomEnroll>
-			</SC.ScreenComponent>
+						{"룸메이트 신청하기"}
+					</Typography>
+				</S.EnrollBtn>
+			</S.BottomEnroll>
 
 			{/* TODO 해당 컴포넌트 tsx로 변경 */}
 			<ApplyCancelBottomSheet
@@ -400,6 +403,6 @@ export default function CompareUserInfo() {
 				setShowPopup={setShowPopup}
 				message={`룸메이트가 저장되었어요!`}
 			/>
-		</SC.Totalframe>
+		</>
 	);
 }
