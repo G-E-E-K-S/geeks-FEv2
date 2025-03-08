@@ -100,12 +100,12 @@ export default function Notification() {
 				</Column>
 				<Toggle isToggle={toggleState.roommate} onClick={() => handleToggle("roommate")} />
 			</S.MenuWrapper>
-			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+			{/* <S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Typography typoSize="T3_semibold" color="Gray800">
 					{"새로운 대화 알림"}
 				</Typography>
 				<Toggle isToggle={toggleState.chat} onClick={() => handleToggle("chat")} />
-			</S.MenuWrapper>
+			</S.MenuWrapper> */}
 			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Column gap={4}>
 					<Typography typoSize="T3_semibold" color="Gray800">

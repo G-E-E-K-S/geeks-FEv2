@@ -134,7 +134,7 @@ export default function MyPage() {
 					/>
 				</S.RoommateWrapper>
 			)}
-			<div style={{ padding: "16px 0", marginTop: "20px" }}>
+			{/* <div style={{ padding: "16px 0", marginTop: "20px" }}>
 				<Row horizonAlign="distribute">
 					<Column gap={4}>
 						<Typography typoSize="T3_semibold" color="Gray800">
@@ -146,16 +146,18 @@ export default function MyPage() {
 					</Column>
 					<Toggle onClick={clickedToggle} isToggle={toggle} />
 				</Row>
-			</div>
+			</div> */}
 
-			<Br />
+			<div style={{ marginTop: "20px" }}>
+				<Br />
+			</div>
 			<MenuList
 				icon={enrollLifeStyle}
 				menuName={`생활 습관 등록하기`}
 				onClick={() => navigate("/lifestyle")}
 				isEnroolListStyle={!top3UserData?.exists}
 			/>
-			<MenuList icon={saveList} menuName={`룸메이트 저장 목록`} onClick={() => navigate("/savelist")} />
+			{/* <MenuList icon={saveList} menuName={`룸메이트 저장 목록`} onClick={() => navigate("/savelist")} /> */}
 			<MenuList
 				icon={roommateApply}
 				menuName={`룸메이트 신청 목록`}

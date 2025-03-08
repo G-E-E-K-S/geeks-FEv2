@@ -76,29 +76,6 @@ export default function Home() {
 		retry: 2
 	});
 
-	// React.useEffect(() => {
-	//   if ('serviceWorker' in navigator) {
-	//     navigator.serviceWorker.ready.then((registration) => {
-	//       registration.update();
-	//     });
-	//   }
-	// }, [location]);
-
-	// useEffect(() => {
-	// 	async function fetchEmailPage() {
-	// 		try {
-	// 			const res = await API.get("/home/main");
-	// 			setRoommateApply(res.data.roommateApply);
-	// 			setIsExist(res.data.exist);
-	// 			setPoint(res.data.points);
-	// 			setLoading(false);
-	// 		} catch (error) {
-	// 			console.error(error);
-	// 		}
-	// 	}
-	// 	fetchEmailPage();
-	// 	const isVisited = localStorage.getItem("vap"); //VisitedAlarmPage
-
 	const { mutate: homeComingMutate } = useMutation({
 		mutationFn: async () => {
 			return await API.post(`/api/v1/roommate/homecoming`);
@@ -217,7 +194,7 @@ export default function Home() {
 						</Row>
 					</ButtonBox>
 				)}
-				<ButtonBox backgroundColor="White" onClick={() => navigate("/roommate")}>
+				{/* <ButtonBox backgroundColor="White" onClick={() => navigate("/roommate")}>
 					<Row horizonAlign="distribute">
 						<Typography typoSize="H3" color="Gray800" style={{ marginBottom: "32px" }}>
 							{isExist
@@ -262,7 +239,7 @@ export default function Home() {
 							</S.EnrollRule>
 						</Column>
 					)}
-				</ButtonBox>
+				</ButtonBox> */}
 				{isShowWriteReview && (
 					<ButtonBox
 						backgroundColor={"Red50"}
@@ -293,6 +270,18 @@ export default function Home() {
 					<CalendarHeader type="home" />
 					<CalendarGrid type="home" scheduleData={scheduleData} />
 					<TodaySchedules todayScheduleDatas={todayScheduleDatas} />
+				</ButtonBox>
+				<ButtonBox backgroundColor="White">
+					<Column gap={4}>
+						<Typography typoSize="T3_bold" color="Gray800">
+							{"‘룸메찾기’ 기능은 2학기에 만나요!"}
+						</Typography>
+						<Typography typoSize="B2_medium" color="Gray800">
+							{
+								"2학기에는 원하는 기준을 설정해서 나와 딱 맞는\n룸메이트를 찾을 수 있어요. 조금만 기다려 주세요!"
+							}
+						</Typography>
+					</Column>
 				</ButtonBox>
 			</Column>
 		</>

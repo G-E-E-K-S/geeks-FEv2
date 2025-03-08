@@ -81,7 +81,7 @@ export default function UserProfile({
 						</Typography>
 					</Column>
 				</Row>
-				{score && (
+				{/* {score && (
 					<Row horizonAlign="center" verticalAlign="center">
 						<Typography
 							typoSize="H3"
@@ -97,7 +97,7 @@ export default function UserProfile({
 							{"점"}
 						</Typography>
 					</Row>
-				)}
+				)} */}
 				{isMe && (
 					<S.Edit onClick={() => navigate("/editprofile")}>
 						<Typography typoSize="T4_semibold" color="Gray700">
