@@ -167,7 +167,11 @@ export default function MyPage() {
 			<MenuList icon={userInfoImg} menuName={`회원 정보 설정`} onClick={() => navigate("/settinguserinfo")} />
 			<MenuList icon={notice} menuName={`알림 설정`} onClick={() => navigate("/notification")} />
 			<MenuList icon={announce} menuName={`공지사항`} onClick={() => navigate("/notice")} />
-			<MenuList icon={HeadPhone} menuName={`문의하기`} onClick={() => navigate("/notice")} />
+			<MenuList
+				icon={HeadPhone}
+				menuName={`문의하기`}
+				onClick={() => window.open("https://forms.gle/pt6zpQ8UtvbtPDW98")}
+			/>
 			{/* <MenuList icon={question} menuName={`자주 묻는 질문`} onClick={() => navigate("/faq")} /> */}
 			<MenuList icon={List} menuName={`약관 및 정책`} onClick={() => navigate("/termpolicy")} />
 			<MenuList icon={logout} menuName={`로그아웃`} onClick={() => Logout()} />
