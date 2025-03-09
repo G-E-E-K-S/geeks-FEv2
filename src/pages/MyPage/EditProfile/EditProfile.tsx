@@ -287,7 +287,7 @@ export default function EditProfile() {
 		const formData = new FormData();
 		formData.append("dto", new Blob([JSON.stringify(userData)], { type: "application/json" }));
 
-		if (photo !== null) {
+		if (file || photo !== null) {
 			//@ts-ignore
 			Object.values(file).forEach((f: File) => {
 				formData.append("files", f);
