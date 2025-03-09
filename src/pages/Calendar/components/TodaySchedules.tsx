@@ -7,12 +7,11 @@ import Column from "../../../components/Common/Layouts/Column";
 import Row from "../../../components/Common/Layouts/Row";
 import { ScheduleMark } from "../utils/styles/ScheduleMark.styled";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Schedule, ScheduleType } from "../utils/types";
+import { Schedule } from "../utils/types";
 import { formatTimeRange } from "../utils";
 import { useCalendarStore } from "../../../store/calendarStore";
 import { useScheduleStore } from "../../../store/scheduleStore";
-
-import test from "../../../assets/img/Home/Alarm/roommate.svg";
+import Profile from "../../../assets/img/MyPage/basicProfile.svg";
 
 interface TodaySchedulesProps {
 	todayScheduleDatas: Schedule[];
@@ -64,7 +63,8 @@ export default function TodaySchedules({ todayScheduleDatas }: TodaySchedulesPro
 								)}
 							</Row>
 							<Row gap={6} verticalAlign="center">
-								<UserImage src={test} />
+								<UserImage
+									src={schedule?.image ? import.meta.env.VITE_APP_BUCKET_BASEURL + schedule.image : Profile} />
 								<Typography typoSize="B2_medium" color="Gray600">
 									{schedule.nickname}
 								</Typography>
@@ -88,13 +88,14 @@ export default function TodaySchedules({ todayScheduleDatas }: TodaySchedulesPro
 const TodaySchedulesContainer = styled.div``;
 
 const ScheduleList = styled.div`
-	margin-top: 16px;
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 `;
 
 const UserImage = styled.img`
-	width: 20px;
-	height: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
 `;

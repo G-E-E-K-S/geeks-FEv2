@@ -15,8 +15,6 @@ import { usePostCalendar } from "../hooks/usePostCalendar";
 import { usePutCalendar } from "../hooks/usePutCalendar";
 import { useScheduleStore } from "../../../store/scheduleStore";
 import { useCalendarStore } from "../../../store/calendarStore";
-import { replace } from "lodash";
-import * as trace_events from "node:trace_events";
 
 export default function ScheduleEdit() {
 	const navigate = useNavigate();
@@ -29,7 +27,7 @@ export default function ScheduleEdit() {
 
 	const [title, setTitle] = useState("");
 	const [type, setType] = useState<ScheduleType>("OUTING");
-	const [alarm, setAlarm] = useState(1);
+	// const [alarm, setAlarm] = useState(1);
 	const [explain, setExplain] = useState("");
 
 	const [startDate, setStartDate] = useState(selectedDate ? dayjs(selectedDate).format("YYYY.M.D") : dayjs().format("YYYY.M.D"));
@@ -38,13 +36,13 @@ export default function ScheduleEdit() {
 	const [endTime, setEndTime] = useState(floorToNearest30(dayjs()).format("HH:mm"));
 
 	const [isActive, setIsActive] = useState(false);
-	const [prevValues, setPrevValues] = useState({ title, type, alarm, explain });
+	const [prevValues, setPrevValues] = useState({ title, type, explain });
 
 	useEffect(() => {
 		if (currentSchedule) {
 			setTitle(currentSchedule.title || "");
 			setType(currentSchedule.type || "OUTING");
-			setAlarm(1); // 기본값 설정
+			// setAlarm(1); // 기본값 설정
 			setExplain(currentSchedule.description || "");
 			setStartDate(dayjs(currentSchedule.startDate).format("YYYY.M.D"));
 			setStartTime(dayjs(currentSchedule.startDate).format("HH:mm"));
@@ -53,7 +51,7 @@ export default function ScheduleEdit() {
 			setPrevValues({
 				title: currentSchedule.title || "",
 				type: currentSchedule.type || "OUTING",
-				alarm: 1, // 기본값 설정
+				// alarm: 1, // 기본값 설정
 				explain: currentSchedule.description || ""
 			});
 		}
@@ -66,14 +64,14 @@ export default function ScheduleEdit() {
 			const isChanged =
 				title !== prevValues.title ||
 				type !== prevValues.type ||
-				alarm !== prevValues.alarm ||
+				// alarm !== prevValues.alarm ||
 				explain !== prevValues.explain;
 			setIsActive(isChanged);
 		} else {
 			// schedule이 없을 때는 title이 비어있지 않으면 active
 			setIsActive(title.trim() !== "");
 		}
-	}, [title, type, alarm, explain, currentSchedule, prevValues]);
+	}, [title, type, explain, currentSchedule, prevValues]);
 
 	const addCalendarSchedule = async () => {
 		const startDateTime = formatDateTimeForApi(startDate, startTime);
@@ -116,7 +114,7 @@ export default function ScheduleEdit() {
 					setEndDate={setEndDate}
 					setEndTime={setEndTime}
 				/>
-				<ScheduleEditAlarm alarm={alarm} setAlarm={setAlarm} />
+				{/*<ScheduleEditAlarm alarm={alarm} setAlarm={setAlarm} />*/}
 				<ScheduleEditExplain explain={explain} setExplain={setExplain} />
 			</Column>
 		</>
