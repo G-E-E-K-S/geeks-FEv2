@@ -38,8 +38,8 @@ export const Chat = styled(Row)`
 `;
 
 export const ApplyRoommateBtn = styled(Row)<{ state: boolean }>`
-position: relative;
-z-index: 20;
+	position: relative;
+	z-index: 1;
 	width: 116px;
 	height: 52px;
 	border-radius: 12px;
