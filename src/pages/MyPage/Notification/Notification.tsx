@@ -1,6 +1,7 @@
 import * as CS from "../../../components/Common/CommonStyle";
 import * as S from "./style";
 import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import Header from "../../../components/MyPage/Header";
 import Typography from "../../../components/Common/Layouts/Typography";
@@ -20,10 +21,13 @@ const patchUserFcmToken = async (token: string) => {
 
 const patchUserServiceNotification = async () => {
 	try {
-		const response = await API.patch(`api/v1/user/change/roommate/notify`);
-		return response.data;
+		await Promise.all([
+			API.patch(`api/v1/user/change/roommate/notify`),
+			API.patch(`api/v1/user/change/service/notify`)
+		]);
+		return "success";
 	} catch (error) {
-		console.log(error);
+		return "error";
 	}
 };
 
@@ -35,6 +39,22 @@ export default function Notification() {
 		service: false,
 		marketing: false
 	});
+
+	const { data } = useQuery({
+		queryKey: ["alarmState"],
+		queryFn: async () => {
+			const response = await API.get(`/api/v1/user/notify/state`);
+			return response.data.data;
+		}
+	});
+
+	useEffect(() => {
+		if (!data) return;
+		setToggleState((prev) => ({
+			total: data.roommate && data.service,
+			...data
+		}));
+	}, [data]);
 
 	const handleToggle = async (type: string) => {
 		// Recheck
@@ -49,12 +69,10 @@ export default function Notification() {
 
 			if (fcmToken === "success") {
 				// 알림 토글
-				const roommateNotifyStatus = await patchUserServiceNotification();
-				console.log(roommateNotifyStatus);
+				await patchUserServiceNotification();
 			}
 		}
 
-		// console.log(";;clickToggle");
 		setToggleState((prev: any) => {
 			if (type === "total") {
 				const newState = !prev.total;
@@ -118,7 +136,7 @@ export default function Notification() {
 				</Column>
 				<Toggle isToggle={toggleState.service} onClick={() => handleToggle("service")} />
 			</S.MenuWrapper>
-			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
+			{/* <S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Column gap={4}>
 					<Typography typoSize="T3_semibold" color="Gray800">
 						{"마케팅 알림"}
@@ -128,7 +146,7 @@ export default function Notification() {
 					</Typography>
 				</Column>
 				<Toggle isToggle={toggleState.marketing} onClick={() => handleToggle("marketing")} />
-			</S.MenuWrapper>
+			</S.MenuWrapper> */}
 		</>
 	);
 }
