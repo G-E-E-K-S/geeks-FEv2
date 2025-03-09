@@ -17,14 +17,14 @@ export default function CalendarHeader({ type, toggleIsOpen }: CalendarHeaderPro
 	const { currentDate, handlePrevMonth, handleNextMonth, handleTodayClick } = useCalendarStore();
 
 	return (
-		<CalendarHeaderWrapper $type={type}>
+		<CalendarHeaderWrapper $type={type} onClick={toggleIsOpen}>
 			{type === "calendar" && (
 				<>
 					<Row verticalAlign="center" gap={4}>
 						<Typography typoSize="H3" color="Gray800">
 							{currentDate.format("YYYY.M")}
 						</Typography>
-						<Button onClick={toggleIsOpen}>
+						<Button>
 							<img src={DownArrowIcon} />
 						</Button>
 					</Row>
