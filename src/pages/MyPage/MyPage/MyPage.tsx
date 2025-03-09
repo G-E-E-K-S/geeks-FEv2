@@ -99,7 +99,7 @@ export default function MyPage() {
 	return isLoading || !userInfo ? (
 		<Loading />
 	) : (
-		<>
+		<div style={{paddingBottom:"76px"}}>
 			<CS.Header backgroundColor="White">
 				<Typography typoSize="H3" color="Gray800">
 					{"마이"}
@@ -180,6 +180,6 @@ export default function MyPage() {
 					menuName={`서비스 탈퇴`}
 					// onClick={() => navigate("/secessionreason", { state: { userName: userInfo.nickname } })}
 				/> */}
-		</>
+		</div>
 	);
 }
