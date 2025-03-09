@@ -14,26 +14,35 @@ const PopupBox = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
+	position: fixed;
 	bottom: ${(props) => props.bottom - 8.3 + "vh"};
-	top: ${({ top }) => (top !== undefined ? `${top}vh` : "0px")};
+	top: ${(props) => props.top && "0%"};
 	border-radius: 12px;
-	background: #fcede8;
-
-	color: #cb3d0b;
+	color: #fff;
 	text-align: center;
 	font-size: 1rem;
 	font-weight: 600;
 	line-height: 24px;
+	margin: auto 0;
 	opacity: 0;
+	color: #cb3d0b;
+	background: #fcede8;
+	left: 50%;
+	transform: translateX(-50%);
+
+	${(props) => props.top != null && "transition: top 0.8s ease, opacity 0.5s ease;"};
+	${(props) => props.bottom != null && "transition: bottom 0.8s ease, opacity 0.5s ease;"};
 
 	&.active {
+		bottom: ${(props) => props.bottom + "vh"};
+		top: ${(props) => props.top + "vh"};
 		opacity: 1;
 		animation: vibrate 0.5s ease-in-out;
 	}
 
+	&:not(.active) {
+		opacity: 0;
+	}
 	@keyframes vibrate {
 		0% {
 			transform: translateX(-50%);

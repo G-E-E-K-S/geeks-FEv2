@@ -10,13 +10,13 @@ export const ModalBackground = styled.div<{ isOpen?: boolean }>`
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.5);
 	opacity: 0.5;
-	z-index: 20;
+	z-index: 1000;
 	transition: transform 0.3s ease;
 	visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
 `;
 
 export const TotalBottomSheet = styled.div<{ height: string; isOpen?: boolean }>`
-	z-index: 20;
+	z-index: 1020;
 	position: fixed;
 	width: 100vw;
 	left: 50%;

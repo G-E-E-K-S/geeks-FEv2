@@ -1,10 +1,11 @@
 import * as CS from "../../../components/Common/CommonStyle";
 import * as S from "./style";
+import { useEffect, useMemo, useState } from "react";
+
 import Header from "../../../components/MyPage/Header";
 import Typography from "../../../components/Common/Layouts/Typography";
 import Toggle from "../../../components/DesignStuff/Toggle/Toggle";
 import Column from "../../../components/Common/Layouts/Column";
-import { useState } from "react";
 import { handleAllowNotification } from "../../../FCM_ALARM";
 import API from "../../../axios/BaseUrl";
 
@@ -112,7 +113,7 @@ export default function Notification() {
 						{"서비스 알림"}
 					</Typography>
 					<Typography typoSize="B2_medium" color="Gray600">
-						{"외박 신청, 어쩌구를 알려드려요"}
+						{"외박 신청을 알려드려요"}
 					</Typography>
 				</Column>
 				<Toggle isToggle={toggleState.service} onClick={() => handleToggle("service")} />
