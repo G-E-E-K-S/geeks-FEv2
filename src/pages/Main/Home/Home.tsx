@@ -49,7 +49,7 @@ export default function Home() {
 	const [isSendMessage, setIsSendMessgae] = useState(false);
 	const navigate = useNavigate();
 
-	const { currentDate, selectedDate } = useCalendarStore();
+	const { currentDate } = useCalendarStore();
 
 	const handleHeader = (headerKey: string) => {
 		switch (headerKey) {

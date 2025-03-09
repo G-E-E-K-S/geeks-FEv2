@@ -30,7 +30,7 @@ export default function Calendar() {
 	const { setCurrentSchedule } = useScheduleStore();
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [isDeletePopup, setIsDeletePopup] = useState(false);
+	// const [isDeletePopup, setIsDeletePopup] = useState(false);
 
 	useEffect(() => {
 		setCurrentSchedule(null);
@@ -51,8 +51,8 @@ export default function Calendar() {
 	};
 
 	const todayScheduleDatas = selectedDate
-		? scheduleData[selectedDate.split(".")[2]]?.schedules
-		: scheduleData[currentDate.format("YYYY.M.D").split(".")[2]]?.schedules;
+		? scheduleData[selectedDate.split("/")[2]]?.schedules
+		: scheduleData[currentDate.format("YYYY/M/D").split("/")[2]]?.schedules;
 
 	return data?.data === null ? (
 		<>
@@ -68,7 +68,7 @@ export default function Calendar() {
 		</>
 	) : (
 		<>
-			<c.SubScreen>
+			<c.SubScreen style={{ paddingBottom: "100px" }}>
 				<CalendarHeader type="calendar" toggleIsOpen={toggleIsOpen} />
 				<CalendarGrid type="calendar" scheduleData={scheduleData} />
 				<Line />
@@ -95,12 +95,12 @@ export default function Calendar() {
 					</Typography>
 				</ScheduleAddButton>
 			</c.SubScreen>
-			<Popup
-				message={`일정이 삭제됐어요`}
-				setShowPopup={setIsDeletePopup}
-				isShowPopup={isDeletePopup}
-				bottom={`18.72`}
-			/>
+			{/*<Popup*/}
+			{/*	message={`일정이 삭제됐어요`}*/}
+			{/*	setShowPopup={setIsDeletePopup}*/}
+			{/*	isShowPopup={isDeletePopup}*/}
+			{/*	bottom={`18.72`}*/}
+			{/*/>*/}
 		</>
 	);
 }

@@ -90,7 +90,7 @@ export const theme = {
 	Green900: "#075a19",
 
 	//Geeks Teal
-	Teal50: "#aff4f4",
+	Teal50: "#EEF9F9",
 	Teal100: " #c5eaea",
 	Teal200: "#8CD7D7",
 	Teal300: "#68c8c8",

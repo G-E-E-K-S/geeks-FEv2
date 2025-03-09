@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import * as c from "../../../components/Common/CommonStyle";
 import ScheduleHeader from "../ui/ScheduleHeader";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Column from "../../../components/Common/Layouts/Column";
 import { floorToNearest30 } from "../../Calendar/utils";
 import ScheduleEditTitle from "./components/ScheduleEditTitle";
@@ -15,11 +14,15 @@ import { formatDateTimeForApi } from "../util";
 import { usePostCalendar } from "../hooks/usePostCalendar";
 import { usePutCalendar } from "../hooks/usePutCalendar";
 import { useScheduleStore } from "../../../store/scheduleStore";
+import { useCalendarStore } from "../../../store/calendarStore";
+import { replace } from "lodash";
+import * as trace_events from "node:trace_events";
 
 export default function ScheduleEdit() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { currentSchedule, setCurrentSchedule } = useScheduleStore();
+	const { selectedDate } = useCalendarStore();
 
 	const postCalendar = usePostCalendar();
 	const putCalendar = usePutCalendar();
@@ -29,9 +32,9 @@ export default function ScheduleEdit() {
 	const [alarm, setAlarm] = useState(1);
 	const [explain, setExplain] = useState("");
 
-	const [startDate, setStartDate] = useState(dayjs().format("YYYY.M.D"));
+	const [startDate, setStartDate] = useState(selectedDate ? dayjs(selectedDate).format("YYYY.M.D") : dayjs().format("YYYY.M.D"));
 	const [startTime, setStartTime] = useState(floorToNearest30(dayjs()).format("HH:mm"));
-	const [endDate, setEndDate] = useState(dayjs().format("YYYY.M.D"));
+	const [endDate, setEndDate] = useState(selectedDate ? dayjs(selectedDate).format("YYYY.M.D") : dayjs().format("YYYY.M.D"));
 	const [endTime, setEndTime] = useState(floorToNearest30(dayjs()).format("HH:mm"));
 
 	const [isActive, setIsActive] = useState(false);
@@ -93,7 +96,7 @@ export default function ScheduleEdit() {
 		}
 		// 전역 상태 초기화
 		setCurrentSchedule(null);
-		navigate("/calendar");
+		navigate("/calendar", { replace: true });
 	};
 
 	return (
