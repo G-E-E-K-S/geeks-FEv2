@@ -14,6 +14,7 @@ import GoBack from "../../../components/Common/GoBack";
 import Typography from "../../../components/Common/Layouts/Typography";
 import UserProfile from "../../../components/Main/UserProfile/UserProfile";
 import { UserProfileType } from "../../../types/userProfileType";
+import Column from "../../../components/Common/Layouts/Column";
 
 const MemberNotice = styled.div`
 	padding: 13px 0 13px 20px;
@@ -69,10 +70,10 @@ export default function Search() {
 						typoSize="T4_medium"
 						color="Gray400"
 						style={{ marginTop: "8px" }}
-					>{`예) 닉네임, 기능, 메뉴 등`}</Typography>
+					>{`닉네임은 생활 습관을 등록한 유저만 검색돼요`}</Typography>
 				</S.SearchTotalTxt>
 			) : (
-				<>
+				<Column gap={6}>
 					<Typography typoSize="B2_medium" color="Gray500">
 						{"회원"}
 					</Typography>
@@ -88,7 +89,7 @@ export default function Search() {
 							onClick={() => navigate(`/details/detail/${val.matchingPointId}/${val.opponentId}`)}
 						/>
 					))}
-				</>
+				</Column>
 			)}
 		</>
 	);

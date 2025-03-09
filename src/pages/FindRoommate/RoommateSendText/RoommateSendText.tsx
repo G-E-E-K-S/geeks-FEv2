@@ -22,15 +22,12 @@ export default function RoommateSendText() {
 				<Typography typoSize="H3" color="Gray800" textAlign="center">
 					{`${location.state}님께\n룸메이트 신청을 보냈어요`}
 				</Typography>
-				<Typography
-					typoSize="T4_medium"
-					color="Gray600"
-				>{`상대방이 수락하면 룸메이트가 맺어져요`}</Typography>
+				<Typography typoSize="T4_medium" color="Gray600">{`상대방이 수락하면 룸메이트가 맺어져요`}</Typography>
 			</Column>
 			<Row horizonAlign="center" verticalAlign="center" width="w-full" style={{ marginTop: "131px" }}>
 				<img src={sendRoommateApply} style={{ width: "289px", height: "52px" }} />
 			</Row>
-			<Button isNextPage={true} text="확인" onClick={() => navigate(`/roommate`)} />
+			<Button isNextPage={true} text="확인" onClick={() => navigate(`/home`)} />
 		</>
 	);
 }

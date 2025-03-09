@@ -100,7 +100,8 @@ export const router = createBrowserRouter([
 					{ path: "/termpolicy", element: <TermPolicy /> },
 					{ path: "/schedule/:scheduleId", element: <Schedule /> },
 					{ path: "/schedule/add", element: <ScheduleEdit /> },
-					{ path: "/schedule/:scheduleId/modify", element: <ScheduleEdit /> }
+					{ path: "/schedule/:scheduleId/modify", element: <ScheduleEdit /> },
+					{ path: "/details/detail/:matchingId/:opponentId", element: <CompareUserInfo /> }
 				]
 			},
 			{

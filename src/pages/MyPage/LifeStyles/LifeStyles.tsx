@@ -21,7 +21,6 @@ export default function LifeStyles() {
 		cleaning: "",
 		tendency: ""
 	});
-	console.log(lifestyleSelections["tendency"])
 	const [lifeStyleExist, setLifeStyleExist] = useState<boolean>(false);
 
 	const handleSelect = (title: string, value: string) => {
@@ -42,7 +41,6 @@ export default function LifeStyles() {
 			tendency: ""
 		});
 	};
-
 
 	const lifeStyleUpdateMutation = useMutation({
 		mutationFn: async () => {
@@ -66,7 +64,7 @@ export default function LifeStyles() {
 
 	const lifeStyleCreateMutation = useMutation({
 		mutationFn: async () => {
-			const response = await API.put("/api/v1/user/detail/create", {
+			const response = await API.post("/api/v1/user/detail/create", {
 				smoke: lifestyleSelections["smoke"] === "흡연자에요" ? "SMOKER" : "NONSMOKER",
 				habit: lifestyleSelections["habit"] === "잠버릇 있어요" ? "HABIT" : "NONHABIT",
 				ear: lifestyleSelections["ear"] === "귀 밝아요" ? "BRIGHT" : "DARK",
@@ -84,31 +82,13 @@ export default function LifeStyles() {
 		}
 	});
 
-	// const { refetch } = useQuery({
-	// 	// TODO BE로 데이터 넘기는 방식 변경해야함.
-	// 	queryKey: ["sendLifeStyles"],
-	// 	queryFn: async () => {
-	// 		const res = await API.post(`/api/v1/user/detail/create`, {
-	// 			smoke: lifestyleSelections["smoke"] === "흡연자" ? "SMOKER" : "NONSMOKER",
-	// 			habit: lifestyleSelections["habit"] === "잠버릇 있어요" ? "HABIT" : "NONHABIT",
-	// 			ear: lifestyleSelections["ear"] === "귀 밝아요" ? "BRIGHT" : "DARK",
-	// 			activityTime: lifestyleSelections["activityTime"] === "아침형이에요" ? "MORNING" : "DAWN",
-	// 			outing: lifestyleSelections["outing"] === "집에 있는 걸 좋아해요" ? "INSIDE" : "OUTSIDE",
-	// 			cleaning: lifestyleSelections["cleaning"] === "주기적으로 청소해요" ? "CLEAN" : "DIRTY",
-	// 			tendency: lifestyleSelections["tendency"] === "혼자 조용히 지내요" ? "ALONE" : "TOGETHER"
-	// 		});
-	// 		return res.data;
-	// 	},
-	// 	enabled: false
-	// });
-
 	const { data } = useQuery({
 		queryKey: ["getLifeStyle"],
 		queryFn: async () => {
 			const res = await API.get(`/api/v1/user/detail/get`);
 			return res.data;
 		},
-		retry: 2
+		retry: 1
 	});
 
 	useEffect(() => {
@@ -128,18 +108,10 @@ export default function LifeStyles() {
 	}, [data]);
 
 	const handleApply = () => {
-		// refetch().then((val) => {
-		// 	val.status === "success" && navigate("/mypage");
-		// });
-
-		if(lifeStyleExist) {
-			lifeStyleUpdateMutation.mutate();
-		} else {
-			lifeStyleCreateMutation.mutate();
-		}
+		console.log(";;;test", lifeStyleExist);
+		lifeStyleExist ? lifeStyleUpdateMutation.mutate() : lifeStyleCreateMutation.mutate();
 	};
 	const isAllSelected = Object.values(lifestyleSelections).every((value) => value !== "");
-
 	return (
 		<>
 			<CS.Header backgroundColor="White">
@@ -148,7 +120,7 @@ export default function LifeStyles() {
 					<Typography typoSize="H3" color="Gray800">{`나의 생활 습관을\n등록해 보세요`}</Typography>
 				</Column>
 			</CS.Header>
-			<div style={{ marginBottom: "44px" }}>
+			<div>
 				<LifeStyle
 					title="흡연"
 					options={["흡연자에요", "비흡연자에요"]}

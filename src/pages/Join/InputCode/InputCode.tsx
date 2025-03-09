@@ -156,9 +156,9 @@ const InputCode = () => {
 			</CS.Flex>
 			<ErrorPopup
 				message={`코드가 일치하지 않아요`}
-				bottom={`18.72`}
+				bottom={`40`}
 				setShowPopup={setIsErrorPopup}
-				isShowPopup={isErrorPopup}
+				isShowPopup={true}
 			/>
 			<JoinButton
 				btnName={"코드 확인하기"}

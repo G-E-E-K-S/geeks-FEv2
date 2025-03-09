@@ -4,11 +4,11 @@ import Row from "../../../components/Common/Layouts/Row";
 
 export const BottomMenu = styled(Row)`
 	width: 100%;
-	/* height: 10.625rem; */
-	padding: 20.17px 5.12vw 86px 5.12vw;
+	padding: 20px 20px 86px 20px;
 	border-top: 1px solid #efefef;
-	position: fixed;
-	bottom: 0;
+	/* position: fixed; */
+	bottom: 0px;
+	left: -5px;
 	background-color: #fff;
 `;
 

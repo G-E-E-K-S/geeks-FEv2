@@ -27,6 +27,8 @@ import { useQuery } from "@tanstack/react-query";
 import { UserProfileType } from "../../../types/userProfileType";
 import Column from "../../../components/Common/Layouts/Column";
 import CompareLifeStyle from "../../../components/Roommate/CompareLifeStyle/CompareLifeStyle";
+import Button from "../../../components/DesignStuff/Button/Button";
+import ErrorPopup from "../../../components/Common/ErrorPopup";
 
 interface RoommateApplyType {
 	roommateStatus: "NONE" | "PENDING" | "ACCEPT";
@@ -41,8 +43,8 @@ export default function CompareUserInfo() {
 	const [acceptRoommate, setAcceptRoommate] = useState(false);
 	const [roommateApplyState, setRoommateApplyState] = useState();
 	const [showPopup, setShowPopup] = useState(false);
-	const [opponentUser, setOpponentUser] = useState(null);
-	const [modalOpen, setModalOpen] = useState(false);
+	const [endRoommate, setEndRoommate] = useState(false);
+	const [cancelRoommate, setCancelRoommate] = useState(false);
 	const lifeStyleList = [
 		{ name: "흡연", key: "smoke", SMOKER: "흡연자", NONSMOKER: "비흡연자" },
 		{ name: "잠버릇", key: "habit", HABIT: "잠버릇 있어요", NONHABIT: "잠버릇 없어요" },
@@ -166,9 +168,13 @@ export default function CompareUserInfo() {
 	});
 
 	const handleRemoveRoommate = () => {
-		refetchCancelRoommate().then((val) => val.status === "success" && navigate("/roommate"));
+		refetchCancelRoommate().then((val) => {
+			setEndRoommate(true);
+			setCancelRoommate(false);
+			setRoommateState("NONE");
+			val.status === "success";
+		});
 	};
-	const [cancelRoommate, setCancelRoommate] = useState(false);
 
 	if (!opponentInfo) return;
 
@@ -196,12 +202,6 @@ export default function CompareUserInfo() {
 					ment={opponentInfo.nickname + ` 님과\n룸메이트를 그만둘까요?`}
 				/>
 			)}
-			{roommateState === "ACCEPT" && (
-				<S.MyRoommateNoti>
-					<S.MyRoommateNotiTxt>{`현재 나의 룸메이트에요`}</S.MyRoommateNotiTxt>
-					<S.EndRoommate onClick={() => handleRemoveRoommate()}>{`룸메이트 끊기`}</S.EndRoommate>
-				</S.MyRoommateNoti>
-			)}
 			{/* user Profile */}
 			<Column gap={16}>
 				<Row horizonAlign="distribute" width="w-full">
@@ -212,13 +212,31 @@ export default function CompareUserInfo() {
 								: BasicProfile
 						}
 					/>
-					<S.Chat gap={8}>
-						{/* onClick={() => startChat()} */}
+					{/* <S.Chat gap={8}>
 						<img src={ChatImg} />
 						<Typography typoSize="T4_semibold" color="Gray700" style={{ whiteSpace: "nowrap" }}>
 							{"대화하기"}
 						</Typography>
-					</S.Chat>
+					</S.Chat> */}
+					<S.ApplyRoommateBtn
+						horizonAlign="center"
+						verticalAlign="center"
+						state={roommateApplyState || roommateState !== "NONE" || acceptRoommate}
+						onClick={() => {
+							if (!(roommateApplyState || roommateState !== "NONE" || acceptRoommate)) {
+								setApplyRommate(true);
+							}
+						}}
+					>
+						<Typography
+							typoSize="T4_semibold"
+							color={
+								roommateApplyState || roommateState !== "NONE" || acceptRoommate ? "Gray400" : "Black"
+							}
+						>
+							{"룸메 맺기"}
+						</Typography>
+					</S.ApplyRoommateBtn>
 				</Row>
 				<div>
 					<Row>
@@ -232,7 +250,7 @@ export default function CompareUserInfo() {
 					</Typography>
 				</div>
 				{opponentInfo?.introduction && (
-					<S.Introduce>
+					<S.Introduce verticalAlign="center">
 						<Typography typoSize="B2_medium" color="Gray700">
 							{opponentInfo?.introduction}
 						</Typography>
@@ -242,7 +260,7 @@ export default function CompareUserInfo() {
 			<Br style={{ marginTop: "20px" }} />
 
 			{/* match score */}
-			<S.MatchText horizonAlign="center" verticalAlign="center">
+			{/* <S.MatchText horizonAlign="center" verticalAlign="center">
 				<div>{opponentInfo.point >= 40 && opponentInfo.point <= 60 ? "서로" : "나와"}</div>
 				<Typography
 					typoSize="H2"
@@ -250,19 +268,19 @@ export default function CompareUserInfo() {
 						opponentInfo.point >= 70
 							? "Blue600"
 							: opponentInfo?.point >= 40 && opponentInfo?.point <= 60
-								? "Yellow700"
-								: "YellowGray600"
+							? "Yellow700"
+							: "YellowGray600"
 					}
 					style={{ marginLeft: "7px" }}
 				>
 					{opponentInfo.point >= 70
 						? "잘 맞아요!"
 						: opponentInfo?.point >= 40 && opponentInfo?.point <= 60
-							? "맞춰가면 좋아요!"
-							: "잘 맞지 않아요"}
+						? "맞춰가면 좋아요!"
+						: "잘 맞지 않아요"}
 				</Typography>
-			</S.MatchText>
-			<div style={{ width: "140px", height: "140px", margin: "0 auto" }}>
+			</S.MatchText> */}
+			{/* <div style={{ width: "140px", height: "140px", margin: "0 auto" }}>
 				<Chart
 					type="doughnut"
 					data={{
@@ -273,16 +291,16 @@ export default function CompareUserInfo() {
 									opponentInfo?.point >= 70
 										? "#2B75CB"
 										: opponentInfo?.point >= 40
-											? "#FFD540"
-											: "#B5AA99",
+										? "#FFD540"
+										: "#B5AA99",
 									"#EFEFEF"
 								],
 								backgroundColor: [
 									opponentInfo?.point >= 70
 										? "#2B75CB"
 										: opponentInfo?.point >= 40
-											? "#FFD540"
-											: "#B5AA99",
+										? "#FFD540"
+										: "#B5AA99",
 									"#EFEFEF"
 								],
 								borderWidth: 0
@@ -318,8 +336,8 @@ export default function CompareUserInfo() {
 									opponentInfo.point >= 70
 										? "#2B75CB"
 										: opponentInfo.point >= 40
-											? "#D68D00"
-											: "#B5AA99";
+										? "#D68D00"
+										: "#B5AA99";
 								ctx.textAlign = "center";
 								ctx.textBaseline = "middle";
 								ctx.fillText(`${opponentInfo.point}점`, x, y);
@@ -328,10 +346,10 @@ export default function CompareUserInfo() {
 						}
 					]}
 				/>
-			</div>
+			</div> */}
 
 			{/* Compare Section */}
-			<Row style={{ marginTop: "56.75px" }}>
+			<Row style={{ marginTop: "24px", marginBottom: "20px" }}>
 				<Typography
 					typoSize="T4_semibold"
 					color="Gray600"
@@ -353,7 +371,7 @@ export default function CompareUserInfo() {
 					myLifeStyle={lifeStyleList.find((item) => item.key === list.key)?.[myListStyle?.[list.key]]}
 				/>
 			))}
-			<S.BottomEnroll horizonAlign="distribute" verticalAlign="center">
+			{/* <S.BottomEnroll horizonAlign="distribute" verticalAlign="center">
 				<Column horizonAlign="center" verticalAlign="center">
 					<img
 						src={isSave ? FillSave : Save}
@@ -376,14 +394,12 @@ export default function CompareUserInfo() {
 				>
 					<Typography
 						typoSize="T3_semibold"
-						color={
-							roommateApplyState || roommateState !== "NONE" || acceptRoommate ? "Gray400" : "Black"
-						}
+						color={roommateApplyState || roommateState !== "NONE" || acceptRoommate ? "Gray400" : "Black"}
 					>
 						{"룸메이트 신청하기"}
 					</Typography>
 				</S.EnrollBtn>
-			</S.BottomEnroll>
+			</S.BottomEnroll> */}
 
 			{/* TODO 해당 컴포넌트 tsx로 변경 */}
 			<ApplyCancelBottomSheet
@@ -392,10 +408,16 @@ export default function CompareUserInfo() {
 				Icon={ApplyRoommateIcon}
 				message={opponentInfo.nickname + `님께\n룸메이트를 신청할까요?`}
 				subMessage={`상대방이 수락하기 전까지는\n언제든지 취소 가능해요`}
-				btnName={`신청하기`}
+				btnName={`룸메이트 맺기`}
 				isOpen={applyRoommate}
 				onClick={() => ApplyRoommate()}
 				applyRoommate={() => setApplyRommate(false)}
+			/>
+			<ErrorPopup
+				message={`룸메이트가 끊어졌어요`}
+				bottom={`80`}
+				setShowPopup={setEndRoommate}
+				isShowPopup={endRoommate}
 			/>
 			<Popup
 				bottom={`13.95`}

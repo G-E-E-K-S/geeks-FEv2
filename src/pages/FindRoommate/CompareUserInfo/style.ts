@@ -37,10 +37,20 @@ export const Chat = styled(Row)`
 	}
 `;
 
-export const Introduce = styled.div`
+export const ApplyRoommateBtn = styled(Row)<{ state: boolean }>`
+position: relative;
+z-index: 20;
+	width: 116px;
+	height: 52px;
+	border-radius: 12px;
+	background: ${({ state, theme }) => (state ? theme.Gray50 : theme.Yellow500)};
+`;
+
+export const Introduce = styled(Row)`
 	width: 100%;
 	height: 34px;
 	border-radius: 8px;
+	padding: 0px 8px;
 	background-color: ${({ theme }) => theme.Gray50};
 `;
 
@@ -90,6 +100,8 @@ export const MyRoommateNoti = styled.div`
 	color: #865800;
 	text-align: center;
 	margin-bottom: 24px;
+	position: relative;
+	z-index: 20;
 `;
 export const MyRoommateNotiTxt = styled.div`
 	font-size: 0.875rem;
