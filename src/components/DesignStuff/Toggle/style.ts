@@ -19,12 +19,12 @@ export const Circle = styled.div<{ isToggle: boolean }>`
 	height: 24px;
 	border-radius: 50%;
 	position: absolute;
-	right: 5px;
+	left: 5px;
 	transition: all 0.3s ease-in-out;
 	${({ isToggle }) =>
 		isToggle &&
 		`
-        transform: translate(-30px, 0);
+        transform: translate(30px, 0);
         transition: all 0.5s ease-in-out;
     `}
 `;
