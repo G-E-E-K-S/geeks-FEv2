@@ -29,7 +29,7 @@ export const useCalendarStore = create<CalendarState>((set, get) => ({
 
 	handleDayClick: (day: string | number) => {
 		if (day !== "") {
-			const clickedDate = get().currentDate.date(Number(day)).format("YYYY.M.D");
+			const clickedDate = get().currentDate.date(Number(day)).format("YYYY/M/D");
 			set({ selectedDate: clickedDate });
 		}
 	},
@@ -37,7 +37,7 @@ export const useCalendarStore = create<CalendarState>((set, get) => ({
 	handleTodayClick: () => {
 		const today = dayjs();
 		set({
-			selectedDate: today.format("YYYY.M.D"),
+			selectedDate: today.format("YYYY/M/D"),
 			currentDate: today
 		});
 	},

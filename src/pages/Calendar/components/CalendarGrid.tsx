@@ -105,7 +105,7 @@ export default function CalendarGrid({ type, scheduleData, onDayClick }: Calenda
 									$isWeekend={dayIdx === 0 || dayIdx === 6}
 									$isSunday={dayIdx === 0}
 									$isToday={isToday(currentDate, day)}
-									$isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
+									$isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY/M/D")}
 									$type={type}
 									onClick={() => handleClick(day)}
 								>
@@ -124,7 +124,7 @@ export default function CalendarGrid({ type, scheduleData, onDayClick }: Calenda
 								$isWeekend={dayIdx === 0 || dayIdx === 6}
 								$isSunday={dayIdx === 0}
 								$isToday={isToday(currentDate, day)}
-								$isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY.M.D")}
+								$isSelected={selectedDate === currentDate.date(Number(day)).format("YYYY/M/D")}
 								$type={type}
 								$isPreviousMonth={isPreviousMonth(currentDate, day)}
 								onClick={() => handleClick(day)}
@@ -143,58 +143,74 @@ export default function CalendarGrid({ type, scheduleData, onDayClick }: Calenda
 const CalendarContainer = styled.div``;
 
 const WeekdayHeader = styled.div<{ $type: Calendar }>`
-	display: flex;
-	margin-bottom: ${({ $type }) => ($type === "home" ? "20px" : "36px")};
-	justify-content: space-between;
+    display: flex;
+    margin-bottom: ${({ $type }) => ($type === "home" ? "20px" : "36px")};
+    justify-content: space-between;
 `;
 
 const WeekdayCell = styled.div<{ $day: string }>`
-	min-width: 38px;
-	text-align: center;
-	color: ${({ $day }) => {
-		switch ($day) {
-			case "토":
-				return theme.Gray500;
-			case "일":
-				return theme.Red300;
-			default:
-				return theme.Gray600;
-		}
-	}};
+    min-width: 38px;
+    text-align: center;
+    color: ${({ $day }) => {
+        switch ($day) {
+            case "토":
+                return theme.Gray500;
+            case "일":
+                return theme.Red300;
+            default:
+                return theme.Gray600;
+        }
+    }};
 `;
 
 const CalendarBody = styled.div``;
 
 const Week = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
 `;
 
 const Day = styled.div<DayProps>`
-	position: relative;
-	z-index: 1;
-	min-width: 38px;
-	min-height: 48px;
-	text-align: center;
-	padding: 0 5px 0;
-	color: ${(props) => {
-		if (props.$type === "calendar" && props.$isSelected) {
-			return theme.White;
-		} else if ((props.$type === "calendar" || props.$type === "home") && props.$isToday) {
-			return theme.Yellow700;
-		} else if (props.$isWeekend) {
-			return props.$isSunday ? theme.Red500 : theme.Gray500;
-		}
-		return theme.Gray800;
-	}};
-	opacity: ${(props) => (props.$isPreviousMonth ? 0.3 : 1)};
+    position: relative;
+    z-index: 1;
+    min-width: 38px;
+    min-height: 48px;
+    text-align: center;
+    padding: 0 5px 0;
+    color: ${(props) => {
+        if (props.$type === "calendar" && props.$isSelected) {
+            return theme.White;
+        } else if ((props.$type === "calendar" || props.$type === "home") && props.$isToday) {
+            return theme.Yellow700;
+        } else if (props.$isWeekend) {
+            return props.$isSunday ? theme.Red500 : theme.Gray500;
+        }
+        return theme.Gray800;
+    }};
+    opacity: ${(props) => (props.$isPreviousMonth ? 0.3 : 1)};
+    ${(props) => props.$type === "calendar" && props.$isToday &&
+            `
+            &::after {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 26px;
+        height: 26px;
+        background-color: ${theme.Yellow100};
+        border-radius: 6px;
+        z-index: -1;
+    }
+            `
+    };
 
-	${(props) =>
-		!props.$isEmpty &&
-		props.$isSelected &&
-		props.$type === "calendar" &&
-		`
+    ${(props) =>
+            !props.$isEmpty &&
+            props.$isSelected &&
+            props.$type === "calendar" &&
+            `
         &::after {
             content: "";
             position: absolute;
@@ -209,10 +225,10 @@ const Day = styled.div<DayProps>`
         }
     `}
 
-	${(props) =>
-		!props.$isEmpty &&
-		props.$type === "modal" &&
-		`
+    ${(props) =>
+            !props.$isEmpty &&
+            props.$type === "modal" &&
+            `
         &:active::after {
             content: "";
             position: absolute;
@@ -229,15 +245,15 @@ const Day = styled.div<DayProps>`
 `;
 
 const ScheduleHeader = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px;
-	margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
 `;
 
 const ScheduleMarkWrapper = styled.div`
-	display: flex;
-	gap: 2px;
-	justify-content: center;
-	margin-top: 6px;
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    margin-top: 6px;
 `;

@@ -185,7 +185,7 @@ export default function ScheduleEditDate({
 				</Row>
 				<Row horizonAlign="center" verticalAlign="center">
 					<Swiper
-						style={{ height: "220px" }}
+						style={{ height: "220px", width: "100%" }}
 						direction={"vertical"}
 						slidesPerView={3}
 						slideToClickedSlide={true}
@@ -195,7 +195,8 @@ export default function ScheduleEditDate({
 						}}
 					>
 						{HOURS.map((no) => (
-							<SwiperSlide key={no.option} style={{ display: "flex", alignItems: "center" }}>
+							<SwiperSlide key={no.option}
+										 style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
 								<Typography typoSize="T1" color="Gray700" textAlign="center">
 									{no.option}
 								</Typography>
@@ -206,7 +207,7 @@ export default function ScheduleEditDate({
 						:
 					</Typography>
 					<Swiper
-						style={{ height: "220px" }}
+						style={{ height: "220px", width: "100%" }}
 						direction={"vertical"}
 						slidesPerView={3}
 						slideToClickedSlide={true}
@@ -216,7 +217,8 @@ export default function ScheduleEditDate({
 						}}
 					>
 						{MINUTES.map((no) => (
-							<SwiperSlide key={no.option} style={{ display: "flex", alignItems: "center" }}>
+							<SwiperSlide key={no.option}
+										 style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
 								<Typography typoSize="T1" color="Gray700" textAlign="center">
 									{no.option}
 								</Typography>
