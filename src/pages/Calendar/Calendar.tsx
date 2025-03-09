@@ -19,7 +19,7 @@ import Popup from "../../components/Common/Popup";
 
 import CloseModal from "../../assets/img/Join/closeModal.svg";
 import AddIcon from ".././../assets/img/Calendar/AddIcon.svg";
-import BlurImg from "../../assets/img/Roommate/blurImg.svg";
+import BlurImg from "../../assets/img/Calendar/BackgroundImg.png";
 import * as S from "../FindRoommate/FindRoommate/style";
 import { useScheduleStore } from "../../store/scheduleStore";
 
