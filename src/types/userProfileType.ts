@@ -8,4 +8,5 @@ export type UserProfileType = {
 	smoke: "NONSMOKER" | "SMOKER";
 	studentNum: number;
 	image: string | null;
+	gender?: "FEMALE" | "MALE";
 };

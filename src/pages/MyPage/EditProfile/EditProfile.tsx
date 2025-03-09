@@ -30,116 +30,117 @@ import BottomSheet from "../../../components/DesignStuff/BottomSheet/BottomSheet
 import { debounce } from "lodash";
 
 const UploadProfile = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
 `;
 
 const HiddenFileInput = styled.input`
-    position: absolute;
-    bottom: -5px;
-    right: 33.66vw;
-    width: 28px;
-    height: 28px;
-    opacity: 0;
-    z-index: 20;
+	position: absolute;
+	bottom: -5px;
+	right: 33.66vw;
+	width: 28px;
+	height: 28px;
+	opacity: 0;
+	z-index: 20;
 `;
 
 const ProfileImg = styled.img<{ isProfile: boolean }>`
-    position: relative;
-    width: 104px;
-    height: 104px;
-    border-radius: 50%;
-    object-fit: ${({ isProfile }) => isProfile && "cover"};
+	position: relative;
+	width: 104px;
+	height: 104px;
+	border-radius: 50%;
+	object-fit: ${({ isProfile }) => isProfile && "cover"};
 `;
 const CameraIcons = styled.div`
-    position: absolute;
-    bottom: -5px;
-    right: 33.66vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 28px;
-    height: 28px;
-    background: #fff;
-    border: 1px solid #d0d0d0;
-    border-radius: 50%;
-    cursor: pointer;
+	position: absolute;
+	bottom: -5px;
+	right: 33.66vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 28px;
+	height: 28px;
+	background: #fff;
+	border: 1px solid #d0d0d0;
+	border-radius: 50%;
+	cursor: pointer;
 `;
 const SubTitle = styled.div`
-    margin-top: 32px;
-    color: #707070;
-    font-size: 0.875rem;
-    font-style: normal;
-    font-weight: 500;
+	margin-top: 32px;
+	color: #707070;
+	font-size: 0.875rem;
+	font-style: normal;
+	font-weight: 500;
 `;
 const AlreadyUse = styled(SubTitle)`
-    color: #cb3d0b;
-    font-size: 0.75rem;
+	color: #cb3d0b;
+	font-size: 0.75rem;
 `;
 const IntroOneLine = styled(SubTitle)`
-    margin-top: 28px;
+	margin-top: 28px;
 `;
 const QuestionMark = styled.img`
-    margin-top: 28px;
-    margin-left: 4px;
+	margin-top: 28px;
+	margin-left: 4px;
 `;
 const StudentIdTotal = styled.div<{ isSelected: boolean }>`
-    margin-top: 4px;
-    padding: 13px 0px 10px 0px;
-    display: flex;
-    width: 12.05vw;
-    border-bottom: 2px solid ${({ isSelected }) => (isSelected ? "#ECAA00" : "#efefef")};
+	margin-top: 4px;
+	padding: 13px 0px 10px 0px;
+	display: flex;
+	width: 12.05vw;
+	border-bottom: 2px solid ${({ isSelected }) => (isSelected ? "#ECAA00" : "#efefef")};
 `;
 const InputStudentId = styled.input`
-    outline: none;
-    border: none;
-    color: #333;
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 24px;
+	outline: none;
+	border: none;
+	color: #333;
+	font-size: 1.125rem;
+	font-weight: 600;
+	line-height: 24px;
 
-    &::placeholder {
-        color: #d0d0d0;
-        font-size: 1.125rem;
-        font-weight: 500;
-        line-height: 24px;
-    }
+	&::placeholder {
+		color: #d0d0d0;
+		font-size: 1.125rem;
+		font-weight: 500;
+		line-height: 24px;
+	}
 `;
 const MajorBtsTxt = styled.div`
-    color: #333;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 28px;
-    margin-bottom: 20px;
+	color: #333;
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 28px;
+	margin-bottom: 20px;
 `;
 const MajorTotal = styled.div`
-    margin-top: 4px;
-    padding: 7px 0px 8px 0px;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    border-bottom: 2px solid #efefef;
+	margin-top: 4px;
+	padding: 7px 0px 8px 0px;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	border-bottom: 2px solid #efefef;
 `;
 const MajorText = styled.div<{ major: boolean }>`
-    color: ${({ major }) => (major ? "#d0d0d0" : "#333333")};
-    font-size: 1.125rem;
-    font-style: normal;
-    font-weight: 600;
+	color: ${({ major }) => (major ? "#d0d0d0" : "#333333")};
+	font-size: 1.125rem;
+	font-style: normal;
+	font-weight: 600;
 `;
 const CloseImg = styled.img`
-    width: 28px;
-    height: 28px;
+	width: 28px;
+	height: 28px;
 `;
 
-const DormitroyBox = styled.div<{ isSelect: boolean }>`
-    width: max-content;
-    border-radius: 20px;
-    padding: 8px 16px;
-    background: ${({ isSelect }) => (isSelect ? "#FFF4CD" : "transparent")};
-    border: 1px solid ${({ isSelect }) => (isSelect ? "#ECAA00" : "#E2E2E2")};
+const DormitroyBox = styled.div<{ isSelect: boolean; isDisabled: boolean }>`
+	width: max-content;
+	border-radius: 20px;
+	padding: 8px 16px;
+	background: ${({ isSelect, isDisabled }) => (isSelect ? "#FFF4CD" : isDisabled ? "#F7F7F7" : "transparent")};
+	border: 1px solid ${({ isSelect }) => (isSelect ? "#ECAA00" : "#E2E2E2")};
+	pointer-events: ${({ isDisabled }) => (isDisabled ? "none" : "auto")};
 `;
 export default function EditProfile() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -242,7 +243,6 @@ export default function EditProfile() {
 				setIsRegexCorrect(true);
 			}
 		}
-
 	}, [userNickName]);
 
 	const handleFile = (event) => {
@@ -275,11 +275,13 @@ export default function EditProfile() {
 
 	const handlePostSubmit = () => {
 		if (!(nickname && dormitory)) return;
+
 		const userData = {
 			nickname: nickname,
 			major: major,
 			studentNum: studentNum,
-			dormitory: dormitory === "신관" ? "NEW" : dormitory === "구관" ? "OLD" : "HAPPY"
+			dormitory: dormitory === "신관" ? "NEW" : dormitory === "구관" ? "OLD" : "HAPPY",
+			introduction: introduction
 		};
 
 		const formData = new FormData();
@@ -313,9 +315,12 @@ export default function EditProfile() {
 			<CS.Header backgroundColor="White">
 				<S.Header>
 					<GoBack />
-					<S.EditBtn onClick={() => {
-						if (isModified() && !isRegexCorrect && !isDuplicate) handlePostSubmit();
-					}} isChange={isModified() && !isRegexCorrect && !isDuplicate}>{`수정`}</S.EditBtn>
+					<S.EditBtn
+						onClick={() => {
+							if (isModified() && !isRegexCorrect && !isDuplicate) handlePostSubmit();
+						}}
+						isChange={isModified() && !isRegexCorrect && !isDuplicate}
+					>{`수정`}</S.EditBtn>
 				</S.Header>
 			</CS.Header>
 			<UploadProfile>
@@ -413,42 +418,33 @@ export default function EditProfile() {
 					))}
 				</BottomSheet>
 			)}
-			{/* <StudentIdTotal
-				onFocus={() => handleFocus(true)}
-				onBlur={() => handleFocus(false)}
-				isSelected={isSelected}
-			>
-				<InputStudentId
-					placeholder="학번"
-					onChange={(e) => handleStudentId(e.target.value)}
-					maxlength={"2"}
-					value={studentID}
-				/>
-			</StudentIdTotal> */}
-			<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "40px" }}>
-				{"기숙사"}
-			</Typography>
-			<Row gap={8}>
-				{DormitoryKind.map(
-					(kind) => (
-						<DormitroyBox onClick={() => setDormitory(kind)} isSelect={dormitory === kind}>
-							<Typography typoSize={"T4_semibold"} color={dormitory === kind ? "Yellow900" : "Gray700"}>
-								{kind}
-							</Typography>
-						</DormitroyBox>
-					)
-					// userInfo.gender === "MALE" && kind === "구관" ? null : (
-					// 	<DormitroyBox onClick={() => setDormitory(kind)} isSelect={dormitory === kind}>
-					// 		<Typography
-					// 			typoSize={"T4_semibold"}
-					// 			color={dormitory === kind ? "Yellow900" : "Gray700"}
-					// 		>
-					// 			{kind}
-					// 		</Typography>
-					// 	</DormitroyBox>
-					// )
-				)}
-			</Row>
+			<Column gap={8}>
+				<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "40px" }}>
+					{"기숙사"}
+				</Typography>
+				<Row gap={8}>
+					{DormitoryKind.map((kind) => {
+						const isSelected = dormitory === kind;
+						const isDisabled = kind === "구관" && userInfo?.gender === "MALE";
+
+						return (
+							<DormitroyBox
+								key={kind}
+								onClick={() => setDormitory(kind)}
+								isSelect={isSelected}
+								isDisabled={isDisabled}
+							>
+								<Typography
+									typoSize={"T4_semibold"}
+									color={isSelected ? "Yellow900" : isDisabled ? "Gray400" : "Gray700"}
+								>
+									{kind}
+								</Typography>
+							</DormitroyBox>
+						);
+					})}
+				</Row>
+			</Column>
 			<Br marginTop={`3.31vh`} />
 			{/* input introduce self */}
 			<Typography typoSize="B2_medium" color="Gray500" style={{ marginTop: "24px" }}>
@@ -466,6 +462,6 @@ export default function EditProfile() {
 	);
 }
 const StudentNumTotal = styled(MajorTotal)`
-    width: fit-content;
-    gap: 30px;
+	width: fit-content;
+	gap: 30px;
 `;
