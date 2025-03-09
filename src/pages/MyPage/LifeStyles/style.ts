@@ -6,7 +6,7 @@ export const BottomMenu = styled(Row)`
 	width: 100%;
 	padding: 20px 20px 86px 20px;
 	border-top: 1px solid #efefef;
-	/* position: fixed; */
+	position: fixed;
 	bottom: 0px;
 	left: -5px;
 	background-color: #fff;

@@ -108,7 +108,6 @@ export default function LifeStyles() {
 	}, [data]);
 
 	const handleApply = () => {
-		console.log(";;;test", lifeStyleExist);
 		lifeStyleExist ? lifeStyleUpdateMutation.mutate() : lifeStyleCreateMutation.mutate();
 	};
 	const isAllSelected = Object.values(lifestyleSelections).every((value) => value !== "");
@@ -120,7 +119,7 @@ export default function LifeStyles() {
 					<Typography typoSize="H3" color="Gray800">{`나의 생활 습관을\n등록해 보세요`}</Typography>
 				</Column>
 			</CS.Header>
-			<div>
+			<div style={{ paddingBottom: "120px" }}>
 				<LifeStyle
 					title="흡연"
 					options={["흡연자에요", "비흡연자에요"]}
