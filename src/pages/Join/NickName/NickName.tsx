@@ -46,7 +46,6 @@ const NickName = () => {
 		setNickname("");
 	}, []);
 
-
 	useEffect(() => {
 		const regex = /^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$/;
 		const length = nickname.length;
@@ -67,7 +66,6 @@ const NickName = () => {
 				setErrorPopup(true);
 			}
 		}
-
 	}, [userNickName]);
 
 	return (
@@ -79,17 +77,12 @@ const NickName = () => {
 			<Typography typoSize="H3" color="Gray800" style={{ marginTop: "16px", marginBottom: "40px" }}>
 				{`회원님을 표현할\n닉네임을 알려주세요`}
 			</Typography>
-			<TextFields
-				maxLength={8}
-				onChange={(val) => setNickname(val)}
-				inputLen={nickname.length}
-				totalNum={8}
-			/>
+			<TextFields maxLength={8} onChange={(val) => setNickname(val)} inputLen={nickname.length} totalNum={8} />
 			<ErrorPopup
 				message={`이미 사용 중인 닉네임이에요`}
 				setShowPopup={setIsPopup}
 				isShowPopup={isPopup}
-				bottom={"18.72"}
+				bottom={"47"}
 			/>
 
 			<ErrorPopup
