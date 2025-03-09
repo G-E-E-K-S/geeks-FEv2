@@ -17,7 +17,8 @@ const PopupBox = styled.div`
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
-	bottom: ${(props) => props.bottom + "vh"};
+	bottom: ${(props) => props.bottom - 8.3 + "vh"};
+	top: ${(props) => props.top + "vh" ?? "0px"};
 	border-radius: 12px;
 	background: #fcede8;
 

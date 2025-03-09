@@ -31,6 +31,7 @@ import CalendarGrid from "../../Calendar/components/CalendarGrid";
 import TodaySchedules from "../../Calendar/components/TodaySchedules";
 import { useCalendarStore } from "../../../store/calendarStore";
 import { useWeekSchedules } from "../../Calendar/hooks/useWeekSchedules";
+import ErrorPopup from "../../../components/Common/ErrorPopup";
 
 export default function Home() {
 	const MAIN_HEADER = [
@@ -39,12 +40,12 @@ export default function Home() {
 		{ key: "dormitorynoti", menuName: "기숙사 공지", Icon: dormiNoti },
 		{ key: "dormitoryCall", menuName: "문의하기", Icon: Call }
 	];
-	// const { nickname, setNickname } = useUserInfo();
 	const [showPopup, setShowPopup] = useState(false);
 	const [isShowWriteReview, setIsShowWriteReview] = useState(localStorage.getItem("show") !== "false");
 	const [isExist, setIsExist] = useState(false);
 	const [isRoommateApply, setIsRoommateApply] = useState<number>(0);
 	const [matchingTop3User, setMatchingTop3User] = useState<UserProfileType[]>([]);
+	const [isOffAlarm, setIsOffAlarm] = useState(false);
 	const [isSendMessage, setIsSendMessgae] = useState(false);
 	const navigate = useNavigate();
 
@@ -81,11 +82,14 @@ export default function Home() {
 			return await API.post(`/api/v1/roommate/homecoming`);
 		},
 		onSuccess: (data) => {
-			console.log("Success: ", data?.data);
 			if (data?.data.data === "success") setIsSendMessgae(true);
 		},
 		onError: (error) => {
-			console.error("Error: ", error);
+			//@ts-ignore
+			if (error.response.data.error.code === 50024) {
+				setIsOffAlarm(true);
+			}
+			console.error(";;Error: ", error);
 		}
 	});
 
@@ -154,7 +158,13 @@ export default function Home() {
 				message={`귀가 알림을 성공적으로 보냈어요!`}
 				setShowPopup={setIsSendMessgae}
 				isShowPopup={isSendMessage}
-				top={`12.5`}
+				top={`15`}
+			/>
+			<ErrorPopup
+				message={`룸메이트가 알림을 꺼놨어요`}
+				setShowPopup={setIsOffAlarm}
+				isShowPopup={isOffAlarm}
+				top={`7`}
 			/>
 			<CS.Header backgroundColor="Background">
 				<Header />
