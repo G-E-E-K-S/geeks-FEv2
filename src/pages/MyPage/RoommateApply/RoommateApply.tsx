@@ -125,6 +125,7 @@ export default function RoommateApply() {
 
 	const handleModal = () => {
 		setOpenMatchingModal(false);
+		navigate("/mypage");
 	};
 
 	useMemo(() => {

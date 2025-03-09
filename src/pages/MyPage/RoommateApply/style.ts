@@ -72,7 +72,6 @@ export const CloseIcon = styled.img`
 	width: 28px;
 	height: 28px;
 	cursor: pointer;
-	margin-left: 2.17vw;
 `;
 export const SuccessGif = styled.img`
 	position: absolute;
