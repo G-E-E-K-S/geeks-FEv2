@@ -25,6 +25,10 @@ export default function InputEmail() {
 
 	const sendEmail = () => {
 		refetch().then((val) => {
+			//@ts-ignore
+			if (val?.error.response.data.error.code === 40901) {
+				setIsDuplicate(true);
+			}
 			if (val.data.data === "available") navigate("/inputcode", { state: { userEmail: email } });
 			if (val.data.error.code === 40901) setIsDuplicate(true);
 		});
@@ -36,7 +40,8 @@ export default function InputEmail() {
 			const res = await API.get(`/api/v1/user/check/email/${email}@sangmyung.kr`);
 			return res.data;
 		},
-		enabled: false
+		enabled: false,
+		retry: 1
 	});
 
 	return (
