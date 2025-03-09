@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -106,6 +106,19 @@ export default function Home() {
 		},
 		retry: 2
 	});
+
+	useEffect(() => {
+		const blockBack = () => {
+			window.history.pushState(null, "", window.location.href);
+		};
+
+		blockBack();
+		window.addEventListener("popstate", blockBack);
+
+		return () => {
+			window.removeEventListener("popstate", blockBack);
+		};
+	}, []);
 
 	useMemo(() => {
 		if (!top3UserData || !mydata) return;
