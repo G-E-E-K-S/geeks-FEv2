@@ -417,7 +417,7 @@ export default function CompareUserInfo() {
 				message={`룸메이트가 끊어졌어요`}
 				bottom={`5`}
 				setShowPopup={setEndRoommate}
-				isShowPopup={true}
+				isShowPopup={endRoommate}
 			/>
 			<Popup
 				bottom={`13.95`}

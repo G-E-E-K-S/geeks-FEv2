@@ -8,7 +8,7 @@ interface ScrollPickerProps<TId extends string | number, TOption extends ReactNo
 	onOptionSelect: (optionId: TId) => void; // 옵션 선택시 동작할 함수
 }
 
-export default function ScrollPicker<TId extends string | number, TOption extends ReactNode | string | number> ({
+export default function ScrollPicker<TId extends string | number, TOption extends ReactNode | string | number>({
 	options,
 	height,
 	onOptionSelect
@@ -20,7 +20,12 @@ export default function ScrollPicker<TId extends string | number, TOption extend
 	return (
 		<S.PickerWrapper $height={height}>
 			{options.map((option) => (
-				<S.PickerOption key={option.id} onClick={() => {handleSelect(option.id);}}>
+				<S.PickerOption
+					key={option.id}
+					onClick={() => {
+						handleSelect(option.id);
+					}}
+				>
 					<Typography typoSize="T1" color="Gray700" textAlign="center">
 						{option.option}
 					</Typography>

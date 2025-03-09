@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 import * as S from "./style";
 
@@ -11,6 +11,12 @@ export default function BottomSheet({
 	children: ReactNode;
 	isOpen?: boolean;
 }) {
+	if (isOpen) {
+		document.body.style.overflow = "hidden";
+	} else {
+		document.body.style.overflow = "auto";
+	}
+
 	return (
 		<>
 			<S.ModalBackground isOpen={isOpen} />

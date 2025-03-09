@@ -143,7 +143,7 @@ export default function Home() {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<>
+		<div style={{ paddingBottom: "100px" }}>
 			<Popup
 				message={`곧 만날 수 있으니 조금만 기다려 주세요!`}
 				setShowPopup={setShowPopup}
@@ -297,6 +297,6 @@ export default function Home() {
 					</Column>
 				</ButtonBox>
 			</Column>
-		</>
+		</div>
 	);
 }

@@ -10,7 +10,7 @@ export const TotalNavigationBar = styled.div`
 	bottom: 0;
 	left: 0;
 	width: 100vw;
-	height: 76px;
+	height: 100px;
 	border-radius: 12px 12px 0px 0px;
 	border-top: 1px solid #efefef;
 	background: #fff;
@@ -19,7 +19,7 @@ export const TotalNavigationBar = styled.div`
 export const StyledNavLink = styled(NavLink)`
 	display: flex;
 	flex-direction: column;
-	height: 76px;
+	height: 100px;
 	justify-content: center;
 	align-items: center;
 	gap: 4px;
