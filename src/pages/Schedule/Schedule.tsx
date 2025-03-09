@@ -14,11 +14,11 @@ import { useScheduleStore } from "../../store/scheduleStore";
 import { theme } from "../../styles/theme";
 import Popup from "../../components/Common/Popup";
 
-import test from "../../assets/img/Home/Alarm/roommate.svg";
 import BellIcon from "../../assets/img/Calendar/BellIcon.svg";
 import Modal from "../../components/Common/Modal";
 import TrashRedIcon from "../../assets/img/Calendar/TrashRedIcon.svg";
 import { useDeleteCalendar } from "./hooks/useDeleteCalendar";
+import Profile from "../../assets/img/MyPage/basicProfile.svg";
 
 const scheduleTextMap: Record<ScheduleType, string> = {
 	OUTING: "외출",
@@ -74,7 +74,8 @@ export default function Schedule() {
 					<Column gap={16} style={{ margin: "24px 0 48px 0" }}>
 						<Column gap={6}>
 							<Row gap={6} verticalAlign="center">
-								<UserImage src={test} />
+								<UserImage
+									src={currentSchedule?.image ? import.meta.env.VITE_APP_BUCKET_BASEURL + currentSchedule.image : Profile} />
 								<Typography typoSize="B2_medium" color="Gray600">
 									{currentSchedule.nickname}
 								</Typography>
@@ -101,14 +102,14 @@ export default function Schedule() {
 							</Typography>
 						</Column>
 					</Column>
-					<Row gap={12}>
-						<Typography typoSize="B1_medium" color="Gray400">
-							알림
-						</Typography>
-						<Typography typoSize="B1_medium" color="Gray800">
-							{"10분 전 알림"}
-						</Typography>
-					</Row>
+					{/*<Row gap={12}>*/}
+					{/*	<Typography typoSize="B1_medium" color="Gray400">*/}
+					{/*		알림*/}
+					{/*	</Typography>*/}
+					{/*	<Typography typoSize="B1_medium" color="Gray800">*/}
+					{/*		{"10분 전 알림"}*/}
+					{/*	</Typography>*/}
+					{/*</Row>*/}
 				</Column>
 			</c.SubScreen>
 			{isDelete && (
@@ -142,26 +143,26 @@ export default function Schedule() {
 }
 
 const Background = styled.div`
-	background: #00000033;
-	position: relative;
-	z-index: 30;
+    background: #00000033;
+    position: relative;
+    z-index: 30;
 `;
 
 const ModalChoiceBtn = styled.div`
-	background-color: ${theme.Yellow500};
-	border-radius: 12px;
-	padding: 20px;
-	width: 100%;
-	text-align: center;
+    background-color: ${theme.Yellow500};
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    text-align: center;
 `;
 
 const ChoiceNo = styled.div`
-	background-color: ${theme.White};
-	border: 1px solid ${theme.Gray200};
-	border-radius: 12px;
-	text-align: center;
-	width: 100%;
-	padding: 20px;
+    background-color: ${theme.White};
+    border: 1px solid ${theme.Gray200};
+    border-radius: 12px;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
 `;
 
 // const SendNotificationButton = styled(Row)`
@@ -172,6 +173,7 @@ const ChoiceNo = styled.div`
 // `;
 
 const UserImage = styled.img`
-	width: 20px;
-	height: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
 `;
