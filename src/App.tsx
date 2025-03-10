@@ -44,7 +44,7 @@ function App() {
 					<Route path="/settinguserinfo" element={<SettingUserInfo />} />
 					<Route path="/savelist" element={<SaveList />} />
 					<Route path="/notice" element={<Notice />} />
-					<Route path="/notification" element={<Notification />} />
+					<Route path="/notification" element={<NotificationSetting />} />
 					<Route path="/changepassword" element={<ChangePassword />} />
 					<Route path="/notice/details/:noticenum" element={<NoticeDetail />} />
 					<Route path="/roommate" element={<FindRoommate />} />

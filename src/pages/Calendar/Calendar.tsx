@@ -59,7 +59,7 @@ export default function Calendar() {
 			<S.BlurIcon src={BlurImg} />
 			<S.EnrollLifeStyle>
 				<Typography typoSize={"B1_semibold"} color={"Gray800"} textAlign="center">
-					{"룸메이트를 맺고\n일정 공유 캘린더를 사용해보세요!"}
+					{"나의 룸메이트와 일정을\n 공유해 보세요!"}
 				</Typography>
 				<S.EnroolLifeStyleBtn
 					onClick={() => navigate("/roommate")}

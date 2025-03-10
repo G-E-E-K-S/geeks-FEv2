@@ -1,7 +1,7 @@
 import * as CS from "../../../components/Common/CommonStyle";
 import * as S from "./style";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import Header from "../../../components/MyPage/Header";
 import Typography from "../../../components/Common/Layouts/Typography";
@@ -21,17 +21,24 @@ const patchUserFcmToken = async (token: string) => {
 
 const patchUserServiceNotification = async () => {
 	try {
-		await Promise.all([
-			API.patch(`api/v1/user/change/roommate/notify`),
-			API.patch(`api/v1/user/change/service/notify`)
-		]);
-		return "success";
+		const response = await API.patch(`api/v1/user/change/service/notify`);
+		return response.data.data;
 	} catch (error) {
-		return "error";
+		console.error(error);
 	}
 };
 
-export default function Notification() {
+const patchUserRoommateNotification = async () => {
+	try {
+		const response = await API.patch(`api/v1/user/change/roommate/notify`);
+		return response.data.data;
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export default function NotificationSetting() {
+	const queryClient = useQueryClient();
 	const [toggleState, setToggleState] = useState({
 		total: false,
 		roommate: false,
@@ -48,6 +55,38 @@ export default function Notification() {
 		}
 	});
 
+	const { data: userNotificationStatus } = useQuery({
+		queryKey: ["notificationStatus"],
+		queryFn: async () => {
+			const response = await API.get(`/api/v1/user/check/fcm/token`);
+			return response.data.data;
+		}
+	});
+
+	const { mutateAsync: serviceNotificationMutate } = useMutation({
+		mutationFn: patchUserServiceNotification,
+		onSuccess: (data) => {
+			console.log("success: ", data);
+			queryClient.invalidateQueries({ queryKey: ["alarmState"] });
+
+		},
+		onError: (error) => {
+			console.error("Error: ", error);
+		}
+	});
+
+	const { mutateAsync: roommateNotificationMutate } = useMutation({
+		mutationFn: patchUserRoommateNotification,
+		onSuccess: (data) => {
+			console.log("success: ", data);
+			queryClient.invalidateQueries({ queryKey: ["alarmState"] });
+
+		},
+		onError: (error) => {
+			console.error("Error: ", error);
+		}
+	});
+
 	useEffect(() => {
 		if (!data) return;
 		setToggleState((prev) => ({
@@ -56,20 +95,39 @@ export default function Notification() {
 		}));
 	}, [data]);
 
+
+	const notificationHandler = async (type: string) => {
+		if (type === "roommate") {
+			await roommateNotificationMutate();
+		} else if (type === "service") {
+			await serviceNotificationMutate();
+		} else {
+			await roommateNotificationMutate();
+			await serviceNotificationMutate();
+		}
+	};
+
 	const handleToggle = async (type: string) => {
-		// Recheck
-		// 알림 테스트용 코드
+		if (Notification.permission === "denied") {
+			alert('브라우저 알림 권한을 허용해주세요!');
+			return;
+		}
+
+		// 권한 허용 및 토큰 받는 코드
 		const { result, userFcmToken } = await handleAllowNotification();
 		console.log(result, userFcmToken);
 
 		if (result === "success") {
-			// 토큰 저장
-			const fcmToken = await patchUserFcmToken(userFcmToken);
-			console.log("fcm 토큰 저장:", fcmToken);
-
-			if (fcmToken === "success") {
-				// 알림 토글
-				await patchUserServiceNotification();
+			// 유저 토큰이 저장돼있는지 확인
+			if (userNotificationStatus) {
+				await notificationHandler(type);
+			} else {
+				// 서버에 토큰 저장
+				const fcmToken = await patchUserFcmToken(userFcmToken);
+				console.log("fcm 토큰 저장:", fcmToken);
+				if (fcmToken === "success") {
+					await notificationHandler(type);
+				}
 			}
 		}
 

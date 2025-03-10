@@ -235,8 +235,8 @@ export default function RoommateApply() {
 							typoSize="T4_semibold"
 							color="Gray800"
 							textAlign="center"
-						>{`보낸 룸메이트 신청이 없어요`}</Typography>
-						<S.FinRoommateBtn onClick={() => navigate("/roommate")}>
+						>{`받은 룸메이트 신청이 없어요`}</Typography>
+						<S.FinRoommateBtn onClick={() => navigate("/search")}>
 							<S.FindRoommateIcon src={Roommate} />
 							<Typography typoSize="T4_semibold" color="Gray700">{`룸메이트 찾으러 가기`}</Typography>
 						</S.FinRoommateBtn>

@@ -19,13 +19,13 @@ export const TotalNavigationBar = styled.div`
 export const StyledNavLink = styled(NavLink)`
 	display: flex;
 	flex-direction: column;
-	height: 100px;
 	justify-content: center;
 	align-items: center;
 	gap: 4px;
 	flex: 1;
 	cursor: pointer;
 	transition: all 0.3s;
+	padding-bottom: 20px;
 
 	&.active {
 		color: ${({ theme }) => theme.Black};

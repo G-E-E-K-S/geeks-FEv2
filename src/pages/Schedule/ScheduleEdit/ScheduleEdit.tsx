@@ -94,7 +94,7 @@ export default function ScheduleEdit() {
 		}
 		// 전역 상태 초기화
 		setCurrentSchedule(null);
-		navigate("/calendar", { replace: true });
+		navigate(-1, { replace: true });
 	};
 
 	return (

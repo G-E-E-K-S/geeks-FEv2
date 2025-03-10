@@ -37,7 +37,7 @@ import {
 	SecessionReason,
 	NoticeDetail,
 	ChangePassword,
-	Notification,
+	NotificationSetting,
 	TermPolicy
 } from "../pages/MyPage/Index";
 import Loading from "../pages/Loading";
@@ -88,7 +88,7 @@ export const router = createBrowserRouter([
 					{ path: "/settinguserinfo", element: <SettingUserInfo /> },
 					{ path: "/savelist", element: <SaveList /> },
 					{ path: "/notice", element: <Notice /> },
-					{ path: "/notification", element: <Notification /> },
+					{ path: "/notification", element: <NotificationSetting /> },
 					{ path: "/changepassword", element: <ChangePassword /> },
 					{ path: "/notice/details/:noticenum", element: <NoticeDetail /> },
 					{ path: "/finishroommate", element: <FinishRoommate /> },

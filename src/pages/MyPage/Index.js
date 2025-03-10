@@ -9,7 +9,7 @@ import MyProfile from "./MyProfile";
 import SecessionReason from "./SecessionReason";
 import NoticeDetail from "./Notice/NoticeDetail";
 import ChangePassword from "./ChangePassword/ChangePassword";
-import Notification from "./Notification/Notification";
+import NotificationSetting from "./Notification/NotificationSetting";
 import TermPolicy from "./TermPolicy/TermPolicy";
 
 export {
@@ -24,6 +24,6 @@ export {
 	SecessionReason,
 	NoticeDetail,
 	ChangePassword,
-	Notification,
+	NotificationSetting,
 	TermPolicy
 };

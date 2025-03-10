@@ -101,7 +101,7 @@ export const MyRoommateNoti = styled.div`
 	text-align: center;
 	margin-bottom: 24px;
 	position: relative;
-	z-index: 20;
+	z-index: 5;
 `;
 export const MyRoommateNotiTxt = styled.div`
 	font-size: 0.875rem;
