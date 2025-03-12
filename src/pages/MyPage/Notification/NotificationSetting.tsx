@@ -189,7 +189,7 @@ export default function NotificationSetting() {
 						{"서비스 알림"}
 					</Typography>
 					<Typography typoSize="B2_medium" color="Gray600">
-						{"외박 신청을 알려드려요"}
+						{"룸메이트가 귀가 알림을 보냈을 시 알려드려요"}
 					</Typography>
 				</Column>
 				<Toggle isToggle={toggleState.service} onClick={() => handleToggle("service")} />
