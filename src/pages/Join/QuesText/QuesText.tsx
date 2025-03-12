@@ -12,7 +12,8 @@ import Question from "../../../assets/gif/question.gif";
 
 export default function QuesText() {
 	const navigate = useNavigate();
-	const { nickname } = useUserInfo();
+	// const { nickname } = useUserInfo();
+	const nickname = localStorage.getItem('nickname');
 
 	return (
 		<>

@@ -16,7 +16,8 @@ import SelectBoy from "../../../assets/img/Join/selectMan.svg";
 
 export default function Gender() {
 	const [isNextPage, setIsNextPage] = useState(false);
-	const { gender, setGender } = useUserInfo();
+	// const { gender, setGender } = useUserInfo();
+	const [gender, setGender] = useState("");
 	const navigate = useNavigate();
 
 	const SelectGender = (gender: "MALE" | "FEMALE") => {
@@ -52,7 +53,10 @@ export default function Gender() {
 					SelectGender={SelectGirl}
 				/>
 			</Row>
-			<Button text={"다음"} onClick={() => navigate("/dormitory")} isNextPage={isNextPage} />
+			<Button text={"다음"} onClick={() => {
+				localStorage.setItem("gender", gender);
+				navigate("/dormitory");
+			}} isNextPage={isNextPage} />
 		</>
 	);
 }

@@ -18,9 +18,10 @@ const NickName = () => {
 	const [isPopup, setIsPopup] = useState(false);
 	const [errorPopup, setErrorPopup] = useState(false);
 	const letterCnt = useRef(0);
-	const { nickname, setNickname } = useUserInfo();
 	const [debouncedNickname, setDebouncedNickname] = useState("");
 	const navigate = useNavigate();
+	// const { nickname, setNickname } = useUserInfo();
+	const [nickname,setNickname] = useState('');
 
 	useEffect(() => {
 		const debouncedUpdate = debounce(() => {
@@ -91,7 +92,10 @@ const NickName = () => {
 				isShowPopup={errorPopup}
 				bottom={"18.72"}
 			/>
-			<Button text={"다음"} onClick={() => navigate("/questiontext")} isNextPage={isNextPage} />
+			<Button text={"다음"} onClick={() => {
+				localStorage.setItem('nickname',nickname);
+				navigate("/questiontext");
+			}} isNextPage={isNextPage} />
 		</>
 	);
 };

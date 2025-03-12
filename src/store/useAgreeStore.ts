@@ -8,6 +8,7 @@ interface AgreeState {
 	marketing: boolean;
 	toggleAll: () => void;
 	toggleItem: (key: keyof Omit<AgreeState, "toggleAll" | "toggleItem">) => void;
+	resetAll: () => void;
 }
 
 export const useAgreeStore = create<AgreeState>((set, get) => ({
@@ -33,6 +34,16 @@ export const useAgreeStore = create<AgreeState>((set, get) => ({
 			const newState = { ...state, [key]: !state[key] };
 			newState.total = newState.service && newState.personal && newState.location && newState.marketing;
 			return newState;
+		});
+	},
+
+	resetAll: () => {
+		set({
+			total: false,
+			service: false,
+			personal: false,
+			location: false,
+			marketing: false
 		});
 	}
 }));

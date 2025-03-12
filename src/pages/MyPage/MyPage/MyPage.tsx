@@ -42,6 +42,7 @@ export default function MyPage() {
 	const clickedToggle = () => {
 		let toggleVal = !toggle;
 		setToggle(toggleVal);
+
 		async function fetchShowProfile() {
 			try {
 				await API.patch("/api/v1/user/profile/change/open");
@@ -49,6 +50,7 @@ export default function MyPage() {
 				console.error(error);
 			}
 		}
+
 		fetchShowProfile();
 	};
 
@@ -83,23 +85,20 @@ export default function MyPage() {
 				const res = await API.post("/api/v1/user/logout");
 				if (res.data.success) {
 					useGetToken.getState().resetToken();
-					navigate("/welcome", {
-						state: {
-							prev: "logout"
-						}
-					});
+					navigate("/welcome", { state: { prev: "logout" } });
 				}
 			} catch (error) {
 				console.error(error);
 			}
 		}
+
 		fetchLogOut();
 	};
 
 	return isLoading || !userInfo ? (
 		<Loading />
 	) : (
-		<div style={{paddingBottom:"76px"}}>
+		<div style={{ paddingBottom: "76px" }}>
 			<CS.Header backgroundColor="White">
 				<Typography typoSize="H3" color="Gray800">
 					{"마이"}

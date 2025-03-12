@@ -21,7 +21,10 @@ const Major = () => {
 	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 	const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
 	const [isStudentNumOpen, setIsStudentNumOpen] = useState(false);
-	const { major, setMajor, department, setDepartment, studentNum, setStudentNum } = useUserInfo();
+	// const { major, setMajor, department, setDepartment, studentNum, setStudentNum } = useUserInfo();
+	const [major, setMajor] = useState("");
+	const [department, setDepartment] = useState("");
+	const [studentNum, setStudentNum] = useState<number | null>(null);
 	const navigate = useNavigate();
 
 	const handleBottomSheet = () => {
@@ -105,7 +108,12 @@ const Major = () => {
 					))}
 				</BottomSheet>
 			)}
-			<Button text={"다음"} isNextPage={isNextPage} onClick={() => navigate("/gender")} />
+			<Button text={"다음"} isNextPage={isNextPage} onClick={() => {
+				localStorage.setItem("major", major);
+				localStorage.setItem("department", department);
+				localStorage.setItem("studentNum", String(studentNum));
+				navigate("/gender");
+			}} />
 		</>
 	);
 };

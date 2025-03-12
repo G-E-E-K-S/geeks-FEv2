@@ -7,16 +7,20 @@ import DormitoryBox from "../../../components/Join/DormitoryBox";
 import Button from "../../../components/DesignStuff/Button/Button";
 import Typography from "../../../components/Common/Layouts/Typography";
 import { useUserInfo } from "../../../store/useUserInfo";
+import { useState } from "react";
 
 const DormitoryTotal = styled.div`
-	margin-top: 6.16vh;
-	& > :last-child {
-		margin-bottom: 0px;
-	}
+    margin-top: 6.16vh;
+
+    & > :last-child {
+        margin-bottom: 0px;
+    }
 `;
 
 const Dormitory = () => {
-	const { gender, dormitory, setDormitory } = useUserInfo();
+	// const { gender, dormitory, setDormitory } = useUserInfo();
+	const [dormitory, setDormitory] = useState("");
+	const gender = localStorage.getItem("gender");
 	const navigate = useNavigate();
 
 	const SelectDormitory = (dormitory: string) => {
@@ -52,7 +56,10 @@ const Dormitory = () => {
 					isSelected={dormitory == "HAPPY"}
 				/>
 			</DormitoryTotal>
-			<Button text={"다음"} onClick={() => navigate("/finalpage")} isNextPage={Boolean(dormitory)} />
+			<Button text={"다음"} onClick={() => {
+				localStorage.setItem("dormitory", dormitory);
+				navigate("/finalpage");
+			}} isNextPage={Boolean(dormitory)} />
 		</>
 	);
 };

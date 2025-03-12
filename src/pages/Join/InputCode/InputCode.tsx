@@ -25,7 +25,8 @@ const InputCode = () => {
 	const [sec, setSec] = useState(0);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { email } = useUserInfo();
+	// const { email } = useUserInfo();
+	const email = localStorage.getItem("email");
 
 	const handleInputChange = (index, event) => {
 		const nextIndex = index + 1;
@@ -158,7 +159,7 @@ const InputCode = () => {
 				message={`코드가 일치하지 않아요`}
 				bottom={`40`}
 				setShowPopup={setIsErrorPopup}
-				isShowPopup={true}
+				isShowPopup={isErrorPopup}
 			/>
 			<JoinButton
 				btnName={"코드 확인하기"}

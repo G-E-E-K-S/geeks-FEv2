@@ -24,7 +24,8 @@ export default function Password() {
 		pwdSame: false
 	});
 	const navigate = useNavigate();
-	const { password, setPassword } = useUserInfo();
+	// const { password, setPassword } = useUserInfo();
+	const [password, setPassword] = useState("");
 
 	const validatePassword = () => {
 		//해당 부분 set처리 말고 객체로 빼서 값 저장하는거 고려.
@@ -95,7 +96,11 @@ export default function Password() {
 					{"똑같은 문자가 4번 반복되면 안돼요"}
 				</Typography>
 			</Row>
-			<JoinButton btnName={"다음"} handleClick={() => navigate("/nickname")} isNextPage={isNextPage} />
+			<JoinButton btnName={"다음"} handleClick={() => {
+				localStorage.setItem("password", password);
+				navigate("/nickname");
+			}
+			} isNextPage={isNextPage} />
 		</>
 	);
 }

@@ -8,10 +8,20 @@ import Button from "../../../components/DesignStuff/Button/Button";
 import Typography from "../../../components/Common/Layouts/Typography";
 import Row from "../../../components/Common/Layouts/Row";
 import { useUserInfo } from "../../../store/useUserInfo";
+import { useEffect } from "react";
+import { useAgreeStore } from "../../../store/useAgreeStore";
 
 export default function FinalPage() {
 	const navigate = useNavigate();
-	const { email, password, nickname, major, studentNum, dormitory, gender } = useUserInfo();
+	// const { email, password, nickname, major, studentNum, dormitory, gender } = useUserInfo();
+	const email = localStorage.getItem('email');
+	const password = localStorage.getItem('password');
+	const nickname = localStorage.getItem('nickname');
+	const major = localStorage.getItem('major');
+	const studentNum = localStorage.getItem('studentNum');
+	const dormitory = localStorage.getItem('dormitory');
+	const gender = localStorage.getItem('gender');
+	const { resetAll } = useAgreeStore();
 	const { refetch } = useQuery({
 		queryKey: ["sendInfo"],
 		queryFn: async () => {
@@ -32,11 +42,16 @@ export default function FinalPage() {
 	const sendEveryInfo = () => {
 		refetch().then((val) => {
 			if (val.data.success) {
+				localStorage.clear();
 				localStorage.setItem("token", val.data.data);
 				navigate("/home", { replace: true });
 			}
 		});
 	};
+
+	useEffect(() => {
+		resetAll();
+	}, []);
 
 	return (
 		<>
