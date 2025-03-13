@@ -57,12 +57,12 @@ export default function SettingUserInfo() {
 				</Typography>
 			</S.AccountInfoBox>
 			{/* Password */}
-			<S.AccountInfoBox>
-				<Typography typoSize="T3_semibold" color="Gray800">
-					{"비밀번호"}
-				</Typography>
-				<S.AccountBtn onClick={() => navigate("/changepassword")}>{"변경하기"}</S.AccountBtn>
-			</S.AccountInfoBox>
+			{/*<S.AccountInfoBox>*/}
+			{/*	<Typography typoSize="T3_semibold" color="Gray800">*/}
+			{/*		{"비밀번호"}*/}
+			{/*	</Typography>*/}
+			{/*	<S.AccountBtn onClick={() => navigate("/changepassword")}>{"변경하기"}</S.AccountBtn>*/}
+			{/*</S.AccountInfoBox>*/}
 			{/* when we account */}
 			<S.AccountInfoBox>
 				<Typography typoSize="T3_semibold" color="Gray800">

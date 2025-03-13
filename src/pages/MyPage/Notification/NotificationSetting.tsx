@@ -119,17 +119,14 @@ export default function NotificationSetting() {
 		if (Notification.permission === "denied") {
 			alert("브라우저 알림 권한을 허용해주세요!");
 			return;
-		}
+		} else if (Notification.permission === "granted" && userNotificationStatus) {
+			await notificationHandler(type);
+		} else {
+			// 권한 허용 및 토큰 받는 코드
+			const { result, userFcmToken } = await AllowNotificationMutate();
+			console.log(result, userFcmToken);
 
-		// 권한 허용 및 토큰 받는 코드
-		const { result, userFcmToken } = await AllowNotificationMutate();
-		console.log(result, userFcmToken);
-
-		if (result === "success") {
-			// 유저 토큰이 저장돼있는지 확인
-			if (userNotificationStatus) {
-				await notificationHandler(type);
-			} else {
+			if (result === "success") {
 				// 서버에 토큰 저장
 				const fcmToken = await patchUserFcmToken(userFcmToken);
 				console.log("fcm 토큰 저장:", fcmToken);
@@ -185,7 +182,8 @@ export default function NotificationSetting() {
 						{"룸메이트 신청을 받거나 맺어졌을 시 알려드려요"}
 					</Typography>
 				</Column>
-				<Toggle isToggle={toggleState.roommate && Notification.permission === "granted" } onClick={() => handleToggle("roommate")} />
+				<Toggle isToggle={toggleState.roommate && Notification.permission === "granted"}
+						onClick={() => handleToggle("roommate")} />
 			</S.MenuWrapper>
 			{/* <S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Typography typoSize="T3_semibold" color="Gray800">
@@ -202,7 +200,8 @@ export default function NotificationSetting() {
 						{"룸메이트가 귀가 알림을 보냈을 시 알려드려요"}
 					</Typography>
 				</Column>
-				<Toggle isToggle={toggleState.service && Notification.permission === "granted" } onClick={() => handleToggle("service")} />
+				<Toggle isToggle={toggleState.service && Notification.permission === "granted"}
+						onClick={() => handleToggle("service")} />
 			</S.MenuWrapper>
 			{/* <S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Column gap={4}>
