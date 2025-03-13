@@ -60,17 +60,17 @@ export default function Search() {
 			<CS.Header backgroundColor="White">
 				<Row horizonAlign="center" verticalAlign="center" gap={12}>
 					<GoBack />
-					<SearchBar placeHolder="검색할 키워드를 입력하세요" inputVal={(val) => handleSearchRoommate(val)} />
+					<SearchBar placeHolder="검색할 닉네임을 입력하세요" inputVal={(val) => handleSearchRoommate(val)} />
 				</Row>
 			</CS.Header>
 			{searchUser?.length === 0 ? (
 				<S.SearchTotalTxt>
-					<Typography typoSize="T3_semibold" color="Gray800">{`모든 키워드를 검색할 수 있어요`}</Typography>
+					{/*<Typography typoSize="T3_semibold" color="Gray800">{`모든 키워드를 검색할 수 있어요`}</Typography>*/}
 					<Typography
 						typoSize="T4_medium"
-						color="Gray400"
+						color="Gray800"
 						style={{ marginTop: "8px" }}
-					>{`닉네임은 생활 습관을 등록한 유저만 검색돼요`}</Typography>
+					>{`닉네임은 서로가 생활습관을\n 등록해야 검색 가능해요`}</Typography>
 				</S.SearchTotalTxt>
 			) : (
 				<Column gap={6}>

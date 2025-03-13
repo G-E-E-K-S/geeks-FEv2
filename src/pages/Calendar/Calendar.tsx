@@ -56,13 +56,13 @@ export default function Calendar() {
 
 	return data?.data === null ? (
 		<>
-			<S.BlurIcon src={BlurImg} />
+			<S.BlurIcon src={BlurImg} style={{height:'calc(100vh - 100px)'}}/>
 			<S.EnrollLifeStyle>
 				<Typography typoSize={"B1_semibold"} color={"Gray800"} textAlign="center">
 					{"나의 룸메이트와 일정을\n 공유해 보세요!"}
 				</Typography>
 				<S.EnroolLifeStyleBtn
-					onClick={() => navigate("/roommate")}
+					onClick={() => navigate("/roommate/apply")}
 				>{`룸메이트 찾기`}</S.EnroolLifeStyleBtn>
 			</S.EnrollLifeStyle>
 		</>

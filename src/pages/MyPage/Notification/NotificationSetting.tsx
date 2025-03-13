@@ -1,7 +1,7 @@
 import * as CS from "../../../components/Common/CommonStyle";
 import * as S from "./style";
 import { useEffect, useMemo, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import Header from "../../../components/MyPage/Header";
 import Typography from "../../../components/Common/Layouts/Typography";
@@ -9,6 +9,7 @@ import Toggle from "../../../components/DesignStuff/Toggle/Toggle";
 import Column from "../../../components/Common/Layouts/Column";
 import { handleAllowNotification } from "../../../FCM_ALARM";
 import API from "../../../axios/BaseUrl";
+import LoadingTransparent from "../../../components/DesignStuff/LoadingTransparent/LoadingTransparent";
 
 const patchUserFcmToken = async (token: string) => {
 	try {
@@ -39,6 +40,8 @@ const patchUserRoommateNotification = async () => {
 
 export default function NotificationSetting() {
 	const queryClient = useQueryClient();
+	const isMutating = useIsMutating();
+
 	const [toggleState, setToggleState] = useState({
 		total: false,
 		roommate: false,
@@ -68,7 +71,6 @@ export default function NotificationSetting() {
 		onSuccess: (data) => {
 			console.log("success: ", data);
 			queryClient.invalidateQueries({ queryKey: ["alarmState"] });
-
 		},
 		onError: (error) => {
 			console.error("Error: ", error);
@@ -80,7 +82,16 @@ export default function NotificationSetting() {
 		onSuccess: (data) => {
 			console.log("success: ", data);
 			queryClient.invalidateQueries({ queryKey: ["alarmState"] });
+		},
+		onError: (error) => {
+			console.error("Error: ", error);
+		}
+	});
 
+	const { mutateAsync: AllowNotificationMutate } = useMutation({
+		mutationFn: handleAllowNotification,
+		onSuccess: (data) => {
+			console.log("success: ", data);
 		},
 		onError: (error) => {
 			console.error("Error: ", error);
@@ -101,20 +112,17 @@ export default function NotificationSetting() {
 			await roommateNotificationMutate();
 		} else if (type === "service") {
 			await serviceNotificationMutate();
-		} else {
-			await roommateNotificationMutate();
-			await serviceNotificationMutate();
 		}
 	};
 
 	const handleToggle = async (type: string) => {
 		if (Notification.permission === "denied") {
-			alert('브라우저 알림 권한을 허용해주세요!');
+			alert("브라우저 알림 권한을 허용해주세요!");
 			return;
 		}
 
 		// 권한 허용 및 토큰 받는 코드
-		const { result, userFcmToken } = await handleAllowNotification();
+		const { result, userFcmToken } = await AllowNotificationMutate();
 		console.log(result, userFcmToken);
 
 		if (result === "success") {
@@ -155,17 +163,19 @@ export default function NotificationSetting() {
 			}
 		});
 	};
+
 	return (
 		<>
+			{isMutating > 0 && <LoadingTransparent />}
 			<CS.Header backgroundColor="White">
 				<Header subtitle={`알림 설정`} />
 			</CS.Header>
-			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
-				<Typography typoSize="T3_semibold" color="Gray800">
-					{"전체 알림"}
-				</Typography>
-				<Toggle isToggle={toggleState.total} onClick={() => handleToggle("total")} />
-			</S.MenuWrapper>
+			{/*<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">*/}
+			{/*	<Typography typoSize="T3_semibold" color="Gray800">*/}
+			{/*		{"전체 알림"}*/}
+			{/*	</Typography>*/}
+			{/*	<Toggle isToggle={toggleState.total} onClick={() => handleToggle("total")} />*/}
+			{/*</S.MenuWrapper>*/}
 			<S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Column gap={4}>
 					<Typography typoSize="T3_semibold" color="Gray800">
@@ -175,7 +185,7 @@ export default function NotificationSetting() {
 						{"룸메이트 신청을 받거나 맺어졌을 시 알려드려요"}
 					</Typography>
 				</Column>
-				<Toggle isToggle={toggleState.roommate} onClick={() => handleToggle("roommate")} />
+				<Toggle isToggle={toggleState.roommate && Notification.permission === "granted" } onClick={() => handleToggle("roommate")} />
 			</S.MenuWrapper>
 			{/* <S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Typography typoSize="T3_semibold" color="Gray800">
@@ -192,7 +202,7 @@ export default function NotificationSetting() {
 						{"룸메이트가 귀가 알림을 보냈을 시 알려드려요"}
 					</Typography>
 				</Column>
-				<Toggle isToggle={toggleState.service} onClick={() => handleToggle("service")} />
+				<Toggle isToggle={toggleState.service && Notification.permission === "granted" } onClick={() => handleToggle("service")} />
 			</S.MenuWrapper>
 			{/* <S.MenuWrapper horizonAlign="distribute" verticalAlign="center">
 				<Column gap={4}>

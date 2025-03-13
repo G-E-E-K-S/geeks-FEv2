@@ -171,7 +171,7 @@ export default function RoommateApply() {
 			</Row>
 			<S.Notice>
 				<Typography typoSize="B2_medium" color="Gray600">
-					{`룸메이트가 맺어지면, 다른 사람에게 보낸 받은 신청과 보낸 신청은 모두 사라져요`}
+					{`룸메이트가 맺어지면, 다른 사람에게 받은 신청과 보낸 신청은 모두 사라져요`}
 				</Typography>
 			</S.Notice>
 			{isChoose === "send" &&
