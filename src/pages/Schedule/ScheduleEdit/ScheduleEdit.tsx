@@ -27,7 +27,6 @@ export default function ScheduleEdit() {
 
 	const [title, setTitle] = useState("");
 	const [type, setType] = useState<ScheduleType>("OUTING");
-	// const [alarm, setAlarm] = useState(1);
 	const [explain, setExplain] = useState("");
 
 	const [startDate, setStartDate] = useState(selectedDate ? dayjs(selectedDate).format("YYYY.M.D") : dayjs().format("YYYY.M.D"));
@@ -36,13 +35,18 @@ export default function ScheduleEdit() {
 	const [endTime, setEndTime] = useState(floorToNearest30(dayjs()).format("HH:mm"));
 
 	const [isActive, setIsActive] = useState(false);
-	const [prevValues, setPrevValues] = useState({ title, type, explain });
+	const [prevValues, setPrevValues] = useState({
+		title,
+		type,
+		explain,
+		startDate: formatDateTimeForApi(startDate, startTime),
+		endDate: formatDateTimeForApi(endDate, endTime)
+	});
 
 	useEffect(() => {
 		if (currentSchedule) {
 			setTitle(currentSchedule.title || "");
 			setType(currentSchedule.type || "OUTING");
-			// setAlarm(1); // 기본값 설정
 			setExplain(currentSchedule.description || "");
 			setStartDate(dayjs(currentSchedule.startDate).format("YYYY.M.D"));
 			setStartTime(dayjs(currentSchedule.startDate).format("HH:mm"));
@@ -51,8 +55,9 @@ export default function ScheduleEdit() {
 			setPrevValues({
 				title: currentSchedule.title || "",
 				type: currentSchedule.type || "OUTING",
-				// alarm: 1, // 기본값 설정
-				explain: currentSchedule.description || ""
+				explain: currentSchedule.description || "",
+				startDate: dayjs(currentSchedule.startDate).format("YYYY-MM-DDTHH:mm"),
+				endDate: dayjs(currentSchedule.endDate).format("YYYY-MM-DDTHH:mm")
 			});
 		}
 
@@ -64,14 +69,15 @@ export default function ScheduleEdit() {
 			const isChanged =
 				title !== prevValues.title ||
 				type !== prevValues.type ||
-				// alarm !== prevValues.alarm ||
-				explain !== prevValues.explain;
+				explain !== prevValues.explain ||
+				formatDateTimeForApi(startDate, startTime) !== prevValues.startDate ||
+				formatDateTimeForApi(endDate, endTime) !== prevValues.endDate;
 			setIsActive(isChanged);
 		} else {
 			// schedule이 없을 때는 title이 비어있지 않으면 active
 			setIsActive(title.trim() !== "");
 		}
-	}, [title, type, explain, currentSchedule, prevValues]);
+	}, [title, type, explain, currentSchedule, prevValues, startDate, startTime, endDate, endTime]);
 
 	const addCalendarSchedule = async () => {
 		const startDateTime = formatDateTimeForApi(startDate, startTime);
@@ -94,7 +100,7 @@ export default function ScheduleEdit() {
 		}
 		// 전역 상태 초기화
 		setCurrentSchedule(null);
-		navigate(-1, { replace: true });
+		navigate(-1);
 	};
 
 	return (
