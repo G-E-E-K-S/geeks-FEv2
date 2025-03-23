@@ -56,6 +56,8 @@ jobs:
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           source: "dist/"
           target: "/home/ubuntu/test"
+          strip_components: 1
+          
       - name: Discord success notification
         if: success()
         uses: sarisia/actions-status-discord@v1
