@@ -1,0 +1,83 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: .env setting
+        run: |
+          echo "VITE_APP_BASEURL=${{ secrets.VITE_APP_BASEURL }}" >> .env
+          echo "VITE_APP_BUCKET_BASEURL=${{ secrets.VITE_APP_BUCKET_BASEURL }}" >> .env
+          echo "VITE_APP_FCM_APIKEY=${{ secrets.VITE_APP_FCM_APIKEY }}" >> .env
+          echo "VITE_APP_FCM_APP_ID=${{ secrets.VITE_APP_FCM_APP_ID }}" >> .env
+          echo "VITE_APP_FCM_AUTHDOMAIN=${{ secrets.VITE_APP_FCM_AUTHDOMAIN }}" >> .env
+          echo "VITE_APP_FCM_PROJECT_ID=${{ secrets.VITE_APP_FCM_PROJECT_ID }}" >> .env
+          echo "VITE_APP_FCM_SENDER_ID=${{ secrets.VITE_APP_FCM_SENDER_ID }}" >> .env
+          echo "VITE_APP_FCM_STORAGE_BUCKET=${{ secrets.VITE_APP_FCM_STORAGE_BUCKET }}" >> .env
+          echo "VITE_APP_VAPIDKEY=${{ secrets.VITE_APP_VAPIDKEY }}" >> .env
+               
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build app
+        run: npm run build
+
+      - name: create firebase-messaging-sw.js
+        run: |
+          cd dist
+
+          touch ./firebase-messaging-sw.js
+          echo "${{ secrets.FIREBASE_MESSAGING_SW }}" >> ./firebase-messaging-sw.js
+        shell: bash
+      
+      - name: Deploy to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AWS_EC2_HOST_IP }}
+          username: ${{ secrets.AWS_EC2_USERNAME }}
+          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+          source: "dist/"
+          target: "/home/ubuntu/front/geeks"
+          strip_components: 1
+          
+      - name: Discord success notification
+        if: success()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "빌드 성공 ✅"
+          description: |
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+          color: 0x00ff00
+
+      - name: Discord failure notification
+        if: failure()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: "빌드 실패 ❌"
+          description: |
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+          color: 0x00ff00
