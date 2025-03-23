@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.AWS_EC2_USERNAME }}
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           source: "dist/"
-          target: "/home/ubuntu/test"
+          target: "/home/ubuntu/front/geeks"
           strip_components: 1
           
       - name: Discord success notification
